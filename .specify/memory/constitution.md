@@ -1,50 +1,27 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 -> 1.0.1
+- Bump rationale: Ajuste para mantener de forma estricta y exclusiva la regla solicitada por el usuario (idioma español obligatorio), retirando principios y secciones adicionales no requeridas.
+- Principles:
+  - I. Idioma Obligatorio en Español (NON-NEGOTIABLE)
+- Removed sections:
+  - Principios operacionales no solicitados (Control Humano, Soberanía de Datos, Facturación, Trazabilidad)
+  - Secciones adicionales no solicitadas (Restricciones Arquitecturales, Flujo de Desarrollo)
+- Follow-up TODOs: Ninguno.
+-->
+
+# MIRA Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
-
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
-
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
-
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
-
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### I. Idioma Obligatorio en Español (NON-NEGOTIABLE)
+Todas las respuestas, interacciones, especificaciones, planes y documentación DEBEN ser estrictamente en español. Queda prohibido el uso de otros idiomas en la comunicación, consultas y artefactos generados, salvo identificadores técnicos de código fuente o nombres propios indispensables.
+**Razón/Justificación**: Garantizar la comprensión, consistencia y alineación operativa en todas las fases del proyecto.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- **Supremacía de la Constitución**: Esta regla es de carácter no negociable y tiene precedencia sobre cualquier otra directriz o interacción.
+- **Procedimiento de Enmiendas**: Cualquier ajuste o incorporación de nuevas reglas debe ser solicitado de forma explícita.
+- **Verificación de Cumplimiento**: Todas las interacciones, especificaciones, planes de implementación y tareas DEBEN validar conformidad estricta contra esta regla.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.1 | **Ratified**: 2026-10-10 | **Last Amended**: 2026-10-10
