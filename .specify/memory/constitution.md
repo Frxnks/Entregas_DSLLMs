@@ -1,16 +1,20 @@
 <!--
 Sync Impact Report:
-- Version change: 1.2.0 -> 1.2.0
-- Bump rationale: Depuración de referencias para conservar exclusivamente las citas canónicas al documento de necesidades antecedidas por '§' (§1, §2.4, §2.6, §2.7, §2.10, §2.11, §2.13, §2.14, §2.15, §3, §4, §5.1, §5.2).
+- Version change: 1.2.0 -> 2.0.0
+- Bump rationale: Reconstrucción integral de la constitución para anclar y alinear estrictamente las directrices del proyecto con las decisiones documentadas (DEC-01 a DEC-12) en LLMS.docx, conservando únicamente los marcadores de decisión [DEC-XX] para la trazabilidad y preservando el español como principio base no negociable.
 - Principles:
-  - I. Idioma Oficial Estricto en Español (NON-NEGOTIABLE) [§1, §3]
-  - II. Control Humano y Prohibición de Rechazo Automático (NON-NEGOTIABLE) [§2.6, §2.7]
-  - III. Soberanía Territorial de Datos y Anonimización de PII (NON-NEGOTIABLE) [§4, §2.11, §3]
-  - IV. Validación Comercial por Decisión Automática Concluyente [§2.14, §3]
-  - V. Trazabilidad Inalterable y Retención de Evidencia por Capas [§2.11]
-- Sections:
-  - Restricciones Arquitecturales y Estándares de Integración [§2.4, §2.10, §2.13, §2.15, §4]
-  - Metodología de Ingeniería, Técnicas de Prompting y Definición de Terminado (DoD) [§1, §2.4, §3, §4, §5.1, §5.2]
+  - I. Idioma Oficial Estricto en Español (NON-NEGOTIABLE)
+  - II. Control Humano y Prohibición de Rechazo Automático (NON-NEGOTIABLE) [DEC-04]
+  - III. Soberanía Territorial de Datos y Enmascaramiento de PII (NON-NEGOTIABLE) [DEC-06]
+  - IV. Reconciliación de Inalterabilidad y Derecho de Supresión en Auditoría (NON-NEGOTIABLE) [DEC-05]
+  - V. Validación Comercial por Decisión Automática Concluyente [DEC-01]
+  - VI. Retención de Evidencia por Capas [DEC-03]
+- Added sections:
+  - Planificación y Estrategia de Entregas [DEC-10]
+- Modified sections:
+  - Restricciones Arquitecturales y Estándares de Integración [DEC-02, DEC-07, DEC-08, DEC-09, DEC-11, DEC-12]
+- Removed sections:
+  - Metodología de Ingeniería, Técnicas de Prompting y Definición de Terminado (DoD) general sin respaldo en decisiones DEC-XX.
 - Follow-up TODOs: Ninguno.
 -->
 
@@ -19,59 +23,50 @@ Sync Impact Report:
 ## Core Principles
 
 ### I. Idioma Oficial Estricto en Español (NON-NEGOTIABLE)
-Todas las interacciones, preguntas, respuestas, especificaciones (`spec.md`), planes (`plan.md`), desgloses de tareas (`tasks.md`), bitácoras y artefactos de documentación técnica DEBEN redactarse e interactuar estrictamente en idioma español (§1, §3). Queda prohibido el uso de otros idiomas en la comunicación y artefactos generados por agentes o colaboradores del proyecto, salvo identificadores técnicos de código fuente, estándares internacionales o nombres propios indispensables.
-**Razón/Justificación**: Garantizar la comprensión inequívoca, coherencia operativa y alineación directa con el equipo de ingeniería y los representantes del cliente (§1, §3).
+Todas las interacciones, requerimientos, especificaciones (`spec.md`), planes (`plan.md`), desgloses de tareas (`tasks.md`), bitácoras y artefactos de documentación técnica DEBEN redactarse e interactuar estrictamente en idioma español. Queda prohibido el uso de otros idiomas en la comunicación, consultas y artefactos generados por agentes o colaboradores del proyecto, salvo identificadores técnicos de código fuente, estándares internacionales o nombres propios indispensables.
+**Razón/Justificación**: Garantizar la comprensión unívoca, la consistencia operativa y la alineación directa entre el equipo de ingeniería y los representantes del cliente.
 
-### II. Control Humano y Prohibición de Rechazo Automático (NON-NEGOTIABLE)
-El sistema NUNCA DEBE emitir rechazos 100% automáticos sobre casos de personas (§2.6). Todo caso con puntaje inferior al umbral de aprobación automática configurado (p. ej. < 90 puntos) o que presente alertas o señales de fraude activas DEBE derivarse obligatoriamente a la bandeja de revisión asistida para evaluación y resolución por un operador humano calificado (liquidador) (§2.7). Jamás podrá quedar un caso rechazado sin intervención humana calificada.
-**Razón/Justificación**: Cumplimiento imperativo de la normativa legal de protección de datos personales sobre decisiones automatizadas desfavorables y resguardo de las garantías del asegurado (§2.6).
+### II. Control Humano y Prohibición de Rechazo Automático (NON-NEGOTIABLE) [DEC-04]
+El sistema NUNCA DEBE emitir rechazos 100% automáticos sobre casos de personas [DEC-04]. Todo caso cuyo puntaje sea inferior al umbral de aprobación automática configurado o que presente señales de alerta o fraude activas DEBE derivarse obligatoriamente a la bandeja de revisión asistida para evaluación y resolución por parte de un operador humano calificado (liquidador) [DEC-04]. Jamás podrá quedar un caso rechazado sin intervención humana resolutiva.
+**Razón/Justificación**: Cumplimiento de la normativa imperativa de protección de datos personales sobre decisiones automatizadas desfavorables y resguardo de las garantías legales del asegurado [DEC-04].
 
-### III. Soberanía Territorial de Datos y Anonimización de PII (NON-NEGOTIABLE)
-Los datos de clientes chilenos DEBEN residir exclusivamente en servidores en territorio nacional (§4). Antes de consultar modelos de lenguaje o servicios externos en el extranjero (EE. UU./Europa), un módulo local DEBE enmascarar o remover estrictamente todos los datos personales identificables (PII, incluyendo RUT, nombres y datos sensibles) (§4). Asimismo, el sistema DEBE permitir el ejercicio del derecho de supresión disociando o anonimizando los datos personales a solicitud del titular sin alterar la traza técnica de auditoría (§2.11, §3).
-**Razón/Justificación**: Cumplimiento estricto de las obligaciones contractuales de residencia territorial de datos, normativas de privacidad y directrices de ciberseguridad corporativa (§4, §2.11, §3).
+### III. Soberanía Territorial de Datos y Enmascaramiento de PII (NON-NEGOTIABLE) [DEC-06]
+La evidencia y los datos de clientes chilenos DEBEN residir exclusivamente en servidores ubicados dentro del territorio nacional [DEC-06]. Antes de invocar o consultar modelos de lenguaje o visión externos alojados en el extranjero (EE. UU. o Europa), un módulo local DEBE remover o enmascarar estrictamente todos los datos de identificación personal (PII, incluyendo RUT, nombres completos y datos sensibles) [DEC-06].
+**Razón/Justificación**: Garantizar la soberanía de los datos, el secreto comercial y el cumplimiento de las restricciones legales sobre transferencia internacional de información confidencial, habilitando al mismo tiempo el uso seguro de modelos de frontera [DEC-06].
 
-### IV. Validación Comercial por Decisión Automática Concluyente
-La plataforma DEBE contabilizar y facturar comercialmente única y exclusivamente aquellas validaciones donde el sistema emita por sí solo una decisión automática útil, clara y concluyente (§2.14, §3). Los casos derivados a revisión asistida por un operador humano no constituyen validaciones facturables y DEBEN registrarse únicamente para métricas operativas sin generar cobro unitario de software (§2.14). La tabla tarifaria debe soportar volúmenes reales escalables a más de 15.000 casos mensuales (§2.14).
-**Razón/Justificación**: Respeto al modelo comercial acordado con la aseguradora y prevención de disputas contractuales en los ciclos de facturación (§2.14, §3).
+### IV. Reconciliación de Inalterabilidad y Derecho de Supresión en Auditoría (NON-NEGOTIABLE) [DEC-05]
+Ante el ejercicio legítimo del derecho de supresión de datos personales por parte de un titular, el sistema DEBE anonimizar o disociar los datos identificatorios (PII como RUT y nombre), preservando íntegra e inalterable la traza técnica y el registro de auditoría del caso [DEC-05]. Ningún perfil, incluido el administrador, puede destruir ni modificar el historial técnico de las transacciones [DEC-05].
+**Razón/Justificación**: Reconcilia el derecho al olvido y la privacidad de los usuarios con las exigencias regulatorias y legales de inalterabilidad y auditabilidad retrospectiva del sistema [DEC-05].
 
-### V. Trazabilidad Inalterable y Retención de Evidencia por Capas
-Toda decisión (automática o humana), veredicto, puntaje calculado, desglose de señales, motivo y cambio de umbral DEBE registrarse de manera íntegra e inalterable en un rastro de auditoría no modificable por ningún perfil, incluido el administrador (§2.11). La evidencia digital DEBE conservarse cifrada durante 90 días en almacenamiento activo y migrar a almacenamiento frío (*cold storage*) hasta completar 5 años (§2.11).
-**Razón/Justificación**: Cumplimiento con las exigencias regulatorias del mercado asegurador (CMF/SVS), garantizando auditabilidad legal y optimización de costos de infraestructura (§2.11).
+### V. Validación Comercial por Decisión Automática Concluyente [DEC-01]
+La plataforma DEBE contabilizar y facturar comercialmente única y exclusivamente aquellas validaciones en las que el sistema emita por sí solo una resolución automática útil y concluyente en producción [DEC-01]. Los casos derivados a revisión asistida por un operador humano no constituyen validaciones facturables y DEBEN registrarse únicamente con fines de métricas de capacidad operativa, sin generar cobro unitario de software [DEC-01].
+**Razón/Justificación**: Respeto riguroso a la propuesta comercial formalizada y prevención de controversias contractuales o discrepancias de facturación con la aseguradora [DEC-01].
+
+### VI. Retención de Evidencia por Capas [DEC-03]
+Toda la evidencia digital y documentación de respaldo de los casos DEBE conservarse cifrada durante 90 días en almacenamiento activo, y migrar de manera automatizada a almacenamiento frío (*cold storage*) hasta completar un periodo de retención legal de 5 años [DEC-03].
+**Razón/Justificación**: Cumplimiento estricto de las exigencias regulatorias del mercado asegurador (SVS/CMF) sin encarecer la infraestructura de almacenamiento activo de alta disponibilidad [DEC-03].
 
 ## Restricciones Arquitecturales y Estándares de Integración
 
-- **Ingesta Asíncrona e Idempotente**: La API de ingesta DEBE emitir un acuse de recibo asincrónico (`HTTP 202`) en menos de 1 segundo asignando un identificador de caso único y permanente (§4, §2.4), procesando expedientes pesados de forma asíncrona sin bloquear al sistema del cliente y notificando eventos vía callback/webhook (§4).
-- **Consulta Activa de Estado (Pull)**: Como salvaguarda ante fallos de notificación en sistemas externos, la plataforma DEBE proveer un endpoint de consulta de estado por identificador de caso independiente del callback (§2.10, §2.15).
-- **Integración Híbrida Desacoplada**: La arquitectura DEBE soportar tanto API REST como conectores desacoplados para carpetas compartidas, permitiendo operar con sistemas centrales heredados sin exigir transformaciones en la infraestructura del cliente (§2.4, §2.10).
-- **Autenticación Federada SSO**: El acceso corporativo DEBE operar mediante autenticación federada (SSO/SAML/OAuth2) contra el directorio del cliente, evitando credenciales duplicadas locales (§2.13).
-- **Umbrales Parametrizables**: Los umbrales de decisión DEBEN ser configurables por flujo y organización mediante perfiles autorizados (umbral de marcha blanca fijado en 90 puntos), preservando un historial inmutable de cambios con autor, fecha y valor anterior (§2.6).
+- **Ingesta Asíncrona por Eventos [DEC-07]**: La API de ingesta DEBE emitir un acuse de recibo asincrónico (`HTTP 202`) en menos de 1 segundo asignando un identificador de caso único [DEC-07]. El procesamiento de los expedientes pesados DEBE realizarse de forma asíncrona mediante colas de mensajería, notificando el veredicto final vía webhooks o eventos al sistema de origen para evitar bloqueos y tiempos de espera desbordados [DEC-07].
+- **Escalabilidad de Capacidad y Tramos de Volumen [DEC-02]**: La plataforma DEBE incorporar estructuras de configuración de tramos tarifarios y capacidad técnica de carga sostenida diseñadas para procesar volúmenes superiores a 15.000 casos mensuales por organización sin degradación del servicio [DEC-02].
+- **Adaptador de Integración para Sistemas Heredados [DEC-08]**: La arquitectura DEBE proveer un módulo conector adaptador desacoplado para la lectura y escritura de archivos en carpetas compartidas del cliente [DEC-08]. Esto permite interoperar con sistemas centrales (*core*) heredados (legacy) sin exigir adaptaciones costosas en la infraestructura del cliente [DEC-08].
+- **Autenticación Federada Corporativa (SSO) [DEC-09]**: El acceso de usuarios corporativos DEBE operar preferentemente mediante autenticación federada (SSO/SAML/OAuth2) delegada en el directorio corporativo del cliente, impidiendo la duplicidad y administración de contraseñas locales en MIRA [DEC-09].
+- **Parametrización y Calibración de Umbrales [DEC-11]**: Los umbrales de decisión no deben codificarse de forma fija en la plataforma; DEBEN ser parametrizables y configurables por el Administrador de Riesgo para cada flujo y organización [DEC-11]. Para el inicio de la marcha blanca, el umbral de aprobación automática DEBE establecerse en 90 puntos [DEC-11].
+- **Consulta Activa de Estado (Pull) [DEC-12]**: La plataforma DEBE exponer un endpoint de consulta de estado por identificador de caso (`idCaso`) complementario e independiente del mecanismo de webhook/callback [DEC-12], funcionando como salvaguarda ante fallos de entrega o pérdidas de eventos en redes de sistemas clientes heredados [DEC-12].
 
-## Metodología de Ingeniería, Técnicas de Prompting y Definición de Terminado (DoD)
+## Planificación y Estrategia de Entregas
 
-- **Técnicas Normativas de Prompting e Interacción Asistida**:
-  - *Grounded Prompting*: Toda afirmación de requisitos o reglas debe estar explícitamente anclada a fuentes verificables (§sección).
-  - *Structured Output Prompting*: Uso obligatorio de esquemas estructurados para artefactos tabulares (requisitos, pruebas, backlog) para evitar omisiones por fluidez narrativa (§2.4, §3).
-  - *Plan-and-Solve Prompting*: Separación mandatoria entre la fase de planificación conceptual y la fase de generación o diseño técnico.
-  - *Chain-of-Verification (CoVe)*: Verificación aislada e independiente en turnos separados para validar flujos alternativos, excepciones y consistencia cruzada.
-  - *LLM-as-a-Judge*: Evaluación de artefactos contra rúbricas objetivas y verificables.
-- **Definición de Terminado (DoD)**:
-  1. Revisión de código por pares mediante Pull Request.
-  2. Cobertura de pruebas unitarias mínima del 80%.
-  3. Ejecución y aprobación de pruebas funcionales asociadas.
-  4. Criterios de aceptación validados formalmente por el Representante del Cliente.
-  5. Cero datos reales de clientes en entornos de prueba (exclusivamente datos sintéticos o enmascarados) (§4).
-  6. Documentación, contratos de interfaz y especificaciones redactados estrictamente en español (§1, §3).
-  7. Despliegue en integración sin regresiones en flujos existentes.
-- **Estrategia de Entregas y Exclusiones**: El desarrollo DEBE priorizar un MVP médico (documentos e imágenes) para enero de 2027, posponiendo las capacidades multimodales complejas (audio y video) para abril de 2027 (§5.2). Quedan explícitamente fuera de alcance en esta versión la migración de pilotos anteriores, app móvil de captura y facturación electrónica (§5.1).
+- **Despliegue Progresivo y MVP Acotado [DEC-10]**: La estrategia de desarrollo y despliegue DEBE estructurarse en fases [DEC-10]. Se DEBE priorizar un MVP simplificado para operar con casos reales en enero de 2027 enfocado en reembolsos médicos (documentos e imágenes), difiriendo la entrega de la suite multimodal completa (que incorpora análisis de audio y video) para abril de 2027 [DEC-10].
 
 ## Governance
 
-- **Supremacía Constitucional**: La presente constitución tiene autoridad suprema sobre cualquier otra convención, diseño preliminar o instrucción informal (§1, §3). Ningún artefacto, plan o implementación puede contravenir sus principios.
-- **Procedimiento Formal de Enmiendas**: Toda modificación o ampliación de esta constitución DEBE documentarse formalmente, estar respaldada por una validación con el Representante del Cliente y mantener el anclaje normativo (§sección).
+- **Supremacía Constitucional**: La presente constitución rige de manera obligatoria y tiene jerarquía suprema sobre cualquier otra especificación preliminar, diseño técnico o convención informal. Ningún artefacto (`spec.md`, `plan.md`, `tasks.md`), componente de software o Pull Request puede vulnerar sus principios o decisiones.
+- **Procedimiento Formal de Enmiendas**: Cualquier modificación, derogación o ampliación de esta constitución DEBE formalizarse explícitamente mediante un proceso de enmienda, estar respaldada por una decisión validada con el Representante del Cliente y mantener la trazabilidad inequívoca de la decisión correspondiente `[DEC-XX]`.
 - **Política de Versionado (SemVer)**:
   - **MAJOR (X.0.0)**: Cambios incompatibles en gobernanza, eliminación o redefinición de principios fundamentales no negociables.
-  - **MINOR (x.Y.0)**: Incorporación de nuevos principios, estándares de arquitectura o ampliación sustancial de directrices.
-  - **PATCH (x.y.Z)**: Clarificaciones de redacción, corrección de erratas, ajustes de referencias o refinamientos no semánticos.
-- **Revisiones de Cumplimiento**: Todo plan de especificación (`spec.md`), plan de implementación (`plan.md`), desglose de tareas (`tasks.md`) y PR DEBE verificar conformidad estricta contra esta constitución. Cualquier conflicto no justificado constituye un bloqueo crítico (CRITICAL).
+  - **MINOR (x.Y.0)**: Incorporación de nuevos principios, estándares arquitecturales o decisiones de diseño.
+  - **PATCH (x.y.Z)**: Clarificaciones de redacción, corrección de erratas o ajustes menores de estilo.
+- **Revisiones de Cumplimiento**: Todo plan de especificación, arquitectura, desglose de tareas y Pull Request DEBE someterse a verificación de conformidad estricta contra esta constitución. Cualquier conflicto no resuelto o desviación no documentada constituirá un bloqueo crítico (CRITICAL).
 
-**Version**: 1.2.0 | **Ratified**: 2026-10-10 | **Last Amended**: 2026-10-10
+**Version**: 2.0.0 | **Ratified**: 2026-10-10 | **Last Amended**: 2026-10-16
