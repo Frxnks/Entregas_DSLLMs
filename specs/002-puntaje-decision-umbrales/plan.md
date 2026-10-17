@@ -34,8 +34,8 @@ El presente plan técnico define la arquitectura de software, modelo de datos re
 | :--- | :--- | :--- | :--- |
 | **I. Idioma Oficial Estricto** | Todo artefacto, código de interfaz y comunicación en español. | **CUMPLE** | La UI (Next.js + shadcn/ui) se especifica 100% en español; mensajes de derivación y justificaciones textuales en español de negocio. |
 | **II. Control Humano y No Rechazo Automático** | **DEC-04**: Prohibición de rechazo 100% automático. Todo caso adverso va a revisión asistida. | **CUMPLE** | El motor `ScoringModule` jamás emite estado `RECHAZADO`. Todo caso con puntaje < 90 o alerta de fraude transiciona estrictamente a `PENDIENTE_REVISION` en F1. |
-| **III. Soberanía Territorial de Datos** | **DEC-06**: Datos y evidencias de clientes chilenos residen en territorio nacional. | **CUMPLE** | Base de datos PostgreSQL y archivos estáticos residen en volúmenes Docker locales en infraestructura chilena; no se transfieren PII al exterior. |
-| **IV. Inalterabilidad y Supresión** | **DEC-05 / RQNF-005**: Rastro de auditoría inalterable e íntegro para todo perfil (incluso Admin). | **CUMPLE** | Las tablas `Decision` y `AuditoriaUmbral` operan bajo patrón estrictamente append-only, sin operaciones `UPDATE`/`DELETE` en API ni ORM. |
+| **III. Soberanía Territorial de Datos** | **DEC-06 / RQNF-003**: Datos y evidencias de clientes chilenos residen en territorio nacional; enmascaramiento de PII. | **CUMPLE** | Base de datos PostgreSQL y archivos estáticos residen en volúmenes Docker locales en infraestructura chilena (DEC-06). Módulo `PiiMaskingService` sanitiza RUTs y nombres en DTOs y logs impidiendo fugas externas (PX-03). |
+| **IV. Inalterabilidad y Supresión** | **DEC-05 / RQNF-005**: Rastro de auditoría inalterable e íntegro para todo perfil; derecho de supresión. | **CUMPLE** | Las tablas `Decision` y `AuditoriaUmbral` operan bajo patrón estrictamente append-only sin UPDATE/DELETE. La entidad `Caso` incorpora soporte de disociación (`esAnonimizado`, `hashTitular`) conciliando el derecho al olvido con la auditoría. |
 | **V. Validación Comercial Concluyente** | **DEC-01**: Facturación comercial única por aprobación automática concluyente sin revisión humana. | **CUMPLE** | Flag booleano `esFacturable = true` únicamente si `estadoDecision == APROBADO_AUTOMATICO`. Casos derivados a F1 tienen `esFacturable = false`. |
 | **VI. Retención de Evidencia** | **DEC-03**: Cifrado y retención por capas (90 días activo / 5 años frío). | **CUMPLE** | Modelo `Evidencia` almacena hash SHA-256 inmutable y soporte de políticas de ciclo de vida de almacenamiento. |
 | **Parametrización de Umbrales** | **DEC-11**: Umbral configurable por flujo; valor inicial de marcha blanca en 90 puntos. | **CUMPLE** | Entidad `Umbral` parametrizable por flujo con valor por defecto de 90.0 y versionamiento inmutable en `AuditoriaUmbral`. |
@@ -52,7 +52,7 @@ flowchart TD
     subgraph DOCKER["Entorno Orquestado: Docker Compose (Red mira-network)"]
 
         subgraph FRONTEND["Contenedor Frontend: mira-frontend (Next.js 14 App Router - Puerto 3000)"]
-            UI_ADMIN["Panel Configuración & Ingesta (/configuracion)\n• Disparo de evaluación simulada de scoring\n• Calibración de umbrales por flujo"]
+            UI_ADMIN["Panel Configuración & Ingesta (/configuracion)\n• Disparo de evaluación simulada de scoring\n• Consulta y calibración de umbrales por flujo"]
             UI_TRAY["Bandeja de Revisión Asistida (/bandeja)\n• Tabla priorizada por urgencia y severidad\n• Semáforo y cuenta regresiva de SLA hábil (Chile)"]
             UI_DETAIL["Visor Integral de Caso (/bandeja/[idCaso])\n• Visor interactivo con Bounding Boxes de hallazgos\n• Panel de resolución inalterable con motivo obligatorio"]
         end
@@ -61,6 +61,8 @@ flowchart TD
             F4_MODULE["F4: ScoringModule (Productor de Casos)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• ScoringController (Endpoints /scoring)\n• ScoringEngineService (cálculo ponderado 0-100)\n• ThresholdService (calibración umbral 90 y auditoría)\n• DecisionRulesEngine (mínimos basales 60 y precedencia DEC-04)\n• Generador de Veredicto (Aprobado Auto vs PENDIENTE_REVISION)"]
             
             F1_MODULE["F1: ReviewTrayModule (Consumidor de Casos)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• ReviewTrayController (Endpoints /review-tray)\n• ReviewTrayService (cómputo horas hábiles SLA 3 días)\n• ConcurrencyService (arriendo temporal lease de 15 min)\n• ResolutionService (veredicto append-only y discrepancia)"]
+
+            COMMON_MODULE["CommonModule (Transversal & Protección PII)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n• PiiMaskingService (enmascara RUT/nombres DEC-06)\n• ChileanCalendarUtil (cómputo jornada hábil Lun-Vie)\n• HttpExceptionFilter (sanitización de errores y logs)"]
             
             STATIC_FILES["StaticFilesService\n• Servidor de archivos mock (/static/evidence/)\n• Entrega de PDFs e imágenes fijas"]
             
@@ -68,7 +70,7 @@ flowchart TD
         end
 
         subgraph DATABASE["Contenedor Base de Datos: mira-db (PostgreSQL 16 Alpine - Puerto 5432)"]
-            DB_CASOS[("Expedientes y Hallazgos\n• casos (estadoCaso, SLA, lease)\n• evidencias (archivos y hashes)\n• senales (bounding boxes JSONB)")]
+            DB_CASOS[("Expedientes y Hallazgos\n• casos (estadoCaso, SLA, lease)\n• titular (PII protegido y hashTitular)\n• evidencias (archivos y hashes)\n• senales (bounding boxes JSONB)")]
             DB_DECISIONES[("Resoluciones de Operador\n• operadores (identidad SSO)\n• decisiones (append-only inalterable)")]
             DB_UMBRALES[("Configuración y Calibración\n• flujos y umbrales (base 90)\n• auditorias_umbral (histórico inmutable)")]
             DB_VOL[("Volumen Persistente: pgdata")]
@@ -77,10 +79,14 @@ flowchart TD
     end
 
     %% Conexiones Frontend -> Backend
-    UI_ADMIN -->|"HTTP POST /evaluate\nHTTP PUT /thresholds"| F4_MODULE
+    UI_ADMIN -->|"HTTP POST /evaluate\nHTTP GET/PUT /thresholds"| F4_MODULE
     UI_TRAY -->|"HTTP GET /review-tray/cases"| F1_MODULE
     UI_DETAIL -->|"HTTP GET /cases/:id\nPOST /lease | POST /decision"| F1_MODULE
     UI_DETAIL -->|"HTTP GET /static/evidence/:file"| STATIC_FILES
+
+    %% Relaciones internas Backend
+    F1_MODULE -.->|"Sanitiza PII en DTOs y logs (PX-03)"| COMMON_MODULE
+    F4_MODULE -.->|"Valida calendario y exceptions"| COMMON_MODULE
 
     %% F4 Produce Casos hacia la Persistencia
     F4_MODULE -->|"1. Persiste caso evaluado\n(Aprobado Auto o Derivado PENDIENTE_REVISION)"| PRISMA
@@ -97,7 +103,7 @@ flowchart TD
 
 ### 1.1 Diagrama de Secuencia de Interacción (F4 Produce $\to$ F1 Consume)
 
-El siguiente diagrama detalla la secuencia cronológica de interacción entre componentes, ilustrando cómo **F4 (`ScoringModule`)** produce los casos derivados en la base de datos tras la evaluación de reglas y cómo **F1 (`ReviewTrayModule`)** los consume, gestiona la concurrencia y registra la resolución humana inalterable:
+El siguiente diagrama detalla la secuencia cronológica de interacción entre componentes, ilustrando cómo **F4 (`ScoringModule`)** produce los casos derivados en la base de datos tras la evaluación de reglas y cómo **F1 (`ReviewTrayModule`)** los consume, gestiona la concurrencia, protege el PII y registra la resolución humana inalterable:
 
 ```mermaid
 sequenceDiagram
@@ -106,12 +112,13 @@ sequenceDiagram
     participant UI as Next.js Frontend (Puerto 3000)
     participant F4 as ScoringModule F4 (Puerto 3001)
     participant F1 as ReviewTrayModule F1 (Puerto 3001)
+    participant SEC as PiiMaskingService (Common)
     participant DB as Prisma ORM & PostgreSQL 16 (Puerto 5432)
 
     Note over F4,DB: Fase 1: Producción del Caso Derivado (F4)
     F4->>F4: 1. Evalúa señales, mínimos (basal 60) y fraude (DEC-04)
     alt Puntaje < 90 O Alerta Fraude O Mínimo no cumplido
-        F4->>DB: 2. Persiste caso con estado PENDIENTE_REVISION (razón derivación, sugerencia MIRA, SLA 3 días)
+        F4->>DB: 2. Persiste caso con estado PENDIENTE_REVISION (razón derivación, sugerencia MIRA, SLA 3 días, hashTitular)
     else Puntaje >= 90 Y Sin Fraude Y Mínimos OK
         F4->>DB: Persiste APROBADO_AUTOMATICO (esFacturable = true, DEC-01)
     end
@@ -121,13 +128,17 @@ sequenceDiagram
     UI->>F1: GET /api/v1/review-tray/cases
     F1->>DB: Consulta casos en estado PENDIENTE_REVISION
     DB-->>F1: Retorna lista de casos con SLA y nivel de riesgo
+    F1->>SEC: Sanitiza metadatos y enmascara RUTs para lista pública (PX-03)
+    SEC-->>F1: DTOs con PII protegido
     F1-->>UI: Despliega tabla priorizada con semáforo y cuenta regresiva
 
     Operador->>UI: Selecciona un caso derivado (/bandeja/[idCaso])
     UI->>F1: POST /api/v1/review-tray/cases/:id/lease (arriendo 15 min)
     UI->>F1: GET /api/v1/review-tray/cases/:id
     F1->>DB: Obtiene expediente completo, señales y coordenadas
-    DB-->>F1: Retorna evidencias y Bounding Boxes
+    DB-->>F1: Retorna evidencias, Bounding Boxes y datos del titular
+    F1->>SEC: Controla acceso a PII según arriendo activo del operador
+    SEC-->>F1: Payload autorizado para evaluación médica
     F1-->>UI: Renderiza visor interactivo con hallazgos espaciales resaltados
 
     Operador->>UI: Emite veredicto formal con justificación obligatoria
@@ -140,6 +151,26 @@ sequenceDiagram
     DB-->>F1: Confirmación de transacción ACID
     F1-->>UI: Notifica resolución exitosa al operador
 ```
+
+### 1.2 Arquitectura de Protección de Datos Personales (PII) y Soberanía Local (DEC-05, DEC-06)
+
+Para satisfacer los Principios Constitucionales III y IV sin vulnerar la trazabilidad regulatoria de la aseguradora:
+1. **Módulo Transversal `CommonModule` & `PiiMaskingService`**:
+   - Se ubica en `backend/src/common/services/pii-masking.service.ts`.
+   - Provee funciones deterministas para enmascaramiento de identificadores chilenos: RUTs (`12.345.***-*`) y nombres (`J*** P***`).
+   - Intercepta las respuestas salientes a endpoints de consulta general y sanitiza los registros de logs para impedir el volcado accidental de datos personales sensibles a `stdout`/`stderr` o almacenamiento no cifrado.
+2. **Visualización Controlada por Roles en Bandeja F1 (PX-03)**:
+   - El operador liquidador con un arriendo temporal (*lease*) activo visualiza el documento médico original y los datos de titular requeridos para evaluar la procedencia del siniestro.
+   - En vistas públicas, métricas agregadas o colas de supervisión de modelos (`/discrepancies`), el PII se entrega enmascarado por defecto.
+3. **Mecanismo de Disociación para Derecho de Supresión (DEC-05)**:
+   - Ante la solicitud legítima de supresión de un asegurado, la entidad `Caso` actualiza `esAnonimizado = true` y reemplaza `rutTitular` y `nombreTitular` por pseudónimos disociados, preservando el `hashTitular` (SHA-256) y manteniendo absolutamente inalterable la traza histórica en `Decision`, `Senal` y `AuditoriaUmbral`.
+
+### 1.3 Dependencias de Persistencia Inter-Funcional (F4 Inicializa $\to$ F1 Consume)
+
+Existe un acoplamiento arquitectural directo en el modelo de monorepositorio:
+- **F4 (`ScoringModule`)**: Es el **productor de persistencia**. Define el esquema `schema.prisma`, genera la migración inicial de PostgreSQL (`backend/prisma/migrations/0_init/migration.sql`), implementa `PrismaService` y ejecuta el script de semillas (`seed.ts`) que carga los 3 casos emblemáticos precalculados (`CASO-SEED-001`, `002`, `003`).
+- **F1 (`ReviewTrayModule`)**: Es el **consumidor de persistencia**. Requiere que la base de datos relacional y los casos semillas existan previamente para poder listar la bandeja, adquirir leases, calcular SLA hábil y registrar resoluciones humanas.
+- **Regla de Ejecución**: La Fase 2 de F1 depende estrictamente de que las tareas T005 a T009 de F4 hayan sido ejecutadas previamente.
 
 ---
 
@@ -157,6 +188,8 @@ El modelo conceptual de la Entrega 1 definía las entidades básicas del negocio
 | **Caso** | — | `fechaVencimientoSLA` | `DateTime` | Plazo perentorio de 3 días hábiles computado en jornada laboral chilena (excluye fines de semana y feriados). | RQF-021, ENT4 |
 | **Caso** | — | `nivelPrioridad` | `Enum (ALTA, MEDIA, BAJA)` | Ordenamiento y semáforo visual en bandeja. Casos con fraude o SLA < 24h son `ALTA`. | RQF-021, RQF-024 |
 | **Caso** | — | `esFacturable` | `Boolean` | Indicador de cobro comercial: únicamente `true` si fue aprobado 100% automático. | DEC-01, RQF-015 |
+| **Caso** | — | `rutTitular`, `nombreTitular` | `String, String` | Datos personales protegidos para visualización autorizada por el liquidador (DEC-06, RQNF-003). |
+| **Caso** | — | `hashTitular`, `esAnonimizado` | `String, Boolean` | Mecanismo de disociación y trazabilidad inalterable para derecho de supresión de datos (DEC-05, Principio IV). |
 | **Caso** | — | `operadorBloqueoId`, `bloqueoExpiracion` | `String (FK), DateTime` | Control de concurrencia: arriendo temporal de edición (lease de 15 min renovable). | RQF-024 |
 | **Senal** | `tipoSenal`, `resultado` | `esAlertaFraude` | `Boolean` | Flag crítico: activa la precedencia absoluta de fraude sobre el puntaje numérico. | DEC-04, RQF-023 |
 | **Senal** | — | `puntaje`, `pesoPonderacion` | `Float, Float` | Valor cuantitativo individual (0-100) y su peso en el cálculo consolidado. | RQF-004 |
@@ -186,6 +219,7 @@ A continuación se resume la matriz de endpoints de los módulos `ScoringModule`
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **F4 (Scoring)** | `POST` | `/api/v1/scoring/evaluate` | `EvaluateCaseRequestDto` (`idCaso`, `idFlujo`, `senales[]`) | `200 OK`: `EvaluationResultResponseDto` (`puntaje`, `estadoDecision`, `sugerenciaMIRA`, `razonDerivacion`, `esFacturable`) | `400 Bad Request`<br>`404 Not Found` | RQF-004, RQF-005, RQF-007, RQF-008, RQF-022, RQF-023, DEC-04, DEC-11, RQNF-001 |
 | **F4 (Scoring)** | `GET` | `/api/v1/scoring/cases/:idCaso/breakdown` | Ninguno (parámetro de ruta `:idCaso`) | `200 OK`: `CaseBreakdownResponseDto` (desglose cuantitativo de señales, pesos, mínimos y alertas de fraude) | `404 Not Found` | RQF-004, RQF-009, RQNF-008 |
+| **F4 (Scoring)** | `GET` | `/api/v1/scoring/thresholds/:idFlujo` | Ninguno (parámetro de ruta `:idFlujo`) | `200 OK`: `ThresholdResponseDto` (configuración de umbral y mínimos basales vigentes) | `404 Not Found` | RQF-006, DEC-11, RQNF-005 |
 | **F4 (Scoring)** | `PUT` | `/api/v1/scoring/thresholds/:idFlujo` | `UpdateThresholdDto` (`valorAprobacion`, `minimoBasalSeguridad`, `usuarioModificador`) | `200 OK`: `ThresholdResponseDto` (nuevos valores y versión actualizada en `AuditoriaUmbral`) | `400 Bad Request`<br>`404 Not Found` | RQF-006, DEC-11, RQNF-005 |
 | **F1 (Bandeja)** | `GET` | `/api/v1/review-tray/cases` | Query params opcionales: `estado`, `prioridad` | `200 OK`: `CaseSummaryDto[]` (lista ordenada por urgencia, horas hábiles restantes SLA y semáforo) | `400 Bad Request` | RQF-008, RQF-021, RQF-024, RQNF-008 |
 | **F1 (Bandeja)** | `GET` | `/api/v1/review-tray/cases/:idCaso` | Ninguno (parámetro de ruta `:idCaso`) | `200 OK`: `CaseDetailDto` (evidencia, URLs estáticas, desglose de señales, razón explícita y `ubicacionHallazgo` bounding boxes) | `404 Not Found` | RQF-009, RQF-020, RQNF-008 |

@@ -112,7 +112,8 @@
 
 - [ ] T024 [P] [US4] Definir DTOs para actualización y respuesta de umbrales con validación de rangos (0-100) en `backend/src/scoring/dto/update-threshold.dto.ts` y `backend/src/scoring/dto/threshold-response.dto.ts` [RQF-006, RQNF-005]
 - [ ] T025 [US4] Implementar servicio de gestión de umbrales con versionamiento y registro inmutable en `backend/src/scoring/threshold.service.ts` [RQF-006, RQNF-005]
-- [ ] T026 [US4] Exponer endpoint `PUT /api/v1/scoring/thresholds/:idFlujo` con registro de auditoría append-only en `backend/src/scoring/scoring.controller.ts` [RQF-006, RQNF-001, RQNF-005]
+- [ ] T026 [US4] Exponer endpoints GET y PUT `/api/v1/scoring/thresholds/:idFlujo` con registro de auditoría append-only en `backend/src/scoring/scoring.controller.ts` [RQF-006, RQNF-001, RQNF-005]
+- [ ] T026b [US4] Desarrollar interfaz de configuración y auditoría de umbrales para el Administrador de Riesgo en `frontend/src/app/configuracion/page.tsx` [RQF-006, RQNF-008]
 
 **Checkpoint**: Todas las historias de usuario de la especificación F4 se encuentran implementadas y probadas.
 
@@ -122,8 +123,8 @@
 
 **Propósito**: Verificación de atributos de calidad no funcionales, validación de integridad y documentación técnica de la funcionalidad.
 
-- [ ] T027 [P] Implementar pruebas de verificación extra-funcional para acuse < 1s (PX-01), soberanía local sin egreso de PII (PX-03), inalterabilidad append-only (PX-05) y tolerancia a caídas (PX-06) en `backend/test/extra-functional.e2e-spec.ts` [RQNF-001, RQNF-003, RQNF-005, RQNF-006]
-- [ ] T028 [P] Ejecutar validación completa de los escenarios declarados en `specs/002-puntaje-decision-umbrales/quickstart.md` [RQF-004, RQF-005, RQF-022, RQF-023, DEC-01, DEC-04]
+- [ ] T027 [P] Implementar pruebas de verificación extra-funcional para acuse < 1s (PX-01), procesamiento no bloqueante (PX-02), soberanía local sin egreso de PII (PX-03), inalterabilidad append-only (PX-05) y tolerancia a caídas (PX-06) en `backend/test/extra-functional.e2e-spec.ts` [RQNF-001, RQNF-002, RQNF-003, RQNF-005, RQNF-006]
+- [ ] T028 [P] Ejecutar validación completa de los escenarios declarados en `specs/002-puntaje-decision-umbrales/quickstart.md` [RQF-004, RQF-005, RQF-015, RQF-022, RQF-023, DEC-01, DEC-04]
 - [ ] T029 Documentar manual de referencia de contratos API y reglas de negocio de scoring en `docs/scoring-api-guide.md` [RQF-006, RQNF-008]
 
 ---

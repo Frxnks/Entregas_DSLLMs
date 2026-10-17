@@ -29,6 +29,7 @@
 - [ ] T006 [P] Implementar utilitario de calendario hábil de Chile (lunes a viernes 08:30 a 18:30 hrs, feriados oficiales) en `backend/src/common/utils/chilean-calendar.util.ts` [RQF-021]
 - [ ] T007 [P] Implementar servicio de control de concurrencia y arriendo temporal (lease de 15 min renovable con heartbeat) en `backend/src/review-tray/concurrency.service.ts` [RQF-024]
 - [ ] T008 [P] Implementar servicio de persistencia inalterable append-only para registro de decisiones en `backend/src/review-tray/resolution.service.ts` [RQF-010, RQNF-005]
+- [ ] T008b [P] Implementar servicio y utilitarios de enmascaramiento de PII (RUTs y nombres chilenos) para DTOs salientes y sanitización de logs en `backend/src/common/services/pii-masking.service.ts` [RQNF-003, DEC-06]
 - [ ] T009 Implementar DTOs para consultas de lista, detalle, leases y resolución en `backend/src/review-tray/dto/case-summary.dto.ts` y `backend/src/review-tray/dto/case-detail.dto.ts` [RQF-009, RQF-010, RQF-020, RQF-024]
 
 **Checkpoint**: Infraestructura base de concurrencia y cómputo de SLA operativa. Las historias de usuario de la bandeja asistida pueden comenzar en paralelo.
@@ -72,8 +73,8 @@
 ### Implementation for User Story 2
 
 - [ ] T017 [P] [US2] Implementar endpoints `POST /api/v1/review-tray/cases/:idCaso/decision` y `GET /api/v1/review-tray/discrepancies` en `backend/src/review-tray/review-tray.controller.ts` [RQF-010, RQF-011, RQNF-005]
-- [ ] T018 [US2] Implementar validación de motivo obligatorio, inserción inalterable y detección de discrepancia en `backend/src/review-tray/resolution.service.ts` [RQF-010, RQF-011, RQNF-005]
-- [ ] T019 [P] [US2] Desarrollar panel de acciones resolutivas con justificación obligatoria y confirmación atómica en `frontend/src/components/PanelResolucion.tsx` [RQF-010, RQNF-005, RQNF-008]
+- [ ] T018 [US2] Implementar validación de motivo obligatorio, inserción inalterable, salvaguarda de control humano (no rechazo automático) y detección de discrepancia en `backend/src/review-tray/resolution.service.ts` [RQF-007, RQF-010, RQF-011, RQNF-005]
+- [ ] T019 [P] [US2] Desarrollar panel de acciones resolutivas con justificación obligatoria, control de veredicto humano y confirmación atómica en `frontend/src/components/PanelResolucion.tsx` [RQF-007, RQF-010, RQNF-005, RQNF-008]
 - [ ] T020 [US2] Integrar emisión de resolución y notificación de discrepancia en la pantalla de detalle en `frontend/src/app/bandeja/[idCaso]/page.tsx` [RQF-010, RQF-011, RQNF-008]
 
 **Checkpoint**: User Stories 1 y 2 operativas de forma conjunta e independiente.
@@ -107,6 +108,7 @@
 
 - [ ] T026 [P] Implementar pruebas End-to-End con Playwright para flujo completo de revisión, usabilidad y tiempo de carga < 2s (PX-08) en `frontend/tests/review-flow.e2e.spec.ts` [RQNF-008, PX-08]
 - [ ] T027 [P] Implementar prueba de inalterabilidad append-only y rechazo de modificaciones directas en auditoría (PX-05) en `backend/test/audit-immutability.e2e-spec.ts` [RQNF-005, PX-05]
+- [ ] T027b [P] Implementar pruebas de verificación extra-funcional para soberanía local y enmascaramiento de PII (PX-03), retención de evidencia cifrada (PX-04) y tolerancia a caídas de servicios externos (PX-06) en `backend/test/extra-functional-f1.e2e-spec.ts` [RQNF-003, RQNF-004, RQNF-006, PX-03, PX-04, PX-06]
 - [ ] T028 [P] Ejecutar validación completa de la guía de inicio rápido en `specs/001-bandeja-revision-asistida/quickstart.md` [RQF-008, RQF-009, RQF-010, RQF-011, RQF-020, RQF-021, RQF-024]
 - [ ] T029 Documentar manual operativo de la bandeja de revisión asistida en `docs/review-tray-operator-guide.md` [RQNF-008]
 
@@ -117,7 +119,7 @@
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: Sin dependencias previas; inicio inmediato.
-- **Foundational (Phase 2)**: Depende de Setup (Phase 1). Bloquea la implementación de historias de usuario.
+- **Foundational (Phase 2)**: Depende de Setup (Phase 1) y de la persistencia base de F4 (tareas T005 a T009 de `002-puntaje-decision-umbrales` para inicialización de `schema.prisma`, migraciones PostgreSQL y seeds precalculadas). Bloquea la implementación de historias de usuario.
 - **User Story 1 (Phase 3)**: Depende de Foundational (Phase 2). Puede ejecutarse en paralelo con US2 y US3.
 - **User Story 2 (Phase 4)**: Depende de US1 (Phase 3) para la UI de detalle y de Foundational para `resolution.service.ts`.
 - **User Story 3 (Phase 5)**: Depende de Foundational (Phase 2) para el calendario chileno y `concurrency.service.ts`.

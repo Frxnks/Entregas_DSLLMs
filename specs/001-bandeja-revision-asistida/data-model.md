@@ -73,6 +73,10 @@ erDiagram
         datetime fechaVencimientoSLA "Calculado segun calendario habil chileno (3 dias)"
         string nivelPrioridad "ALTA | MEDIA | BAJA"
         boolean esFacturable "True solo si APROBADO_AUTOMATICO (DEC-01)"
+        string rutTitular "RUT para visualizacion autorizada (12.345.***-*)"
+        string nombreTitular "Nombre del asegurado"
+        string hashTitular "Hash SHA-256 de integridad y disociacion"
+        boolean esAnonimizado "Flag de derecho de supresion ejercido (DEC-05)"
         string operadorBloqueoId FK "Operador con lease activo"
         datetime bloqueoExpiracion "Timestamp de expiracion de lease (15 min)"
     }
@@ -139,6 +143,8 @@ erDiagram
 | **Caso** | — | `fechaVencimientoSLA` | DateTime | Plazo perentorio de 3 días hábiles computado en días laborables de Chile (RQF-021, ENT4). |
 | **Caso** | — | `nivelPrioridad` | Enum (`ALTA`, `MEDIA`, `BAJA`) | Priorización en bandeja: casos con fraude o SLA inminente pasan a `ALTA` (RQF-024). |
 | **Caso** | — | `esFacturable` | Boolean | Facturación comercial única por aprobación automática concluyente (DEC-01, RQF-015). |
+| **Caso** | — | `rutTitular`, `nombreTitular` | String, String | Datos personales protegidos para visualización autorizada por el liquidador (DEC-06, RQNF-003). |
+| **Caso** | — | `hashTitular`, `esAnonimizado` | String, Boolean | Mecanismo de disociación y trazabilidad inalterable para derecho de supresión de datos (DEC-05, Principio IV). |
 | **Caso** | — | `operadorBloqueoId`, `bloqueoExpiracion` | String, DateTime | Control de concurrencia híbrido mediante lease temporal de edición de 15 min (RQF-024). |
 | **Senal** | `tipoSenal`, `resultado` | `esAlertaFraude` | Boolean | Bandera que activa la regla de precedencia absoluta de fraude sobre el puntaje (DEC-04, RQF-023). |
 | **Senal** | — | `puntaje`, `pesoPonderacion` | Float, Float | Componente cuantitativo del puntaje de confianza ponderado (RQF-004). |
@@ -277,6 +283,10 @@ model Caso {
   fechaVencimientoSLA DateTime
   nivelPrioridad     NivelPrioridad   @default(MEDIA)
   esFacturable       Boolean          @default(false) // DEC-01
+  rutTitular         String?          // PII protegido: RUT del asegurado (DEC-06, RQNF-003)
+  nombreTitular      String?          // PII protegido: Nombre completo del titular
+  hashTitular        String?          // Hash SHA-256 del RUT para trazabilidad inalterable (DEC-05)
+  esAnonimizado      Boolean          @default(false) // Flag de derecho de supresión ejercido (DEC-05)
   operadorBloqueoId  String?
   bloqueoExpiracion  DateTime?
   flujo              Flujo            @relation(fields: [idFlujo], references: [idFlujo])

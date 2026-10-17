@@ -84,6 +84,7 @@ A continuación se presenta la tabla integral de requisitos funcionales que sust
 
 | ID | Tipo | Requisito | Prioridad | Fuente | Verif. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| **RQF-002** | Funcional | Informar en lenguaje comprensible cuando una pieza de evidencia no sea legible o tenga fallas de formato, permitiendo revisar el resto sin bloquear la bandeja. | Must | §2.5, §3 | PF-02 |
 | **RQF-007** | Funcional | No emitir rechazos 100% automáticos: todo caso con puntaje insuficiente o señal de fraude se deriva a revisión humana. | Must | ENT6, DEC-04 | PF-07 |
 | **RQF-008** | Funcional | Derivar a la bandeja de revisión todo caso bajo el umbral o con alerta de fraude activa. | Must | §2.7, ENT6, DEC-04 | PF-08 |
 | **RQF-009** | Funcional | Mostrar al operador, en una sola pantalla, la evidencia, el puntaje, el desglose de señales y la razón de derivación. | Must | §2.7, ENT4, ENT5 | PF-09 |
@@ -120,6 +121,7 @@ Para conferir plena validez y trazabilidad conforme a la metodología de ingenie
 
 | ID | Verifica | Precondición | Pasos | Resultado Esperado |
 | :--- | :--- | :--- | :--- | :--- |
+| **PF-02** | RQF-002 | Caso con pieza de evidencia ilegible por iluminación o escaneo deficiente. | El operador abre el detalle del caso derivado. | El visor muestra un mensaje claro de ilegibilidad técnica sin bloquear la visualización del resto de documentos ni la resolución. |
 | **PF-07** | RQF-007 | Caso con puntaje 45 (bajo el umbral). | Ejecutar el motor de reglas sobre el caso. | El sistema no emite rechazo automático; el caso se deriva obligatoriamente a revisión humana. |
 | **PF-08** | RQF-008 | Caso con puntaje 95 pero con alerta de fraude activa. | Ejecutar el motor de reglas. | El caso se deriva a revisión pese al puntaje alto (la señal de fraude prevalece sobre el puntaje). |
 | **PF-09** | RQF-009 | Caso derivado presente en la bandeja. | El operador abre el caso desde su bandeja. | La pantalla muestra evidencia, puntaje, señales y la razón de derivación en una sola vista, sin necesidad de otro sistema. |
@@ -137,6 +139,7 @@ A continuación se declaran los requisitos no funcionales que aplican a la funci
 
 | ID | Tipo | Requisito | Prioridad | Fuente | Verif. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| **RQNF-001** | No funcional | La API debe responder a consultas de detalle, listado y gestión de leases en menos de 1 segundo sin degradación. | Must | §4 parr. 159, ENT3, DEC-07 | PX-01 |
 | **RQNF-003** | No funcional | Los datos de clientes chilenos deben residir en territorio nacional; solo fragmentos sin datos identificatorios (PII) se procesan o transmiten. | Must | §4 parr. 154, ENT6, DEC-06 | PX-03 |
 | **RQNF-004** | No funcional | La evidencia se conserva cifrada: 90 días en almacenamiento activo y hasta 5 años en almacenamiento frío. | Must | §2.11, §4 parr. 164, ENT6, DEC-03 | PX-04 |
 | **RQNF-005** | No funcional | El rastro de auditoría debe ser inalterable e íntegro para todo perfil de usuario, incluido el administrador, al persistir las decisiones del operador. | Must | §2.11, §4 parr. 167, ENT6, DEC-05 | PX-05 |
@@ -172,6 +175,7 @@ A continuación se declaran los requisitos no funcionales que aplican a la funci
 
 | ID | Atributo | Escenario | Condición Aplicada | Umbral de Aceptación |
 | :--- | :--- | :--- | :--- | :--- |
+| **PX-01** | Rendimiento de API | Consultas concurrentes de detalle de caso, listado y solicitud de arriendo (lease). | Carga estándar de operadores en bandeja. | El 95 % de las respuestas de API se entregan en menos de 1 segundo sin degradación. |
 | **PX-03** | Soberanía de datos | Inspección de visualización de evidencia y llamadas salientes. | Envío de metadatos y fragmentos en pantalla de revisión. | Los datos sensibles de clientes chilenos residen en base de datos local y no se exponen RUTs ni PII sin enmascaramiento previo. |
 | **PX-04** | Retención e integridad | Solicitud de visualización de evidencia de un expediente archivado. | Acceso a archivos asociados al caso derivado. | Se recupera la evidencia sin pérdida de integridad ni alteración de metadatos originales en ≤ 10 segundos. |
 | **PX-05** | Auditoría e inalterabilidad | Intento de modificar o eliminar un registro de decisión de operador con perfil Administrador. | Petición directa a base de datos / API con máximo privilegio. | La operación se rechaza estrictamente (política append-only), el registro permanece inalterado y el intento queda logueado. |

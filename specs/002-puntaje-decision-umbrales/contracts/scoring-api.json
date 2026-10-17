@@ -83,6 +83,37 @@
       }
     },
     "/thresholds/{idFlujo}": {
+      "get": {
+        "summary": "Consultar umbral de aprobación y mínimos basales vigentes de un flujo",
+        "description": "Retorna la calibración actual de umbrales y mínimos por señal para el flujo especificado.",
+        "operationId": "getThresholds",
+        "tags": ["Thresholds"],
+        "parameters": [
+          {
+            "name": "idFlujo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuración de umbrales obtenida exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThresholdResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Flujo o configuración de umbral no encontrada."
+          }
+        }
+      },
       "put": {
         "summary": "Calibrar umbrales y mínimos por señal con auditoría inalterable",
         "description": "Permite al Administrador de Riesgo ajustar el umbral de aprobación y mínimos basales. Registra de forma inmutable el usuario, fecha, valor anterior y nuevo valor.",

@@ -104,6 +104,7 @@ A continuación se detalla la matriz unificada de requisitos funcionales que rig
 | **RQF-006** | Funcional | Permitir configurar el umbral de aprobación por flujo, registrando autor, fecha y valor anterior de cada cambio. | Must | §2.6, ENT4, DEC-11 | PF-06, PF-06b |
 | **RQF-007** | Funcional | No emitir rechazos 100% automáticos: todo caso con puntaje insuficiente o señal de fraude se deriva a revisión humana. | Must | ENT6, DEC-04 | PF-07 |
 | **RQF-008** | Funcional | Derivar a la bandeja de revisión todo caso bajo el umbral o con alerta de fraude activa. | Must | §2.7, ENT6, DEC-04 | PF-08 |
+| **RQF-015** | Funcional | Contabilizar y registrar como facturable comercialmente única y exclusivamente las decisiones de aprobación automática concluyente sin revisión humana. | Must | §2.16, ENT4, DEC-01 | PF-15 |
 | **RQF-022** | Funcional | Derivar obligatoriamente a revisión asistida cualquier caso en el que una o más señales individuales no alcancen el umbral mínimo configurado para dicha señal (aplicando por defecto un mínimo basal de seguridad de 60 puntos en señales documentales del MVP, editable por Riesgo), aun cuando el puntaje global supere el umbral de aprobación automática. | Must | §2.6, ENT3, ENT4 | PF-22 |
 | **RQF-023** | Funcional | Aplicar la regla de precedencia absoluta a las señales de fraude sobre el puntaje total y los mínimos de señal según jerarquía estricta (1º Fraude, 2º Mínimo de señal, 3º Puntaje global), de modo que ante causales concurrentes, el caso se clasifique bajo la causal más crítica (`Derivado_A_Revision_Humana_Fraude`) e inhabilite la aprobación automática, registrando todas las causales concurrentes en el desglose explicativo. | Must | §2.6, §3, DEC-04 | PF-23 |
 
@@ -123,6 +124,10 @@ Conforme a la metodología formal de auditoría de requisitos y las pautas estab
    - **Fuente §2.6 (El nivel de confianza y la decisión)**: *"La aprobación automática debe aplicarse a partir de 80 puntos cuando el caso no presente ninguna señal de fraude activa."*
    - **Fuente Principio Constitucional II (Control Humano y Prohibición de Rechazo Automático) [DEC-04]**: *"El sistema NUNCA DEBE emitir rechazos 100% automáticos sobre casos de personas [DEC-04]. Todo caso cuyo puntaje sea inferior al umbral de aprobación automática configurado o que presente señales de alerta o fraude activas DEBE derivarse obligatoriamente a la bandeja de revisión asistida para evaluación y resolución por parte de un operador humano calificado (liquidador) [DEC-04]. Jamás podrá quedar un caso rechazado sin intervención humana resolutiva."*
 
+3. **RQF-015 (Validación comercial concluyente y facturación)**:
+   - **Fuente §2.16 (Métricas y reportería)**: *"La plataforma debe contabilizar las validaciones realizadas distinguiendo las que fueron automáticas de las que requirieron revisión asistida."*
+   - **Fuente ENT4 / DEC-01**: *"La plataforma debe facturar única y exclusivamente las validaciones en las que el sistema emita por sí solo una resolución útil. Los casos derivados a revisión asistida no constituyen validaciones facturables."*
+
 ---
 
 ### Casos de Prueba de Verificación Funcional Asociados
@@ -135,6 +140,7 @@ Conforme a la metodología formal de auditoría de requisitos y las pautas estab
 | **PF-06b** | RQF-006 | Administrador de Riesgo autenticado, editando un flujo sin módulos de análisis activos. | Intentar publicar el flujo sin ningún módulo activo. | La publicación se rechaza de forma síncrona; el flujo no queda publicado. |
 | **PF-07** | RQF-007 | Caso con puntaje 45 (bajo el umbral). | Ejecutar el motor de reglas sobre el caso. | El sistema no emite rechazo automático; el caso se deriva obligatoriamente a revisión humana. |
 | **PF-08** | RQF-008 | Caso con puntaje 95 pero con alerta de fraude activa. | Ejecutar el motor de reglas de decisión. | El caso se deriva a revisión asistida pese a su puntaje sobresaliente (la señal de fraude prevalece). |
+| **PF-15** | RQF-015 | Caso Aprobado_Automatico vs Caso derivado a revisión asistida. | Evaluar atributo esFacturable en persistencia tras evaluación. | Caso aprobado automáticamente registra esFacturable = true; todo caso derivado registra esFacturable = false. |
 | **PF-22** | RQF-022 | Caso con puntaje global de 92 (superior al umbral de 90), pero con señal biométrica en 50 (mínimo de dicha señal configurado en 60). | Ejecutar el motor de reglas y evaluación de umbrales. | El caso no se aprueba automáticamente; se deriva a revisión asistida indicando como causa el incumplimiento del mínimo en biometría. |
 | **PF-23** | RQF-023 | Caso con puntaje global de 98 y señal de fraude documental activa. | Ejecutar el motor de reglas. | La regla de precedencia intercepta el caso; se impide la aprobación automática y se deriva de inmediato con prioridad alta a revisión humana. |
 
@@ -148,6 +154,7 @@ A continuación se declaran los requisitos no funcionales que aplican a la funci
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **RQNF-001** | No funcional | La API debe emitir acuse de recibo / respuesta (HTTP 200/202) en menos de 1 segundo desde la invocación de evaluación de puntaje y reglas. | Must | §4 parr. 159, ENT3, DEC-07 | PX-01 |
 | **RQNF-002** | No funcional | El procesamiento del caso debe ser asincrónico para expedientes con múltiples evidencias, sin bloquear al sistema del cliente. | Must | §4, ENT3, ENT7, DEC-07 | PX-02 |
+| **RQNF-003** | No funcional | Los datos de clientes chilenos deben residir en territorio nacional; la evaluación no transfiere PII sin enmascaramiento previo a servicios externos. | Must | §4 parr. 154, ENT6, DEC-06 | PX-03 |
 | **RQNF-005** | No funcional | El rastro de auditoría de evaluación, cálculo de puntaje y cambios de configuración de umbrales debe ser inalterable e íntegro para todo perfil, incluido el administrador. | Must | §2.11, §4 parr. 167, ENT6, DEC-05 | PX-05 |
 | **RQNF-006** | No funcional | La plataforma debe mantener 99,9 % de disponibilidad mensual, encolando casos ante la caída de un servicio externo, sin pérdida de casos ni resultados. | Must | §4 parr. 158, 165, ENT9 | PX-06 |
 | **RQNF-007** | No funcional | La plataforma debe soportar al menos 15.000 casos mensuales por organización sin degradar el tiempo de respuesta del motor de evaluación. | Should | §2.14, §4 parr. 161, ENT4, ENT8, DEC-02 | PX-07 |
@@ -178,6 +185,10 @@ A continuación se declaran los requisitos no funcionales que aplican a la funci
    - **Fuente §4 (Consideraciones técnicas, parr. 159)**: *"Ningún caso debe demorar más de cinco segundos en procesarse."*
    - **Fuente §2.6 (El nivel de confianza y la decisión)**: *"Cuando la plataforma entrega un puntaje, la pregunta inmediata del cliente es de dónde salió ese número. La explicación de señales y deducciones debe entregarse de forma inmediata y estructurada."*
 
+6. **RQNF-003 (Soberanía territorial y protección de PII)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 154)**: *"Los datos de los clientes chilenos deben permanecer alojados en territorio nacional... la evidencia sensible debe tratarse con enmascaramiento local."*
+   - **Fuente DEC-06**: *"Antes de procesar evidencias o interactuar con modelos externos, un módulo local debe remover o enmascarar estrictamente todos los datos de identificación personal (PII)."*
+
 ---
 
 ### Casos de Prueba de Verificación Extra-Funcional (PX)
@@ -186,6 +197,7 @@ A continuación se declaran los requisitos no funcionales que aplican a la funci
 | :--- | :--- | :--- | :--- | :--- |
 | **PX-01** | Rendimiento de ingesta y evaluación | Invocación simultánea de cálculo de puntaje y reglas para 100 casos concurrentes. | Carga concurrente sobre endpoint de evaluación. | El 95 % de las respuestas o acuses se entregan en menos de 1 segundo sin degradación ni pérdida de peticiones. |
 | **PX-02** | Procesamiento asincrónico | Evaluación de caso con múltiples evidencias documentales e imágenes. | Expediente voluminoso sin bloqueo. | Acuse inmediato en < 1 segundo; cálculo de puntaje, evaluación de mínimos y precedencia completados sin bloquear el sistema cliente. |
+| **PX-03** | Soberanía y protección PII | Inspección de payloads de evaluación y almacenamiento local. | Envío de metadatos de caso y ejecución de scoring. | Los datos sensibles de clientes chilenos residen en base de datos local y no se transfieren ni exponen RUTs ni PII sin enmascaramiento previo. |
 | **PX-05** | Auditoría e inalterabilidad de umbrales | Intento de modificar o sobrescribir un registro histórico de umbral o auditoría de decisión con perfil Administrador. | Modificación directa en base de datos / API con privilegios máximos. | La operación es rechazada estrictamente (política append-only), preservando la versión previa y registrando el evento de intento no autorizado. |
 | **PX-06** | Disponibilidad y tolerancia a fallos | Caída o desconexión de simulación de un módulo de señal durante la evaluación. | Flujo con módulo no responsivo. | El caso no se pierde; se encola o se marca con fallo de señal sin asignar puntajes ficticios favorables, derivando a revisión asistida. |
 | **PX-07** | Capacidad y volumen sostenido | Simulación de carga sostenida equivalente a 15.000 casos mensuales por organización. | Pruebas de estrés y volumen continuo en ambiente de integración. | El motor de scoring y evaluación de reglas mantiene un tiempo de respuesta promedio inferior a 2,5 segundos sin acumulación de memoria. |

@@ -101,6 +101,10 @@ erDiagram
         datetime fechaVencimientoSLA "Calculado segun calendario habil chileno"
         string nivelPrioridad "ALTA | MEDIA | BAJA"
         boolean esFacturable "True solo si APROBADO_AUTOMATICO (DEC-01)"
+        string rutTitular "RUT para visualizacion autorizada (12.345.***-*)"
+        string nombreTitular "Nombre del asegurado"
+        string hashTitular "Hash SHA-256 de integridad y disociacion"
+        boolean esAnonimizado "Flag de derecho de supresion ejercido (DEC-05)"
         string operadorBloqueoId FK "Operador con arriendo (lease) activo"
         datetime bloqueoExpiracion "Timestamp expiracion lease (15 min)"
     }
@@ -170,6 +174,8 @@ La siguiente tabla resume todos los atributos y entidades nuevos que surgieron e
 | **Caso** | — | `fechaVencimientoSLA` | DateTime | **Control temporal hábil:** Timestamp absoluto precalculado al ingresar el caso, aplicando el calendario laborable de Chile (3 días hábiles de 08:30 a 18:30 hrs) para alertas tempranas (`RQF-021`, DEC-13). |
 | **Caso** | — | `nivelPrioridad` | Enum (`ALTA`, `MEDIA`, `BAJA`) | **Ordenamiento de bandeja:** Indexación en base de datos para ordenar la lista de trabajo por urgencia y riesgo en menos de 2 segundos (`RQF-024`, `RQNF-008`). |
 | **Caso** | — | `esFacturable` | Boolean | **Integridad comercial:** Flag booleano indexable para reportes de facturación; garantiza que solo las aprobaciones automáticas concluyentes generen cobro (`DEC-01`, `RQF-015`). |
+| **Caso** | — | `rutTitular`, `nombreTitular` | String, String | **Protección de PII y visualización autorizada:** Almacenamiento local de datos del asegurado protegidos, entregados sin enmascarar únicamente al liquidador con arriendo activo y enmascarados en logs/vistas públicas (`DEC-06`, `RQNF-003`, `PX-03`). |
+| **Caso** | — | `hashTitular`, `esAnonimizado` | String, Boolean | **Reconciliación con Derecho de Supresión:** Hash SHA-256 inmutable para trazabilidad y flag de supresión ejercida (`DEC-05`, Principio IV). Permite anonimizar los nombres del asegurado sin destruir la auditoría histórica. |
 | **Caso** | — | `operadorBloqueoId`, `bloqueoExpiracion` | String (FK), DateTime | **Concurrencia y arriendo (lease):** Implementa el protocolo de concurrencia híbrida (`DEC-14`, `RQF-024`). Evita *race conditions* garantizando arriendos de 15 min con renovación por *heartbeat*. |
 | **Caso** | — | `idFlujo` | String (FK UUID) | **Clave foránea relacional:** Integridad referencial con la versión específica del flujo bajo la cual se tramitó el expediente. |
 | **Senal** | `tipoSenal`, `resultado` | `idSenal`, `idCaso`, `idEvidencia` | String (UUID PK y FKs) | **Claves técnicas y relación espacial:** E1 no vinculaba la señal a un archivo concreto. `idEvidencia` es indispensable para que el visor abra la imagen exacta donde ocurrió el hallazgo (`RQF-020`). |
@@ -214,12 +220,13 @@ sequenceDiagram
     participant UI as Next.js Frontend (Puerto 3000)
     participant F4 as ScoringModule F4 (Puerto 3001)
     participant F1 as ReviewTrayModule F1 (Puerto 3001)
+    participant SEC as PiiMaskingService (Common)
     participant DB as Prisma ORM & PostgreSQL 16 (Puerto 5432)
 
     Note over F4,DB: Fase 1: Producción del Caso Derivado (F4 Desacoplado)
     F4->>F4: 1. Evalúa señales, mínimos (basal 60.0) y fraude (DEC-04)
     alt Puntaje < 90 O Alerta Fraude O Mínimo reprobado
-        F4->>DB: 2. Persiste Caso en estado PENDIENTE_REVISION\n(razonDerivacion, sugerenciaMIRA, fechaVencimientoSLA a 3 días hábiles)
+        F4->>DB: 2. Persiste Caso en estado PENDIENTE_REVISION\n(razonDerivacion, sugerenciaMIRA, SLA 3 días hábiles, hashTitular)
     else Puntaje >= 90 Y Sin Fraude Y Mínimos OK
         F4->>DB: Persiste APROBADO_AUTOMATICO (esFacturable = true, DEC-01)
     end
@@ -229,6 +236,8 @@ sequenceDiagram
     UI->>F1: GET /api/v1/review-tray/cases
     F1->>DB: Consulta casos en estado PENDIENTE_REVISION ordenados por SLA
     DB-->>F1: Retorna lista con tiempos restantes y niveles de prioridad
+    F1->>SEC: Sanitiza metadatos y enmascara RUTs para lista pública (PX-03)
+    SEC-->>F1: DTOs con PII protegido
     F1-->>UI: Renderiza tabla priorizada con semáforo y cuenta regresiva hábil
 
     Operador->>UI: Selecciona un caso derivado (/bandeja/[idCaso])
@@ -236,7 +245,9 @@ sequenceDiagram
     F1->>DB: Registra operadorBloqueoId y bloqueoExpiracion (DEC-14)
     UI->>F1: GET /api/v1/review-tray/cases/:id
     F1->>DB: Obtiene expediente completo, señales y coordenadas
-    DB-->>F1: Retorna evidencias y Bounding Boxes (JSONB)
+    DB-->>F1: Retorna evidencias, Bounding Boxes (JSONB) y datos del titular
+    F1->>SEC: Controla acceso a PII según arriendo activo del operador (PX-03)
+    SEC-->>F1: Payload autorizado para evaluación médica
     F1-->>UI: Renderiza visor integral con hallazgos localizados y destacados
 
     Operador->>UI: Emite veredicto formal con justificación obligatoria
@@ -258,12 +269,13 @@ La Entrega 1 concebía a MIRA como un bloque monolítico único. En la Entrega 2
 
 1. **Contenedor Frontend (`mira-frontend`)**:
    - Next.js 14 (App Router con Server Components RSC).
-   - Divide la experiencia en tres vistas: `/configuracion` (Admin/Ingesta), `/bandeja` (lista priorizada de casos) y `/bandeja/[idCaso]` (visor integral con visor de *bounding boxes* interactivo).
+   - Divide la experiencia en tres vistas: `/configuracion` (Admin/Ingesta y calibración de umbrales), `/bandeja` (lista priorizada de casos) y `/bandeja/[idCaso]` (visor integral con visor de *bounding boxes* interactivo).
    - Cumple `RQNF-008` (tiempos de carga < 2 segundos).
 2. **Contenedor Backend (`mira-backend`)**:
    - NestJS v10 modular.
    - **`ScoringModule` (F4)**: Encapsula el cálculo de scoring, calibración de umbrales y aplicación de reglas de negocio (`DEC-04`, `DEC-11`, `RQF-022`, `RQF-023`). Actúa como **productor** de expedientes evaluados.
    - **`ReviewTrayModule` (F1)**: Encapsula la gestión de la bandeja, cómputo de SLA en horas hábiles laborables (`DEC-13`), protocolo de concurrencia híbrida (`DEC-14`) y servicio de resoluciones inalterables. Actúa como **consumidor**.
+   - **`CommonModule` (Transversal y Seguridad PII)**: Provee `PiiMaskingService` para enmascaramiento determinista de RUTs y nombres (`DEC-06`, `PX-03`), `ChileanCalendarUtil` para cómputo de SLA en jornada laborable chilena (`DEC-13`) y `HttpExceptionFilter` para sanitización global de excepciones y logs.
    - **`StaticFilesService`**: Servidor de archivos mock local para servir evidencias ficticias (PDFs e imágenes) sin exponer datos personales al exterior (`DEC-06`).
    - **`PrismaModule`**: Capa de abstracción relacional con tipado estático y garantía de transacciones ACID.
 3. **Contenedor Base de Datos (`mira-db`)**:
