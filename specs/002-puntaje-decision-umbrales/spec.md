@@ -140,7 +140,58 @@ Conforme a la metodología formal de auditoría de requisitos y las pautas estab
 
 ---
 
-### Entidades Principales del Dominio
+### Matriz de Trazabilidad de Requisitos No Funcionales (RQNF)
+
+A continuación se declaran los requisitos no funcionales que aplican a la funcionalidad **F4 - Puntaje y decisión por umbrales**, derivados de `LLMS.docx` y fundamentados en `Descripción del proyecto.docx`:
+
+| ID | Tipo | Requisito | Prioridad | Fuente | Verif. |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **RQNF-001** | No funcional | La API debe emitir acuse de recibo / respuesta (HTTP 200/202) en menos de 1 segundo desde la invocación de evaluación de puntaje y reglas. | Must | §4 parr. 159, ENT3, DEC-07 | PX-01 |
+| **RQNF-002** | No funcional | El procesamiento del caso debe ser asincrónico para expedientes con múltiples evidencias, sin bloquear al sistema del cliente. | Must | §4, ENT3, ENT7, DEC-07 | PX-02 |
+| **RQNF-005** | No funcional | El rastro de auditoría de evaluación, cálculo de puntaje y cambios de configuración de umbrales debe ser inalterable e íntegro para todo perfil, incluido el administrador. | Must | §2.11, §4 parr. 167, ENT6, DEC-05 | PX-05 |
+| **RQNF-006** | No funcional | La plataforma debe mantener 99,9 % de disponibilidad mensual, encolando casos ante la caída de un servicio externo, sin pérdida de casos ni resultados. | Must | §4 parr. 158, 165, ENT9 | PX-06 |
+| **RQNF-007** | No funcional | La plataforma debe soportar al menos 15.000 casos mensuales por organización sin degradar el tiempo de respuesta del motor de evaluación. | Should | §2.14, §4 parr. 161, ENT4, ENT8, DEC-02 | PX-07 |
+| **RQNF-008** | No funcional | El motor debe procesar y resolver las reglas en menos de 5 segundos por caso, permitiendo consultas explicativas con carga en menos de 2 segundos. | Should | §4 parr. 159-160, §2.6, ENT3 | PX-08 |
+
+---
+
+### Justificación y Citación Textual de Fuentes para Requisitos No Funcionales
+
+1. **RQNF-001 (Rendimiento de respuesta de API < 1s)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 159)**: *"El sistema debe ser rápido: ninguna pantalla puede tardar más de dos segundos en cargar y ningún caso debe demorar más de cinco segundos en procesarse."*
+   - **Fuente ENT3 (Sebastián Alarcón, líder de ingeniería de modelos)**: *"El cliente manda el caso, nosotros respondemos 'recibido' en menos de un segundo, y ahí empieza a correr el proceso pesado en el fondo sin amarrar la conexión."*
+   - **Fuente DEC-07**: *"La API de ingesta debe emitir un acuse de recibo asincrónico (HTTP 202) en menos de 1 segundo asignando un identificador de caso único."*
+
+2. **RQNF-005 (Inalterabilidad del rastro de auditoría y configuración de umbrales)**:
+   - **Fuente §2.11 (Trazabilidad y auditoría)**: *"Todo lo que ocurre con un caso debe quedar registrado de forma inalterable. El registro debe contener qué módulos procesaron el caso, qué señales produjeron, qué puntaje se calculó, qué decisión se tomó..."*
+   - **Fuente §3 (Comportamiento esperado del sistema)**: *"Un cambio en un flujo o en un umbral no tiene efecto retroactivo. Los casos que ya están en proceso se resuelven con la versión vigente al momento de su ingreso."*
+   - **Fuente ENT6 (Daniela Morales, gerenta legal y compliance)**: *"El registro de auditoría no se puede borrar ni alterar por nadie, ni siquiera por el administrador de sistemas."*
+
+3. **RQNF-007 (Escalabilidad de volumen sostenido de 15.000 casos/mes)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 161)**: *"La plataforma debe soportar el crecimiento esperado de la operación sin necesidad de rediseñarse. Se estima un volumen inicial de dos mil casos mensuales, con un peak diario que está por determinar."*
+   - **Fuente DEC-02 / ENT4 / ENT8**: *"El tramo de volumen proyectado para el cliente piloto alcanza los 15.000 casos mensuales, requiriendo que la infraestructura no degrade sus tiempos de respuesta ante carga continua."*
+
+4. **RQNF-006 (Disponibilidad 99.9% y tolerancia a fallos de servicios de análisis)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 158 y 165)**: *"El compromiso de disponibilidad es de 99,9 % mensual... El diseño debe permitir sustituir un proveedor de modelos por otro sin rehacer los flujos de los clientes, y debe tolerar que uno de ellos deje de responder sin que se pierdan casos."*
+
+5. **RQNF-008 (Tiempos de respuesta y explicabilidad)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 159)**: *"Ningún caso debe demorar más de cinco segundos en procesarse."*
+   - **Fuente §2.6 (El nivel de confianza y la decisión)**: *"Cuando la plataforma entrega un puntaje, la pregunta inmediata del cliente es de dónde salió ese número. La explicación de señales y deducciones debe entregarse de forma inmediata y estructurada."*
+
+---
+
+### Casos de Prueba de Verificación Extra-Funcional (PX)
+
+| ID | Atributo | Escenario | Condición Aplicada | Umbral de Aceptación |
+| :--- | :--- | :--- | :--- | :--- |
+| **PX-01** | Rendimiento de ingesta y evaluación | Invocación simultánea de cálculo de puntaje y reglas para 100 casos concurrentes. | Carga concurrente sobre endpoint de evaluación. | El 95 % de las respuestas o acuses se entregan en menos de 1 segundo sin degradación ni pérdida de peticiones. |
+| **PX-02** | Procesamiento asincrónico | Evaluación de caso con múltiples evidencias documentales e imágenes. | Expediente voluminoso sin bloqueo. | Acuse inmediato en < 1 segundo; cálculo de puntaje, evaluación de mínimos y precedencia completados sin bloquear el sistema cliente. |
+| **PX-05** | Auditoría e inalterabilidad de umbrales | Intento de modificar o sobrescribir un registro histórico de umbral o auditoría de decisión con perfil Administrador. | Modificación directa en base de datos / API con privilegios máximos. | La operación es rechazada estrictamente (política append-only), preservando la versión previa y registrando el evento de intento no autorizado. |
+| **PX-06** | Disponibilidad y tolerancia a fallos | Caída o desconexión de simulación de un módulo de señal durante la evaluación. | Flujo con módulo no responsivo. | El caso no se pierde; se encola o se marca con fallo de señal sin asignar puntajes ficticios favorables, derivando a revisión asistida. |
+| **PX-07** | Capacidad y volumen sostenido | Simulación de carga sostenida equivalente a 15.000 casos mensuales por organización. | Pruebas de estrés y volumen continuo en ambiente de integración. | El motor de scoring y evaluación de reglas mantiene un tiempo de respuesta promedio inferior a 2,5 segundos sin acumulación de memoria. |
+| **PX-08** | Explicabilidad y rendimiento | Consulta del desglose completo de componentes de señales y precedencias de un caso procesado. | Carga de estructura JSON / vista de desglose. | La respuesta estructurada con componentes de confianza y justificación se entrega en < 500 ms (visualizable en UI en < 2 segundos). |
+
+---
 
 - **Caso**: Instancia del expediente procesado con identificador permanente `idCaso`, versión del flujo aplicada y veredicto resolutivo final.
 - **PuntajeConfianza**: Valor cuantitativo normalizado entre 0 y 100 que resume el grado de certeza de legitimidad del caso.

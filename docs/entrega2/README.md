@@ -39,6 +39,8 @@ La documentación detallada exigida para esta entrega se organiza en los siguien
 | :--- | :--- | :--- |
 | **Informe de Cambios en Especificación (SPECS)** | [`especificacion_cambios.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/especificacion_cambios.md) | - Matriz comparativa completa de requisitos entre Entrega 1 y Entrega 2 (mantenidos, modificados, fuera de alcance y descartados).<br>- Detalle de los 5 nuevos requisitos funcionales (`RQF-020` a `RQF-024`) con citas directas.<br>- Análisis de alucinaciones y decisiones autónomas del agente (aceptadas y rechazadas con su criterio).<br>- Métricas cuantitativas y cualitativas de autoría agente vs. equipo humano. |
 | **Informe de Decisiones y Clarificación (CLARIFY)** | [`clarificacion_cambios.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/clarificacion_cambios.md) | - Documentación de las 5 preguntas estructuradas formuladas por el agente durante `/speckit-clarify` con sus citas y resoluciones.<br>- Análisis de ambigüedades resueltas por el agente y contraste con el criterio del cliente.<br>- Matriz completa de decisiones de negocio (`DEC-01` a `DEC-14`).<br>- Fichas formales completas de las nuevas decisiones `DEC-13` y `DEC-14` según el estándar de `LLMS.docx`. |
+| **Evolución de Diagramas y Persistencia (PLAN)** | [`cambios_diagramas_persistencia.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/cambios_diagramas_persistencia.md) | - Evolución del Modelo de Dominio Conceptual (E1) a Modelo Entidad-Relación relacional físico (E2) en PostgreSQL y Prisma.<br>- Tabla de nuevos atributos y entidades exigidos por persistencia (ciclos de vida `estadoCaso`, bounding boxes JSONB, hashes SHA-256, lease de concurrencia).<br>- Transformación del Diagrama de Secuencia de `CU-02` hacia interacción multicapa asíncrona (F4 Productor $\to$ F1 Consumidor) en Docker. |
+| **Registro de Supuestos Invalidados (PLAN)** | [`supuestos_invalidados.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/supuestos_invalidados.md) | - Análisis detallado de los 7 supuestos de la Entrega 1 que colapsaron al descender al diseño técnico real.<br>- Registro de quién detectó cada supuesto (Equipo de Ingeniería, Agente de IA o Representante del Cliente).<br>- Solución técnica implementada y lecciones aprendidas de ingeniería. |
 
 ---
 
@@ -82,7 +84,9 @@ graph LR
 
 ## 4. Estado del Proyecto y Pasos Siguientes
 
-Con la generación y clarificación de estas especificaciones:
+Con la generación de las especificaciones (`/speckit-specify`), la clarificación de requerimientos (`/speckit-clarify`) y el diseño del plan técnico (`/speckit-plan`):
 1. Las especificaciones de `F1` y `F4` se encuentran formalmente cerradas y ratificadas por el Representante del Cliente.
 2. Ambas especificaciones aprobaron al 100% sus listas de verificación de calidad (`checklists/requirements.md`).
-3. El proyecto se encuentra en condiciones óptimas para iniciar la fase de planificación arquitectónica y diseño técnico mediante `/speckit-plan`.
+3. El **Plan Técnico de Implementación** ha quedado consolidado en [`specs/001-bandeja-revision-asistida/plan.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/plan.md) y [`specs/002-puntaje-decision-umbrales/plan.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/plan.md), acompañado de su esquema relacional `schema.prisma` y contratos de API REST.
+4. La evolución de los diagramas y el análisis de supuestos invalidados quedan formalmente documentados en [`cambios_diagramas_persistencia.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/cambios_diagramas_persistencia.md) y [`supuestos_invalidados.md`](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/supuestos_invalidados.md).
+5. El proyecto se encuentra listo para iniciar la fase de desglose de tareas ejecutables mediante `/speckit-tasks`.

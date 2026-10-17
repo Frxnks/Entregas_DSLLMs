@@ -131,7 +131,54 @@ Para conferir plena validez y trazabilidad conforme a la metodología de ingenie
 
 ---
 
-### Entidades Principales del Dominio
+### Matriz de Trazabilidad de Requisitos No Funcionales (RQNF)
+
+A continuación se declaran los requisitos no funcionales que aplican a la funcionalidad **F1 - Bandeja de revisión asistida**, derivados de `LLMS.docx` y fundamentados en `Descripción del proyecto.docx`:
+
+| ID | Tipo | Requisito | Prioridad | Fuente | Verif. |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **RQNF-003** | No funcional | Los datos de clientes chilenos deben residir en territorio nacional; solo fragmentos sin datos identificatorios (PII) se procesan o transmiten. | Must | §4 parr. 154, ENT6, DEC-06 | PX-03 |
+| **RQNF-004** | No funcional | La evidencia se conserva cifrada: 90 días en almacenamiento activo y hasta 5 años en almacenamiento frío. | Must | §2.11, §4 parr. 164, ENT6, DEC-03 | PX-04 |
+| **RQNF-005** | No funcional | El rastro de auditoría debe ser inalterable e íntegro para todo perfil de usuario, incluido el administrador, al persistir las decisiones del operador. | Must | §2.11, §4 parr. 167, ENT6, DEC-05 | PX-05 |
+| **RQNF-006** | No funcional | La plataforma debe mantener 99,9 % de disponibilidad mensual, tolerando caídas de servicios externos sin pérdida de casos en bandeja. | Must | §4 parr. 158, 165, ENT9 | PX-06 |
+| **RQNF-008** | No funcional | Un operador nuevo debe poder resolver su primer caso sin capacitación previa, con pantallas que cargan en menos de 2 segundos. | Should | §4 parr. 159-160, ENT4, ENT5 | PX-08 |
+
+---
+
+### Justificación y Citación Textual de Fuentes para Requisitos No Funcionales
+
+1. **RQNF-005 (Inalterabilidad del rastro de auditoría)**:
+   - **Fuente §2.11 (Trazabilidad y auditoría)**: *"Todo lo que ocurre con un caso debe quedar registrado de forma inalterable. El registro debe contener qué módulos procesaron el caso, qué señales produjeron, qué puntaje se calculó, qué decisión se tomó y —si intervino un operador— quién fue, qué decisión tomó y qué motivo dio. Este registro debe ser consultable por los auditores del cliente..."*
+   - **Fuente §4 (Consideraciones técnicas, parr. 167)**: *"La plataforma debe registrar su propio funcionamiento con suficiente detalle como para diagnosticar un problema sin acceder a la evidencia de los clientes."*
+   - **Fuente ENT6 (Daniela Morales, gerenta legal y compliance)**: *"El registro de auditoría no se puede borrar ni alterar por nadie, ni siquiera por el administrador de sistemas. Si un liquidador aprobó algo que el modelo marcó como fraude, tengo que saber exactamente qué día, a qué hora y con qué justificación."*
+
+2. **RQNF-008 (Tiempo de carga < 2s y usabilidad intuitiva)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 159-160)**: *"El sistema debe ser rápido: ninguna pantalla puede tardar más de dos segundos en cargar y ningún caso debe demorar más de cinco segundos en procesarse. La interfaz debe ser simple e intuitiva. Un operador nuevo debe poder resolver su primer caso sin capacitación previa."*
+   - **Fuente ENT5 (Marco Peñailillo, analista liquidador)**: *"Si la máquina me subraya dónde está cada cosa, me cambia el día. Hoy me demoro 15 a 20 minutos por caso porque paso la mitad del tiempo buscando el dato entre hojas sueltas. Si carga rápido y me lleva directo al hallazgo, puedo liquidar un caso en 3 minutos."*
+
+3. **RQNF-004 (Retención y cifrado de evidencia)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 164)**: *"La evidencia se almacena cifrada, tanto en tránsito como en reposo. Las imágenes biométricas, cuando se procesen, reciben un tratamiento más restrictivo que el resto de la evidencia: acceso limitado, plazo de conservación propio y registro de cada consulta."*
+   - **Fuente §2.11 (Trazabilidad y auditoría)**: *"La evidencia debe conservarse cifrada durante 90 días en almacenamiento activo y migrar a almacenamiento frío hasta cumplir el plazo legal de 5 años."*
+
+4. **RQNF-003 (Soberanía de datos y enmascaramiento)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 154)**: *"La plataforma se despliega en nube pública. Los datos de los clientes chilenos deben permanecer alojados en territorio nacional, exigencia contractual de dos de nuestros clientes del sector financiero."*
+
+5. **RQNF-006 (Disponibilidad y resiliencia)**:
+   - **Fuente §4 (Consideraciones técnicas, parr. 158 y 165)**: *"La plataforma debe estar disponible de forma permanente... El compromiso de disponibilidad es de 99,9 % mensual... El diseño debe tolerar que uno de los proveedores externos deje de responder sin que se pierdan casos."*
+
+---
+
+### Casos de Prueba de Verificación Extra-Funcional (PX)
+
+| ID | Atributo | Escenario | Condición Aplicada | Umbral de Aceptación |
+| :--- | :--- | :--- | :--- | :--- |
+| **PX-03** | Soberanía de datos | Inspección de visualización de evidencia y llamadas salientes. | Envío de metadatos y fragmentos en pantalla de revisión. | Los datos sensibles de clientes chilenos residen en base de datos local y no se exponen RUTs ni PII sin enmascaramiento previo. |
+| **PX-04** | Retención e integridad | Solicitud de visualización de evidencia de un expediente archivado. | Acceso a archivos asociados al caso derivado. | Se recupera la evidencia sin pérdida de integridad ni alteración de metadatos originales en ≤ 10 segundos. |
+| **PX-05** | Auditoría e inalterabilidad | Intento de modificar o eliminar un registro de decisión de operador con perfil Administrador. | Petición directa a base de datos / API con máximo privilegio. | La operación se rechaza estrictamente (política append-only), el registro permanece inalterado y el intento queda logueado. |
+| **PX-06** | Disponibilidad y resiliencia | Indisponibilidad simulada de servicios de análisis externos durante la revisión de un caso en bandeja. | El operador inspecciona y emite decisión sobre un caso ya derivado. | La bandeja de revisión sigue operativa al 100%, la decisión se registra atómicamente y ningún caso se pierde ni se corrompe. |
+| **PX-08** | Usabilidad y rendimiento de UI | Operador sin capacitación previa recibe e interactúa con su primer caso derivado en la bandeja de revisión asistida. | Pantalla estándar de revisión asistida con visor de evidencia y señales. | El operador completa y resuelve el caso sin soporte externo; el 100% de las pantallas y componentes del visor cargan en < 2 segundos. |
+
+---
 
 - **BandejaRevision**: Conjunto ordenado y priorizado de casos derivados que requieren intervención humana resolutiva, con filtros por estado, plazo restante y severidad de riesgo.
 - **Caso**: Unidad fundamental de tramitación identificada por `idCaso` único, permanente e inalterable, que almacena el expediente del siniestro, estado del ciclo de vida, puntaje global, motivo de derivación, fecha límite de SLA y atributos de concurrencia híbrida (`bloqueoEdicion`: usuario activo, timestamp y expiración de lease de 15 min).

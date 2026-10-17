@@ -1,0 +1,280 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MIRA Scoring & Thresholds API (F4)",
+    "description": "API REST de NestJS para el cálculo de puntaje de confianza, verificación de mínimos de señal, precedencia absoluta de señales de fraude y derivación a revisión humana conforme a DEC-04 y DEC-11.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/v1/scoring",
+      "description": "Servidor de desarrollo local NestJS"
+    }
+  ],
+  "paths": {
+    "/evaluate": {
+      "post": {
+        "summary": "Evaluar caso con señales precalculadas y determinar veredicto",
+        "description": "Calcula el puntaje global ponderado (0-100), comprueba mínimos por señal y aplica precedencia estricta de fraude. Si el caso no se aprueba automáticamente, crea o transiciona el caso a estado PENDIENTE_REVISION para consumo de la bandeja F1.",
+        "operationId": "evaluateCase",
+        "tags": ["Scoring"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateCaseRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evaluación exitosa. Retorna el puntaje de confianza, el desglose analítico y el veredicto resolutivo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationResultResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datos de entrada inválidos o expediente incompleto."
+          },
+          "404": {
+            "description": "Flujo o configuración de umbral no encontrada."
+          }
+        }
+      }
+    },
+    "/cases/{idCaso}/breakdown": {
+      "get": {
+        "summary": "Consultar desglose analítico de señales y factores explicativos",
+        "description": "Retorna la estructura explicativa detallada de cada señal, ponderación, cumplimiento de mínimos y presencia de alertas de fraude asociadas a un caso evaluado.",
+        "operationId": "getCaseBreakdown",
+        "tags": ["Scoring"],
+        "parameters": [
+          {
+            "name": "idCaso",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identificador único permanente del caso (ej. CASO-SEED-001)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Desglose explicativo obtenido exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseBreakdownResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Caso no encontrado."
+          }
+        }
+      }
+    },
+    "/thresholds/{idFlujo}": {
+      "put": {
+        "summary": "Calibrar umbrales y mínimos por señal con auditoría inalterable",
+        "description": "Permite al Administrador de Riesgo ajustar el umbral de aprobación y mínimos basales. Registra de forma inmutable el usuario, fecha, valor anterior y nuevo valor.",
+        "operationId": "updateThresholds",
+        "tags": ["Thresholds"],
+        "parameters": [
+          {
+            "name": "idFlujo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateThresholdDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Umbral actualizado y versión de auditoría persistida inalterable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThresholdResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Valores de umbral fuera de rango (deben estar entre 0 y 100)."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EvaluateCaseRequestDto": {
+        "type": "object",
+        "required": ["idCaso", "idFlujo", "senales"],
+        "properties": {
+          "idCaso": {
+            "type": "string",
+            "example": "CASO-SEED-002"
+          },
+          "idFlujo": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "senales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InputSenalDto"
+            }
+          }
+        }
+      },
+      "InputSenalDto": {
+        "type": "object",
+        "required": ["tipoSenal", "moduloOrigen", "puntaje", "pesoPonderacion", "esAlertaFraude"],
+        "properties": {
+          "tipoSenal": {
+            "type": "string",
+            "example": "AUTENTICIDAD_DOCUMENTAL"
+          },
+          "moduloOrigen": {
+            "type": "string",
+            "example": "lector_boletas_v1"
+          },
+          "puntaje": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 80
+          },
+          "pesoPonderacion": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "example": 0.4
+          },
+          "umbralMinimo": {
+            "type": "number",
+            "example": 60
+          },
+          "esAlertaFraude": {
+            "type": "boolean",
+            "example": false
+          },
+          "idEvidencia": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Firma y timbre legibles pero con fecha retrasada"
+          },
+          "ubicacionHallazgo": {
+            "$ref": "#/components/schemas/BoundingBoxDto"
+          }
+        }
+      },
+      "BoundingBoxDto": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer", "example": 1 },
+          "x": { "type": "number", "example": 120 },
+          "y": { "type": "number", "example": 450 },
+          "width": { "type": "number", "example": 280 },
+          "height": { "type": "number", "example": 60 }
+        }
+      },
+      "EvaluationResultResponseDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string", "example": "CASO-SEED-002" },
+          "puntajeConfianza": { "type": "number", "example": 74.0 },
+          "estadoDecision": {
+            "type": "string",
+            "enum": ["APROBADO_AUTOMATICO", "DERIVADO_REVISION_ASISTIDA"],
+            "example": "DERIVADO_REVISION_ASISTIDA"
+          },
+          "sugerenciaMIRA": {
+            "type": "string",
+            "enum": ["APROBAR", "RECHAZAR", "SOLICITAR_ANTECEDENTES"],
+            "example": "APROBAR"
+          },
+          "causalDerivacion": {
+            "type": "string",
+            "enum": ["FRAUDE", "MINIMO_SENAL", "PUNTAJE_INSUFICIENTE", "NINGUNA"],
+            "example": "PUNTAJE_INSUFICIENTE"
+          },
+          "razonDerivacion": {
+            "type": "string",
+            "example": "Puntaje global insuficiente (74/100) inferior al umbral de aprobación automática (90 puntos)."
+          },
+          "esFacturable": { "type": "boolean", "example": false },
+          "fechaVencimientoSLA": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CaseBreakdownResponseDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string" },
+          "puntajeConfianza": { "type": "number" },
+          "umbralAprobacion": { "type": "number" },
+          "alertaFraudeActiva": { "type": "boolean" },
+          "senales": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tipoSenal": { "type": "string" },
+                "moduloOrigen": { "type": "string" },
+                "puntaje": { "type": "number" },
+                "pesoPonderacion": { "type": "number" },
+                "umbralMinimo": { "type": "number" },
+                "cumpleMinimo": { "type": "boolean" },
+                "esAlertaFraude": { "type": "boolean" },
+                "descripcion": { "type": "string" },
+                "ubicacionHallazgo": { "$ref": "#/components/schemas/BoundingBoxDto" }
+              }
+            }
+          }
+        }
+      },
+      "UpdateThresholdDto": {
+        "type": "object",
+        "required": ["valorAprobacion", "usuarioModificador"],
+        "properties": {
+          "valorAprobacion": { "type": "number", "minimum": 0, "maximum": 100, "example": 85.0 },
+          "minimoBasalSeguridad": { "type": "number", "minimum": 0, "maximum": 100, "example": 60.0 },
+          "usuarioModificador": { "type": "string", "example": "admin.riesgo@aseguradora.cl" }
+        }
+      },
+      "ThresholdResponseDto": {
+        "type": "object",
+        "properties": {
+          "idFlujo": { "type": "string" },
+          "valorAprobacion": { "type": "number" },
+          "minimoBasalSeguridad": { "type": "number" },
+          "version": { "type": "integer" },
+          "fechaActualizacion": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

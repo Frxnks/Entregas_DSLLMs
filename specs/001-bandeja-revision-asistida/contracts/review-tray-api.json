@@ -1,0 +1,333 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MIRA Review Tray API (F1)",
+    "description": "API REST de NestJS para la bandeja de revisión asistida: listado de casos derivados, inspección con coordenadas de hallazgos, arriendo temporal de edición (lease de 15 min), resolución inalterable por operador humano y marcado de discrepancias.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/v1/review-tray",
+      "description": "Servidor de desarrollo local NestJS"
+    }
+  ],
+  "paths": {
+    "/cases": {
+      "get": {
+        "summary": "Listar casos derivados pendientes en la bandeja de trabajo",
+        "description": "Retorna la lista de expedientes derivados ordenados por urgencia y tiempo restante de SLA. Incluye alertas de vencimiento inminente (< 24h) y semáforo visual (RQF-021, RQF-024).",
+        "operationId": "getReviewCases",
+        "tags": ["ReviewTray"],
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["PENDIENTE_REVISION", "EN_REVISION", "VENCIDO_ESCALADO"],
+              "default": "PENDIENTE_REVISION"
+            }
+          },
+          {
+            "name": "prioridad",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ALTA", "MEDIA", "BAJA"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de casos derivados obtenida exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaseSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cases/{idCaso}": {
+      "get": {
+        "summary": "Obtener vista integral de un caso derivado para revisión",
+        "description": "Despliega en una sola llamada la evidencia asociada (URLs de PDFs/imágenes locales), puntaje, desglose de señales, motivo explícito de derivación y coordenadas espaciales de hallazgos (RQF-009, RQF-020). Carga garantizada en < 2s (RQNF-008).",
+        "operationId": "getCaseDetail",
+        "tags": ["ReviewTray"],
+        "parameters": [
+          {
+            "name": "idCaso",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identificador del caso derivado (ej. CASO-SEED-002)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle completo consolidado del caso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Caso no encontrado."
+          }
+        }
+      }
+    },
+    "/cases/{idCaso}/lease": {
+      "post": {
+        "summary": "Adquirir o renovar arriendo temporal de edición (lease de 15 min)",
+        "description": "Asigna el bloqueo de edición temporal al operador solicitante con expiración a los 15 minutos renovable por heartbeat, permitiendo concurrencia en modo lectura a otros analistas (RQF-024).",
+        "operationId": "acquireOrRenewLease",
+        "tags": ["Concurrency"],
+        "parameters": [
+          {
+            "name": "idCaso",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcquireLeaseRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lease adquirido o renovado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaseResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto: El caso se encuentra actualmente bloqueado por otro operador."
+          }
+        }
+      }
+    },
+    "/cases/{idCaso}/decision": {
+      "post": {
+        "summary": "Emitir veredicto formal del operador sobre el caso derivado",
+        "description": "Registra de forma inalterable y atómica la resolución del liquidador (APROBADO, RECHAZADO, SOLICITAR_ANTECEDENTES) con justificación textual obligatoria. Si la decisión difiere de sugerenciaMIRA, marca automáticamente el caso con marcaDiscrepancia=true (CU-02, RQF-010, RQF-011, DEC-04, RQNF-005).",
+        "operationId": "submitDecision",
+        "tags": ["ReviewTray"],
+        "parameters": [
+          {
+            "name": "idCaso",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDecisionRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Decisión registrada exitosamente de forma inalterable. Caso pasa a estado RESUELTO.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Petición inválida: justificación vacía o datos de operador ausentes."
+          },
+          "409": {
+            "description": "Conflicto: El caso ya fue resuelto previamente (concurrencia atómica first-to-submit)."
+          }
+        }
+      }
+    },
+    "/discrepancies": {
+      "get": {
+        "summary": "Listar casos resueltos con discrepancia con la sugerencia de MIRA",
+        "description": "Endpoint de consulta para el equipo de modelos de IA con el histórico de casos donde la resolución del operador contradijo la recomendación algorítmica (RQF-011).",
+        "operationId": "getDiscrepancies",
+        "tags": ["Audit"],
+        "responses": {
+          "200": {
+            "description": "Lista de casos con marca de discrepancia.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiscrepancyItemDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CaseSummaryDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string", "example": "CASO-SEED-002" },
+          "fechaIngreso": { "type": "string", "format": "date-time" },
+          "puntajeConfianza": { "type": "number", "example": 74.0 },
+          "razonDerivacion": { "type": "string", "example": "Puntaje global bajo el umbral (74/90)" },
+          "sugerenciaMIRA": { "type": "string", "enum": ["APROBAR", "RECHAZAR", "SOLICITAR_ANTECEDENTES"] },
+          "nivelPrioridad": { "type": "string", "enum": ["ALTA", "MEDIA", "BAJA"] },
+          "alertaFraude": { "type": "boolean", "example": false },
+          "tiempoRestanteHorasHabiles": { "type": "number", "example": 48.5 },
+          "estadoSLA": { "type": "string", "enum": ["EN_PLAZO", "PROXIMO_A_VENCER", "VENCIDO_ESCALADO"] },
+          "bloqueadoPor": { "type": "string", "nullable": true }
+        }
+      },
+      "CaseDetailDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string", "example": "CASO-SEED-003" },
+          "fechaIngreso": { "type": "string", "format": "date-time" },
+          "puntajeConfianza": { "type": "number", "example": 92.0 },
+          "estadoCaso": { "type": "string", "example": "PENDIENTE_REVISION" },
+          "sugerenciaMIRA": { "type": "string", "example": "RECHAZAR" },
+          "razonDerivacion": { "type": "string", "example": "Alerta de fraude activa en imagen de boleta" },
+          "causalDerivacion": { "type": "string", "example": "FRAUDE" },
+          "fechaVencimientoSLA": { "type": "string", "format": "date-time" },
+          "tiempoRestanteHorasHabiles": { "type": "number", "example": 14.0 },
+          "estadoSLA": { "type": "string", "example": "PROXIMO_A_VENCER" },
+          "evidencias": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "idEvidencia": { "type": "string" },
+                "nombreArchivo": { "type": "string", "example": "boleta_manipulada_003.jpg" },
+                "tipoArchivo": { "type": "string", "example": "IMAGEN_JPG" },
+                "urlAlmacenamiento": { "type": "string", "example": "/static/evidence/boleta_manipulada_003.jpg" },
+                "esLegible": { "type": "boolean", "example": true }
+              }
+            }
+          },
+          "senales": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "idSenal": { "type": "string" },
+                "tipoSenal": { "type": "string", "example": "FRAUDE_MANIPULACION" },
+                "moduloOrigen": { "type": "string", "example": "forense_imagen_v1" },
+                "puntaje": { "type": "number", "example": 35.0 },
+                "esAlertaFraude": { "type": "boolean", "example": true },
+                "descripcion": { "type": "string", "example": "Monto total modificado digitalmente" },
+                "ubicacionHallazgo": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "integer", "example": 1 },
+                    "x": { "type": "number", "example": 310 },
+                    "y": { "type": "number", "example": 520 },
+                    "width": { "type": "number", "example": 140 },
+                    "height": { "type": "number", "example": 45 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AcquireLeaseRequestDto": {
+        "type": "object",
+        "required": ["idOperador"],
+        "properties": {
+          "idOperador": { "type": "string", "format": "uuid" }
+        }
+      },
+      "LeaseResponseDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string" },
+          "operadorBloqueoId": { "type": "string" },
+          "bloqueoExpiracion": { "type": "string", "format": "date-time" },
+          "vigenciaMinutos": { "type": "integer", "example": 15 }
+        }
+      },
+      "SubmitDecisionRequestDto": {
+        "type": "object",
+        "required": ["idOperador", "tipoDecision", "justificacion"],
+        "properties": {
+          "idOperador": { "type": "string", "format": "uuid" },
+          "tipoDecision": {
+            "type": "string",
+            "enum": ["APROBADO", "RECHAZADO", "SOLICITAR_ANTECEDENTES"],
+            "example": "APROBADO"
+          },
+          "justificacion": {
+            "type": "string",
+            "minLength": 10,
+            "example": "Se verificó manualmente con el prestador clínico emisor y se validó la autenticidad del monto."
+          }
+        }
+      },
+      "DecisionResultDto": {
+        "type": "object",
+        "properties": {
+          "idDecision": { "type": "string", "format": "uuid" },
+          "idCaso": { "type": "string", "example": "CASO-SEED-003" },
+          "estadoCasoFinal": { "type": "string", "example": "RESUELTO" },
+          "tipoDecision": { "type": "string", "example": "APROBADO" },
+          "marcaDiscrepancia": { "type": "boolean", "example": true },
+          "fechaDecision": { "type": "string", "format": "date-time" },
+          "mensaje": { "type": "string", "example": "Decisión registrada exitosamente de forma inalterable." }
+        }
+      },
+      "DiscrepancyItemDto": {
+        "type": "object",
+        "properties": {
+          "idCaso": { "type": "string" },
+          "sugerenciaMIRA": { "type": "string" },
+          "decisionOperador": { "type": "string" },
+          "justificacion": { "type": "string" },
+          "operadorNombre": { "type": "string" },
+          "fechaDecision": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}
