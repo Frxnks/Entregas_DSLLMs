@@ -324,9 +324,9 @@ La implementación se estructura en un monorepositorio ligero orquestado por Doc
 │   ├── package.json
 │   ├── tsconfig.json
 │   ├── prisma/
-│   │   ├── schema.prisma           # Esquema declarativo Prisma E2
+│   │   ├── schema.prisma           # Esquema declarativo Prisma E2 (Caso, Senal, Decision, Umbral, AuditoriaUmbral, Evidencia)
 │   │   ├── migrations/             # Migraciones versionadas
-│   │   └── seed.ts                 # Carga de los 3 casos precalculados
+│   │   └── seed.ts                 # Carga de los 3 casos precalculados con datos ficticios
 │   ├── static/
 │   │   └── evidence/               # Archivos mock (boleta_limpia_001.pdf, etc.)
 │   ├── src/
@@ -334,11 +334,16 @@ La implementación se estructura en un monorepositorio ligero orquestado por Doc
 │   │   ├── prisma/                 # PrismaService y PrismaModule
 │   │   ├── scoring/                # F4: ScoringModule (ScoringService, Controller, DTOs)
 │   │   ├── review-tray/            # F1: ReviewTrayModule (ReviewTrayService, Controller, LeaseService)
-│   │   └── common/                 # Filtros de excepción, utilitarios de calendario chileno
+│   │   └── common/                 # CommonModule
+│   │       ├── filters/            # Filtros globales de excepción HTTP
+│   │       ├── services/
+│   │       │   └── pii-masking.service.ts # Enmascaramiento PII (RUT, Nombres) y supresión DEC-05 / DEC-06 (T008b)
+│   │       └── utils/              # Calendario y cálculo de SLA en jornada laboral chilena
 │   └── test/
-│       ├── scoring.spec.ts         # Pruebas unitarias de scoring y reglas
-│       ├── review-tray.spec.ts     # Pruebas de bandeja y discrepancias
-│       └── extra-functional.e2e-spec.ts # Pruebas PX-01 a PX-07 con Supertest
+│       ├── scoring.spec.ts         # Pruebas unitarias de scoring y reglas (PF-04, PF-05, PF-07)
+│       ├── review-tray.spec.ts     # Pruebas de bandeja, leases y discrepancias (PF-08..PF-11, PF-20, PF-24)
+│       ├── extra-functional.e2e-spec.ts # Pruebas PX-01, PX-02, PX-05, PX-07
+│       └── extra-functional-f1.e2e-spec.ts # Pruebas PX-03 (Soberanía PII), PX-04 (Cripto/Retención), PX-06 (Resiliencia)
 ├── frontend/                       # Aplicación Next.js 14 App Router (TypeScript)
 │   ├── Dockerfile
 │   ├── package.json
@@ -347,21 +352,30 @@ La implementación se estructura en un monorepositorio ligero orquestado por Doc
 │   │   ├── app/
 │   │   │   ├── layout.tsx          # Layout global 100% en español con shadcn/ui
 │   │   │   ├── page.tsx            # Redirección a /bandeja
-│   │   │   └── bandeja/
-│   │   │       ├── page.tsx        # Lista de casos derivados con SLA y semáforo (RSC)
-│   │   │       └── [idCaso]/
-│   │   │           └── page.tsx    # Visor integral con Bounding Boxes y resolución
-│   │   ├── components/             # Componentes modulares (VisorEvidencia, PanelResolucion, BadgeSLA)
-│   │   └── lib/                    # Cliente API tipado y formateadores
+│   │   │   ├── bandeja/
+│   │   │   │   ├── page.tsx        # Lista de casos derivados con SLA y semáforo (RSC)
+│   │   │   │   └── [idCaso]/
+│   │   │   │       └── page.tsx    # Visor integral con Bounding Boxes y resolución
+│   │   │   └── configuracion/
+│   │   │       └── page.tsx        # Interfaz de calibración de umbrales para Admin de Riesgo (US4, T026b)
+│   │   ├── components/             # Componentes modulares (VisorEvidencia, PanelResolucion, BadgeSLA, BoundingBoxViewer)
+│   │   └── lib/                    # Cliente API tipado y formateadores de datos
 │   └── tests/
 │       └── review-flow.e2e.spec.ts # Pruebas Playwright (incluye verificación PX-08 < 2s)
 └── specs/
     ├── 001-bandeja-revision-asistida/
+    │   ├── plan.md                 # Plan técnico F1
+    │   ├── research.md             # Investigación de arquitectura (Fase 0)
+    │   ├── data-model.md           # Modelo de datos y diagrama ER (Fase 1)
+    │   ├── quickstart.md           # Guía de validación rápida (Fase 1)
+    │   ├── tasks.md                # Tareas de implementación F1
+    │   └── contracts/              # Contratos OpenAPI (scoring-api.json y review-tray-api.json)
     └── 002-puntaje-decision-umbrales/
-        ├── plan.md                 # Este plan técnico
+        ├── plan.md                 # Plan técnico F4
         ├── research.md             # Investigación de arquitectura (Fase 0)
         ├── data-model.md           # Modelo de datos y diagrama ER (Fase 1)
         ├── quickstart.md           # Guía de validación rápida (Fase 1)
+        ├── tasks.md                # Tareas de implementación F4
         └── contracts/              # Contratos OpenAPI (scoring-api.json y review-tray-api.json)
 ```
 
