@@ -7,6 +7,15 @@
 
 ---
 
+## Clarificaciones
+
+### Sesión 2026-10-17
+- Q: ¿Cuál debe ser la acción operativa por defecto que ejecute la plataforma cuando un caso derivado en la bandeja de revisión asistida exceda el plazo límite de resolución (SLA) sin que ningún operador haya emitido su decisión? (RQF-021) → A: Escalar automáticamente el caso a una cola de supervisión con estado `Vencido_Escalado` y notificar al supervisor de siniestros.
+- Q: ¿Cómo debe computarse el tiempo restante y la cuenta regresiva del SLA para los casos derivados en la bandeja de revisión asistida? (RQF-021) → A: Computar el SLA en días y horas hábiles laborables (lunes a viernes 08:30–18:30 hrs), pausando en fines de semana y feriados nacionales de Chile.
+- Q: ¿Cuál debe ser la política de expiración y liberación del bloqueo temporal de edición cuando un operador toma y abre un caso derivado en la bandeja de revisión asistida? (RQF-024) → A: Esquema híbrido (combinación A y C): lectura concurrente multiusuario permitida, con arriendo temporal de edición (lease) de 15 minutos renovable por actividad (heartbeat), liberación automática tras 15 minutos de inactividad y confirmación atómica de resolución (first-to-submit).
+
+---
+
 ## 1. Escenarios de Usuario y Pruebas *(Obligatorio)*
 
 ### Historia de Usuario 1 - Visualización Integral del Caso Derivado y Localización de Hallazgos (Prioridad: P1)
@@ -53,16 +62,17 @@ Como operador y supervisor de siniestros, quiero visualizar una lista priorizada
 
 1. **Dado** un operador autenticado que ingresa a la bandeja de revisión asistida, **cuando** carga la interfaz principal, **entonces** el sistema despliega la lista completa de casos derivados pendientes asignables a su perfil, indicando por cada caso: `idCaso`, fecha/hora de derivación, razón principal resumida, nivel de riesgo/fraude y tiempo restante para el cumplimiento del SLA.
 2. **Dado** un caso cuyo tiempo restante de resolución es inferior al umbral de advertencia configurado (ej. menos de 24 horas hábiles), **cuando** se muestra en la lista o en la vista de detalle, **entonces** la plataforma exhibe una alerta visual prominente de "Vencimiento Inminente" destacando la urgencia operativa.
-3. **Dado** un caso que ha superado el plazo máximo de resolución establecido por el cliente sin haber recibido decisión de un operador, **cuando** el tiempo expira, **entonces** el caso pasa al estado de alerta crítica de "Plazo Vencido" y se ejecuta la acción de contingencia parametrizada por la organización (escalamiento a supervisión o notificación de alerta según §3).
+3. **Dado** un caso que ha superado el plazo máximo de resolución establecido por el cliente sin haber recibido decisión de un operador, **cuando** el tiempo expira, **entonces** el caso pasa automáticamente al estado crítico de `Vencido_Escalado`, es transferido a la cola de supervisión prioritaria y se emite una notificación de contingencia al supervisor de siniestros (conforme a RQF-021 y §2.15).
 
 ---
 
 ### Casos Borde y Excepciones
 
 - **Evidencia con falla de legibilidad o archivo corrupto**: Si una pieza del expediente no es legible (RQF-002), el visor debe mostrar el mensaje en lenguaje comprensible (ej. "Documento ilegible por iluminación insuficiente") permitiendo al operador revisar el resto de los documentos del caso o solicitar antecedentes complementarios sin bloquear la bandeja.
-- **Concurrencia entre operadores**: Si dos operadores intentan abrir simultáneamente el mismo caso derivado, el sistema debe asignar un bloqueo temporal de edición al primer operador que lo tome, notificando al segundo que el caso se encuentra en revisión activa por otro usuario para evitar duplicidad de resoluciones.
+- **Concurrencia entre operadores y bloqueo híbrido de edición**: Múltiples operadores pueden consultar concurrentemente el caso y su evidencia en modo lectura. Cuando un operador inicia la resolución formal, el sistema asigna un arriendo temporal de edición (*lease*) de 15 minutos renovable mediante pulsos periódicos de actividad (*heartbeat*), notificando visualmente a otros visores que el caso se encuentra en edición activa. Tras 15 minutos de inactividad o cierre voluntario de la vista, el bloqueo se libera automáticamente devolviendo el caso al pool general; la confirmación resolutiva final es atómica (*first-to-submit*), rechazando intentos simultáneos con un mensaje de alerta en tiempo real.
 - **Llegada de nueva evidencia sobre un caso en revisión o ya cerrado**: Si ingresa nueva evidencia para un siniestro ya cerrado, MIRA no reabre el caso cerrado sino que crea un caso nuevo vinculado al anterior (RQF-003), mostrándolo en la bandeja como caso vinculado con referencia al historial previo.
 - **Caída de servicios externos durante la revisión**: Si los modelos o servicios externos experimentan indisponibilidad, el operador puede continuar revisando la evidencia ya almacenada localmente y emitir su decisión, garantizando la continuidad operativa sin pérdida de casos (RQNF-006).
+- **Cómputo de SLA y exclusión de días no laborables**: El cálculo del tiempo restante y la cuenta regresiva del SLA (RQF-021) se computa en días y horas hábiles laborables (lunes a viernes de 08:30 a 18:30 hrs), pausando automáticamente el conteo durante las noches, fines de semana y feriados oficiales de Chile para prevenir falsas alertas de vencimiento durante períodos inhábiles.
 
 ---
 
@@ -80,8 +90,8 @@ A continuación se presenta la tabla integral de requisitos funcionales que sust
 | **RQF-010** | Funcional | Registrar de forma inalterable la decisión del operador y su motivo. | Must | §2.11 | PF-10 |
 | **RQF-011** | Funcional | Marcar un caso para revisión del equipo de modelos cuando el operador contradiga la sugerencia de MIRA. | Must | §2.18, DEC-04 | PF-11 |
 | **RQF-020** | Funcional | Permitir al operador inspeccionar cada pieza de evidencia visualizando el hallazgo detectado y su ubicación espacial exacta dentro del documento o imagen analizada. | Must | §2.5, §2.7, ENT5 | PF-20 |
-| **RQF-021** | Funcional | Mostrar en la bandeja de revisión asistida el tiempo restante para la resolución de cada caso según el plazo comprometido (SLA) y emitir alertas visuales cuando un caso esté próximo a vencer o exceda el tiempo límite. | Must | §2.7, §2.15, §3, ENT4 | PF-21 |
-| **RQF-024** | Funcional | Proveer una interfaz de lista de trabajo en la bandeja de revisión asistida que presente los casos derivados asignables, ordenados por prioridad y tiempo restante de resolución, permitiendo al operador seleccionar y gestionar casos individuales. | Must | §2.7, §2.15, ENT4 | PF-24 |
+| **RQF-021** | Funcional | Mostrar en la bandeja de revisión asistida el tiempo restante para la resolución de cada caso según el plazo comprometido computado en días y horas hábiles (lunes a viernes 08:30–18:30 hrs, excluyendo fines de semana y feriados de Chile), emitir alertas visuales cuando un caso esté próximo a vencer (<24h hábiles), y al expirar el plazo sin decisión, escalarlo automáticamente a supervisión con estado `Vencido_Escalado` notificando al supervisor. | Must | §2.7, §2.15, §3, ENT4 | PF-21 |
+| **RQF-024** | Funcional | Proveer una interfaz de lista de trabajo en la bandeja de revisión asistida que presente los casos derivados asignables ordenados por prioridad y SLA, soportando lectura concurrente multiusuario y asignando un arriendo temporal de edición (lease de 15 min renovable por heartbeat, liberable tras 15 min de inactividad) con confirmación atómica (first-to-submit) para prevenir colisiones resolutivas. | Must | §2.7, §2.15, ENT4 | PF-24 |
 
 ---
 
@@ -116,20 +126,20 @@ Para conferir plena validez y trazabilidad conforme a la metodología de ingenie
 | **PF-10** | RQF-010 | Operador con caso derivado abierto. | El operador aprueba el caso ingresando un motivo. | La decisión y el motivo quedan guardados de forma inalterable, con fecha, hora y autor. |
 | **PF-11** | RQF-011 | MIRA sugiere “rechazar”; el operador decide “aprobar”. | El operador registra su decisión, contraria a la sugerencia. | Se guarda la decisión del operador tal como la tomó; el caso queda marcado automáticamente para revisión del equipo de modelos. |
 | **PF-20** | RQF-020 | Caso en bandeja con hallazgo de inconsistencia en boleta. | El operador hace clic en el hallazgo en el desglose de señales. | El visor enfoca y destaca la coordenada exacta de la boleta donde se ubica el hallazgo detectado. |
-| **PF-21** | RQF-021 | Caso con plazo comprometido de 3 días que lleva 2 días y 18 horas detenido. | El operador visualiza la bandeja de casos derivados. | El sistema muestra tiempo restante (<6h) y despliega alerta visual de vencimiento inminente en color de advertencia. |
-| **PF-24** | RQF-024 | Múltiples casos derivados pendientes de resolución en la plataforma. | El operador carga la vista principal de la bandeja. | Se despliega la lista de casos derivados ordenados por urgencia de SLA, permitiendo seleccionar y cargar un caso individual. |
+| **PF-21** | RQF-021 | Caso con plazo comprometido de 3 días que alcanza su límite de tiempo sin resolución de un operador. | Monitorear el temporizador del caso al expirar el SLA. | El caso transiciona automáticamente a estado `Vencido_Escalado`, se transfiere a la cola de supervisión prioritaria y se despacha notificación al supervisor. |
+| **PF-24** | RQF-024 | Dos operadores abren simultáneamente el mismo caso derivado de la lista de trabajo. | Ambos operadores visualizan la evidencia en lectura; el Operador 1 toma la edición y el Operador 2 intenta resolver en paralelo. | Ambos visualizan la evidencia en lectura; el Operador 1 adquiere el lease de edición (15 min con heartbeat); la interfaz del Operador 2 muestra advertencia de edición activa por otro usuario; tras 15 min de inactividad de Op1, el lease se libera automáticamente; la confirmación final es atómica sin colisiones. |
 
 ---
 
 ### Entidades Principales del Dominio
 
 - **BandejaRevision**: Conjunto ordenado y priorizado de casos derivados que requieren intervención humana resolutiva, con filtros por estado, plazo restante y severidad de riesgo.
-- **Caso**: Unidad fundamental de tramitación identificada por `idCaso` único, permanente e inalterable, que almacena el expediente del siniestro, estado del ciclo de vida, puntaje global, motivo de derivación y fecha límite de SLA.
+- **Caso**: Unidad fundamental de tramitación identificada por `idCaso` único, permanente e inalterable, que almacena el expediente del siniestro, estado del ciclo de vida, puntaje global, motivo de derivación, fecha límite de SLA y atributos de concurrencia híbrida (`bloqueoEdicion`: usuario activo, timestamp y expiración de lease de 15 min).
 - **PiezaEvidencia**: Archivo digital (documento escaneado, fotografía, PDF) aportado como respaldo del caso, con atributos de legibilidad, texto extraído, capas de metadatos y hallazgos asociados.
 - **HallazgoLocalizado**: Objeto de señalamiento analítico generado por un módulo de análisis (ej. monto incongruente, fecha desfasada, edición de imagen) que cuenta con descripción técnica, texto identificado y coordenadas espaciales (`bounding box` o región delimitada) dentro de la pieza de evidencia.
 - **DesgloseSenales**: Estructura analítica compuesta por los resultados individuales de cada módulo activo (autenticidad documental, consistencia biométrica, cruce de fuentes, señales de fraude) que justifican de forma transparente el puntaje global.
 - **DecisionOperador**: Registro legal inalterable generado por la acción resolutiva del liquidador (`Aprobado`, `Rechazado`, `Solicitud_Antecedentes`), que incluye identificador del usuario autenticado vía SSO, fecha/hora exacta, justificación textual obligatoria y bandera de discrepancia.
-- **AlertaVencimientoSLA**: Componente de monitoreo de tiempo que computa la diferencia entre la fecha/hora de ingreso a la bandeja y el plazo comprometido por la aseguradora (SLA parametrizable, nominalmente 3 a 5 días hábiles), emitiendo indicadores de estado (`En_Plazo`, `Proximo_A_Vencer`, `Vencido`).
+- **AlertaVencimientoSLA**: Componente de monitoreo de tiempo que computa la diferencia entre la fecha/hora de ingreso a la bandeja y el plazo comprometido por la aseguradora en días y horas hábiles laborables (lunes a viernes 08:30–18:30 hrs, excluyendo feriados nacionales de Chile, nominalmente 3 días hábiles según ENT4), emitiendo indicadores de estado (`En_Plazo`, `Proximo_A_Vencer`, `Vencido_Escalado`).
 
 ---
 
@@ -142,7 +152,7 @@ Para conferir plena validez y trazabilidad conforme a la metodología de ingenie
 - **SC-003**: En el 100% de los documentos e imágenes con hallazgos de inconsistencia o alteración, el operador puede navegar con un solo clic a la región espacial exacta del hallazgo resaltada en el visor.
 - **SC-004**: El 100% de las resoluciones de operadores quedan guardadas con carácter inalterable (autor, fecha y motivo), cumpliendo con el principio de que ningún caso desfavorable quede rechazado sin intervención humana calificada (Principio II / DEC-04).
 - **SC-005**: El 100% de las discrepancias entre la recomendación de MIRA y la decisión humana quedan automáticamente registradas y etiquetadas para auditoría del equipo de modelos (§2.18).
-- **SC-006**: La bandeja de trabajo calcula y refresca en tiempo real el tiempo restante de resolución de cada caso, disparando alertas visuales automáticas para el 100% de los casos que alcancen el umbral de vencimiento inminente (< 24 horas restantes).
+- **SC-006**: La bandeja de trabajo calcula y refresca en tiempo real el tiempo restante de resolución de cada caso en horario hábil laborable (pausando en noches, fines de semana y feriados oficiales de Chile), disparando alertas visuales automáticas para el 100% de los casos que alcancen el umbral de vencimiento inminente (< 24 horas hábiles restantes).
 
 ---
 

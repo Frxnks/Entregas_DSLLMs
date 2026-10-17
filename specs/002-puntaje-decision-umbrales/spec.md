@@ -7,6 +7,14 @@
 
 ---
 
+## Clarificaciones
+
+### Sesión 2026-10-17
+- Q: ¿Cómo debe operar el motor de decisión respecto a los valores mínimos por señal (RQF-022) en el flujo del MVP médico cuando el cliente piloto aún no ha configurado valores personalizados en el diseñador de flujos? (RQF-022) → A: Aplicar un mínimo basal de seguridad de 60 puntos a las señales críticas de documentos en el MVP, editable por el Administrador de Riesgo.
+- Q: ¿Cuál debe ser la jerarquía y estado resolutivo formal cuando un caso evaluado presente simultáneamente múltiples causales de derivación (por ejemplo, alerta de fraude activa, incumplimiento de un mínimo por señal y puntaje global bajo el umbral)? (RQF-023) → A: Jerarquía estricta: 1º Fraude, 2º Mínimo de señal, 3º Puntaje global; asignando el estado de la causal más crítica e incluyendo todas las causales en el desglose explicativo.
+
+---
+
 ## 1. Escenarios de Usuario y Pruebas *(Obligatorio)*
 
 ### Historia de Usuario 1 - Cálculo del Puntaje de Confianza Multimodal Explicable (Prioridad: P1)
@@ -52,7 +60,7 @@ Como administrador de riesgo, quiero que la decisión resultante del caso determ
 **Escenarios de Aceptación**:
 
 1. **Dado** un caso sin señales de fraude activas y con todas sus señales individuales sobre sus mínimos configurados, **cuando** el puntaje total calculado es mayor o igual al umbral de aprobación del flujo (ej. puntaje 93 frente a umbral de 90), **entonces** el sistema emite la decisión de **Aprobación Automática** sin requerir intervención humana, registrando la validación como facturable (DEC-01 / RQF-015).
-2. **Dado** un caso cuyo puntaje total supera el umbral de aprobación (ej. puntaje 91 frente a umbral de 90), **cuando** una o más señales individuales obtienen una calificación inferior a su mínimo configurado en el flujo, **entonces** el sistema no aprueba automáticamente el caso y emite la decisión de **Derivación a Revisión Asistida**, consignando como razón de derivación el incumplimiento del mínimo de la señal correspondiente.
+2. **Dado** un caso cuyo puntaje total supera el umbral de aprobación (ej. puntaje 91 frente a umbral de 90), **cuando** una o más señales individuales obtienen una calificación inferior a su mínimo configurado en el flujo (o al mínimo basal de seguridad de 60 puntos en señales documentales del MVP), **entonces** el sistema no aprueba automáticamente el caso y emite la decisión de **Derivación a Revisión Asistida**, consignando como razón de derivación el incumplimiento del mínimo de la señal correspondiente.
 3. **Dado** un caso cuyo puntaje total se ubica por debajo del umbral de aprobación automática y no presenta señales de fraude (ej. puntaje 72 frente a umbral de 90), **cuando** el motor evalúa los umbrales, **entonces** el sistema emite la decisión de **Derivación a Revisión Asistida**, prohibiendo categóricamente cualquier rechazo 100% automático.
 
 ---
@@ -78,7 +86,8 @@ Como administrador de riesgo de la organización cliente, quiero configurar los 
 - **Puntaje en el límite exacto del umbral**: Si el puntaje total coincide exactamente con el valor del umbral configurado (ej. puntaje 90 con umbral en 90) y no hay señales de fraude ni mínimos incumplidos, el caso se aprueba automáticamente; si el puntaje es 89.9 (o estrictamente inferior a 90), se deriva obligatoriamente a revisión asistida.
 - **Caso con puntaje 0 o falla de procesamiento en componentes**: Si la evidencia no puede ser procesada por falla de lectura o formato, el sistema no emite una decisión favorable ficticia; se deriva a revisión indicando el fallo técnico de lectura en lenguaje comprensible (RQF-002).
 - **Prohibición absoluta de rechazo 100% automático**: Bajo ninguna circunstancia de puntaje (incluso con puntaje 0 o con múltiples señales críticas desfavorables) la plataforma MIRA emitirá una resolución final de "Rechazado" sin intervención humana resolutiva (Principio II de la Constitución y DEC-04). Todo caso bajo el umbral se deriva a la bandeja de trabajo para revisión de un operador.
-- **Señales sin mínimo configurado**: Si para una señal particular el área de riesgo no ha configurado un umbral mínimo específico, dicha señal aporta a la ponderación global sin gatillar por sí sola la regla de derivación por mínimo, rigiendo únicamente el umbral global y la regla de fraude.
+- **Mínimos basales y señales sin calibración específica**: En el flujo del MVP médico, las señales críticas de autenticidad documental y consistencia cuentan por defecto con un mínimo basal de seguridad de 60 puntos (RQF-022, §2.6) para prevenir aprobaciones automáticas indebidas. El Administrador de Riesgo puede recalibrar o deshabilitar este valor explícitamente desde el diseñador de flujos; aquellas señales que no posean mínimo basal ni calibración expresa aportarán al puntaje global sin gatillar derivación por mínimo individual.
+- **Múltiples causales de derivación concurrentes**: Si un caso presenta simultáneamente alerta de fraude, señales bajo su mínimo y puntaje global insuficiente, el motor aplica una jerarquía estricta de precedencia resolutiva: se clasifica primariamente como `Derivado_A_Revision_Humana_Fraude` (máxima prioridad operativa), pero el desglose analítico y la traza de auditoría registran la totalidad de los factores concurrentes para conocimiento integral del operador (§3 y RQF-023).
 
 ---
 
@@ -95,8 +104,8 @@ A continuación se detalla la matriz unificada de requisitos funcionales que rig
 | **RQF-006** | Funcional | Permitir configurar el umbral de aprobación por flujo, registrando autor, fecha y valor anterior de cada cambio. | Must | §2.6, ENT4, DEC-11 | PF-06, PF-06b |
 | **RQF-007** | Funcional | No emitir rechazos 100% automáticos: todo caso con puntaje insuficiente o señal de fraude se deriva a revisión humana. | Must | ENT6, DEC-04 | PF-07 |
 | **RQF-008** | Funcional | Derivar a la bandeja de revisión todo caso bajo el umbral o con alerta de fraude activa. | Must | §2.7, ENT6, DEC-04 | PF-08 |
-| **RQF-022** | Funcional | Derivar obligatoriamente a revisión asistida cualquier caso en el que una o más señales individuales no alcancen el umbral mínimo configurado para dicha señal, aun cuando el puntaje global supere el umbral de aprobación automática. | Must | §2.6, ENT3, ENT4 | PF-22 |
-| **RQF-023** | Funcional | Aplicar la regla de precedencia absoluta a las señales de fraude sobre el puntaje total, de modo que cualquier señal de fraude activa inhabilite la aprobación automática y obligue a la derivación a revisión humana o escalamiento, independientemente del puntaje calculado. | Must | §2.6, §3, DEC-04 | PF-23 |
+| **RQF-022** | Funcional | Derivar obligatoriamente a revisión asistida cualquier caso en el que una o más señales individuales no alcancen el umbral mínimo configurado para dicha señal (aplicando por defecto un mínimo basal de seguridad de 60 puntos en señales documentales del MVP, editable por Riesgo), aun cuando el puntaje global supere el umbral de aprobación automática. | Must | §2.6, ENT3, ENT4 | PF-22 |
+| **RQF-023** | Funcional | Aplicar la regla de precedencia absoluta a las señales de fraude sobre el puntaje total y los mínimos de señal según jerarquía estricta (1º Fraude, 2º Mínimo de señal, 3º Puntaje global), de modo que ante causales concurrentes, el caso se clasifique bajo la causal más crítica (`Derivado_A_Revision_Humana_Fraude`) e inhabilite la aprobación automática, registrando todas las causales concurrentes en el desglose explicativo. | Must | §2.6, §3, DEC-04 | PF-23 |
 
 ---
 
@@ -136,8 +145,8 @@ Conforme a la metodología formal de auditoría de requisitos y las pautas estab
 - **Caso**: Instancia del expediente procesado con identificador permanente `idCaso`, versión del flujo aplicada y veredicto resolutivo final.
 - **PuntajeConfianza**: Valor cuantitativo normalizado entre 0 y 100 que resume el grado de certeza de legitimidad del caso.
 - **ComponenteSenal**: Dimensión específica evaluada (Documentos, Biometría, Cruce de Fuentes, Fraude) que contiene: identificador del módulo generador, puntaje parcial (0–100), ponderación en el flujo, umbral mínimo particular (opcional) y estado de bandera de fraude (`Activa`/`Inactiva`).
-- **UmbralFlujo**: Esquema de calibración de riesgo gobernado por la organización, que establece: umbral general de aprobación automática (valor por defecto en piloto: 90 puntos [DEC-11]), umbrales mínimos por componente de señal y reglas de precedencia.
-- **DecisionResultante**: Estado resolutivo formal determinado por la máquina (`Aprobado_Automatico`, `Derivado_A_Revision_Humana_Puntaje`, `Derivado_A_Revision_Humana_Fraude`, `Derivado_A_Revision_Humana_Minimo_Senal`).
+- **UmbralFlujo**: Esquema de calibración de riesgo gobernado por la organización, que establece: umbral general de aprobación automática (valor por defecto en piloto: 90 puntos [DEC-11]), umbrales mínimos por componente de señal (con mínimo basal de seguridad por defecto de 60 puntos para señales documentales del MVP) y reglas de precedencia.
+- **DecisionResultante**: Estado resolutivo formal determinado por la máquina conforme a jerarquía estricta: `Aprobado_Automatico` (si cumple umbral global, todos los mínimos y sin fraude), o en caso de derivación: 1º `Derivado_A_Revision_Humana_Fraude` (máxima severidad), 2º `Derivado_A_Revision_Humana_Minimo_Senal`, 3º `Derivado_A_Revision_Humana_Puntaje`.
 - **RegistroAuditoriaUmbral**: Entrada histórica inmutable que certifica: flujo modificado, parámetro ajustado, valor anterior, valor nuevo, usuario autor (autenticado por SSO) y estampa de tiempo.
 
 ---
