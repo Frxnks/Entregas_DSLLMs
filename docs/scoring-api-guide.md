@@ -231,15 +231,21 @@ Todos los endpoints se encuentran prefijados bajo la ruta `/api/v1/scoring` y op
   "alertaFraudeActiva": false,
   "senales": [
     {
-      "tipoSenal": "CONSISTENCIA_MONTOS",
-      "moduloOrigen": "lector_v1",
-      "puntaje": 83.0,
-      "pesoPonderacion": 0.65,
+      "tipoSenal": "AUTENTICIDAD_DOCUMENTAL",
+      "moduloOrigen": "lector_boletas_v1",
+      "puntaje": 80.0,
+      "pesoPonderacion": 0.4,
       "umbralMinimo": 60.0,
       "cumpleMinimo": true,
       "esAlertaFraude": false,
-      "descripcion": "Discrepancia menor en desglose de copago",
-      "ubicacionHallazgo": null
+      "descripcion": "Comprobante legible pero con arrugas y contraste deficiente",
+      "ubicacionHallazgo": {
+        "page": 1,
+        "x": 80,
+        "y": 150,
+        "width": 200,
+        "height": 80
+      }
     },
     {
       "tipoSenal": "COHERENCIA_FECHAS",
@@ -257,10 +263,29 @@ Todos los endpoints se encuentran prefijados bajo la ruta `/api/v1/scoring` y op
         "width": 280,
         "height": 60
       }
+    },
+    {
+      "tipoSenal": "CRUCE_FUENTES",
+      "moduloOrigen": "cruce_prestadores_v1",
+      "puntaje": 78.0,
+      "pesoPonderacion": 0.25,
+      "umbralMinimo": 60.0,
+      "cumpleMinimo": true,
+      "esAlertaFraude": false,
+      "descripcion": "Prestador reconocido pero sin especialidad declarada",
+      "ubicacionHallazgo": {
+        "page": 1,
+        "x": 100,
+        "y": 300,
+        "width": 250,
+        "height": 60
+      }
     }
   ]
 }
 ```
+
+**Nota de verificación del seed:** las señales reales del caso son 80 × 0,40, 65 × 0,35 y 78 × 0,25; su suma ponderada es 74,25, mientras el registro persiste `puntajeConfianza: 74.0`. La diferencia está registrada como no resuelta en [verificacion_F4.md](entrega2/evidencia/verificacion_F4.md); no debe interpretarse este ejemplo como evidencia de redondeo ni como una modificación de la regla de scoring.
 
 ---
 
