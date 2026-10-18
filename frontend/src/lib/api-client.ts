@@ -11,6 +11,7 @@ import {
   CaseBreakdownResponseDto,
   ThresholdResponseDto,
   UpdateThresholdDto,
+  ThresholdAuditDto,
 } from '@/types';
 
 const API_BASE_URL =
@@ -179,6 +180,15 @@ export const apiClient = {
         method: 'PUT',
         body: JSON.stringify(data),
       }
+    );
+  },
+
+  /**
+   * Consulta el historial inmutable de auditoría de calibración de umbrales
+   */
+  async getThresholdAudit(idFlujo: string): Promise<ThresholdAuditDto[]> {
+    return request<ThresholdAuditDto[]>(
+      `/scoring/thresholds/${encodeURIComponent(idFlujo)}/audit`
     );
   },
 

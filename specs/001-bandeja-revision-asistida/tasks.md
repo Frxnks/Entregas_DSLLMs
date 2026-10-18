@@ -106,11 +106,11 @@
 
 **Propósito**: Verificación de experiencia de usuario de extremo a extremo, aseguramiento de tiempos de respuesta < 2s e inalterabilidad de auditoría.
 
-- [ ] T026 [P] Implementar pruebas End-to-End con Playwright para flujo completo de revisión, usabilidad y tiempo de carga < 2s (PX-08) en `frontend/tests/review-flow.e2e.spec.ts` [RQNF-008, PX-08]
-- [ ] T027 [P] Implementar prueba de inalterabilidad append-only y rechazo de modificaciones directas en auditoría (PX-05) en `backend/test/audit-immutability.e2e-spec.ts` [RQNF-005, PX-05]
-- [ ] T027b [P] Implementar pruebas de verificación extra-funcional para soberanía local y enmascaramiento de PII (PX-03), retención de evidencia cifrada (PX-04) y tolerancia a caídas de servicios externos (PX-06) en `backend/test/extra-functional-f1.e2e-spec.ts` [RQNF-003, RQNF-004, RQNF-006, PX-03, PX-04, PX-06]
-- [ ] T028 [P] Ejecutar validación completa de la guía de inicio rápido en `specs/001-bandeja-revision-asistida/quickstart.md` [RQF-008, RQF-009, RQF-010, RQF-011, RQF-020, RQF-021, RQF-024]
-- [ ] T029 Documentar manual operativo de la bandeja de revisión asistida en `docs/review-tray-operator-guide.md` [RQNF-008]
+- [x] T026 [P] Implementar pruebas End-to-End con Playwright para flujo completo de revisión, usabilidad y tiempo de carga < 2s (PX-08) en `frontend/tests/review-flow.e2e.spec.ts` [RQNF-008, PX-08]
+- [x] T027 [P] Implementar prueba de inalterabilidad append-only y rechazo de modificaciones directas en auditoría (PX-05) en `backend/test/audit-immutability.e2e-spec.ts` [RQNF-005, PX-05]
+- [x] T027b [P] Implementar pruebas de verificación extra-funcional para soberanía local y enmascaramiento de PII (PX-03), retención de evidencia cifrada (PX-04) y tolerancia a caídas de servicios externos (PX-06) en `backend/test/extra-functional-f1.e2e-spec.ts` [RQNF-003, RQNF-004, RQNF-006, PX-03, PX-04, PX-06]
+- [x] T028 [P] Ejecutar validación completa de la guía de inicio rápido en `specs/001-bandeja-revision-asistida/quickstart.md` [RQF-008, RQF-009, RQF-010, RQF-011, RQF-020, RQF-021, RQF-024]
+- [x] T029 Documentar manual operativo de la bandeja de revisión asistida en `docs/review-tray-operator-guide.md` [RQNF-008]
 
 ---
 

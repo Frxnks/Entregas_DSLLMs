@@ -199,3 +199,15 @@ export interface UpdateThresholdDto {
   minimoBasalSeguridad?: number;
   usuarioModificador: string;
 }
+
+export interface ThresholdAuditDto {
+  idAuditoria: string;
+  idFlujo: string;
+  valorAprobacionAnterior: number;
+  valorAprobacionNuevo: number;
+  minimoBasalAnterior: number;
+  minimoBasalNuevo: number;
+  usuarioModificador: string;
+  fechaModificacion: string;
+}
+

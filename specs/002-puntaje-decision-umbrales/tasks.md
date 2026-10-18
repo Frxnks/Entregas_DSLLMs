@@ -106,14 +106,14 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T023 [P] [US4] Pruebas de integración para endpoint de actualización y auditoría inalterable de umbrales en `backend/test/threshold-audit.spec.ts` [RQF-006, RQNF-005]
+- [x] T023 [P] [US4] Pruebas de integración para endpoint de actualización y auditoría inalterable de umbrales en `backend/test/threshold-audit.spec.ts` [RQF-006, RQNF-005]
 
 ### Implementation for User Story 4
 
-- [ ] T024 [P] [US4] Definir DTOs para actualización y respuesta de umbrales con validación de rangos (0-100) en `backend/src/scoring/dto/update-threshold.dto.ts` y `backend/src/scoring/dto/threshold-response.dto.ts` [RQF-006, RQNF-005]
-- [ ] T025 [US4] Implementar servicio de gestión de umbrales con versionamiento y registro inmutable en `backend/src/scoring/threshold.service.ts` [RQF-006, RQNF-005]
-- [ ] T026 [US4] Exponer endpoints GET y PUT `/api/v1/scoring/thresholds/:idFlujo` con registro de auditoría append-only en `backend/src/scoring/scoring.controller.ts` [RQF-006, RQNF-001, RQNF-005]
-- [ ] T026b [US4] Desarrollar interfaz de configuración y auditoría de umbrales para el Administrador de Riesgo en `frontend/src/app/configuracion/page.tsx` [RQF-006, RQNF-008]
+- [x] T024 [P] [US4] Definir DTOs para actualización y respuesta de umbrales con validación de rangos (0-100) en `backend/src/scoring/dto/update-threshold.dto.ts` y `backend/src/scoring/dto/threshold-response.dto.ts` [RQF-006, RQNF-005]
+- [x] T025 [US4] Implementar servicio de gestión de umbrales con versionamiento y registro inmutable en `backend/src/scoring/threshold.service.ts` [RQF-006, RQNF-005]
+- [x] T026 [US4] Exponer endpoints GET y PUT `/api/v1/scoring/thresholds/:idFlujo` con registro de auditoría append-only en `backend/src/scoring/scoring.controller.ts` [RQF-006, RQNF-001, RQNF-005]
+- [x] T026b [US4] Desarrollar interfaz de configuración y auditoría de umbrales para el Administrador de Riesgo en `frontend/src/app/configuracion/page.tsx` [RQF-006, RQNF-008]
 
 **Checkpoint**: Todas las historias de usuario de la especificación F4 se encuentran implementadas y probadas.
 
