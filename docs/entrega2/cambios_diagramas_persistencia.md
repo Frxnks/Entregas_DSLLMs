@@ -4,10 +4,10 @@
 **Fecha:** 17 de Octubre de 2026  
 **Autores / Revisores:** Dante Chávez, Nikolas Lagos (Representante del Cliente), Franko Moraga y Felipe Caru  
 **Artefactos Técnicos de Referencia:**
-- [Plan de Implementación Técnica (`specs/001-bandeja-revision-asistida/plan.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/plan.md)
-- [Modelo de Datos y Prisma Schema (`specs/001-bandeja-revision-asistida/data-model.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/data-model.md)
-- [Especificación F1 (`specs/001-bandeja-revision-asistida/spec.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/spec.md)
-- [Especificación F4 (`specs/002-puntaje-decision-umbrales/spec.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/spec.md)
+- [Plan de Implementación Técnica (`specs/001-bandeja-revision-asistida/plan.md`)](../../specs/001-bandeja-revision-asistida/plan.md)
+- [Modelo de Datos y Prisma Schema (`specs/001-bandeja-revision-asistida/data-model.md`)](../../specs/001-bandeja-revision-asistida/data-model.md)
+- [Especificación F1 (`specs/001-bandeja-revision-asistida/spec.md`)](../../specs/001-bandeja-revision-asistida/spec.md)
+- [Especificación F4 (`specs/002-puntaje-decision-umbrales/spec.md`)](../../specs/002-puntaje-decision-umbrales/spec.md)
 
 ---
 

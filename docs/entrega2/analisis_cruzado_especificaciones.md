@@ -3,11 +3,11 @@
 **Entrega:** Entrega 2  
 **Fecha:** 17 de Octubre de 2026  
 **Autores / Revisores:** Dante Chávez, Nikolas Lagos (Representante del Cliente), Franko Moraga y Felipe Caru  
-**Proceso:** Ejecución y resolución del análisis cruzado de consistencia mediante `/speckit-analyze` sobre el directorio [`specs`](file:///home/franko/Codigos/Entregas_DSLLMs/specs)  
+**Proceso:** Ejecución y resolución del análisis cruzado de consistencia mediante `/speckit-analyze` sobre el directorio [`specs`](../../specs)
 **Artefactos Analizados:**
-- `F1 - Bandeja de revisión asistida`: [`001/spec.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/spec.md), [`001/plan.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/plan.md), [`001/tasks.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/tasks.md)
-- `F4 - Puntaje y decisión por umbrales`: [`002/spec.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/spec.md), [`002/plan.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/plan.md), [`002/tasks.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/tasks.md)
-- Gobernanza Superior: [Constitución de MIRA v2.0.0](file:///home/franko/Codigos/Entregas_DSLLMs/.specify/memory/constitution.md)
+- `F1 - Bandeja de revisión asistida`: [`001/spec.md`](../../specs/001-bandeja-revision-asistida/spec.md), [`001/plan.md`](../../specs/001-bandeja-revision-asistida/plan.md), [`001/tasks.md`](../../specs/001-bandeja-revision-asistida/tasks.md)
+- `F4 - Puntaje y decisión por umbrales`: [`002/spec.md`](../../specs/002-puntaje-decision-umbrales/spec.md), [`002/plan.md`](../../specs/002-puntaje-decision-umbrales/plan.md), [`002/tasks.md`](../../specs/002-puntaje-decision-umbrales/tasks.md)
+- Gobernanza Superior: [Constitución de MIRA v2.0.0](../../.specify/memory/constitution.md)
 
 ---
 
@@ -104,7 +104,7 @@ Se robusteció la entidad `Caso` para dar soporte nativo al enmascaramiento de P
 ---
 
 ### 3.2 Cambios en los Contratos OpenAPI (`scoring-api.json`)
-En [`specs/002-puntaje-decision-umbrales/contracts/scoring-api.json`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/contracts/scoring-api.json) se subsanó la inconsistencia **I2**:
+En [`specs/002-puntaje-decision-umbrales/contracts/scoring-api.json`](../../specs/002-puntaje-decision-umbrales/contracts/scoring-api.json) se subsanó la inconsistencia **I2**:
 * Se añadió la operación **`GET /api/v1/scoring/thresholds/{idFlujo}`**: Permite al frontend de Next.js consultar los valores vigentes de `valorAprobacion` y `minimoBasalSeguridad`, así como el histórico de versiones antes de enviar una modificación con `PUT`.
 
 ---
@@ -147,8 +147,8 @@ En [`specs/002-puntaje-decision-umbrales/contracts/scoring-api.json`](file:///ho
 ---
 
 ### 3.6 Armonización de Matrices en Especificaciones (`spec.md`)
-* En [`001/spec.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/spec.md): Se incorporaron formalmente las filas para `RQF-002` (manejo de legibilidad en visor, prueba `PF-02`) y `RQNF-001` (rendimiento de acuse en API < 1s, prueba `PX-01`).
-* En [`002/spec.md`](file:///home/franko/Codigos/Entregas_DSLLMs/specs/002-puntaje-decision-umbrales/spec.md): Se incorporaron las filas para `RQF-015` (validación comercial facturable, prueba `PF-15`) y `RQNF-003` (soberanía territorial y enmascaramiento de PII, prueba `PX-03`).
+* En [`001/spec.md`](../../specs/001-bandeja-revision-asistida/spec.md): Se incorporaron formalmente las filas para `RQF-002` (manejo de legibilidad en visor, prueba `PF-02`) y `RQNF-001` (rendimiento de acuse en API < 1s, prueba `PX-01`).
+* En [`002/spec.md`](../../specs/002-puntaje-decision-umbrales/spec.md): Se incorporaron las filas para `RQF-015` (validación comercial facturable, prueba `PF-15`) y `RQNF-003` (soberanía territorial y enmascaramiento de PII, prueba `PX-03`).
 
 ---
 
