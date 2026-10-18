@@ -27,7 +27,7 @@ Antes de operar en la plataforma, el analista debe tener presentes los siguiente
 | :--- | :--- | :--- |
 | **Prohibición de Rechazo Automático** | DEC-04 / RQF-007 | Si un siniestro obtiene un puntaje inferior al umbral configurado (ej. &lt; 90 puntos), **nunca** se rechaza por el sistema. Se deriva a la bandeja de revisión para evaluación humana. |
 | **Precedencia Absoluta de Fraude** | DEC-04 / RQF-023 | Una señal de alerta de fraude confirmada prevalece sobre cualquier puntaje alto (incluso 95 o 100 puntos), forzando la derivación prioritaria a la bandeja con nivel **ALTA**. |
-| **Protección y Soberanía de Datos** | DEC-06 / RQNF-003 | En cumplimiento de la Ley 19.628 y estándares de privacidad, el RUT y nombre del asegurado se exhiben enmascarados en las bandejas generales (ej. `18.234.***-*`). |
+| **Protección y Soberanía de Datos** | DEC-06 / RQNF-003 | En cumplimiento de la Ley 19.628 y estándares de privacidad, el RUT y nombre del asegurado se exhiben enmascarados en las bandejas generales. Al enmascarar un RUT completo, el formato esperado es `18.234.***-*`. |
 | **Inalterabilidad Registral** | DEC-05 / RQNF-005 | Toda decisión emitida, con su motivo, estampa cronológica e identidad del liquidador, se almacena bajo el patrón estrictamente *append-only*. Ningún usuario o administrador puede borrar o editar una resolución ya sellada. |
 | **Trazabilidad de Discrepancias** | CU-02 / RQF-011 | Si el liquidador aprueba un caso que MIRA recomendó rechazar (o viceversa), el sistema respeta de inmediato la voluntad humana y marca automáticamente el caso con `marcaDiscrepancia = true` para supervisión del equipo de modelos. |
 
@@ -155,5 +155,7 @@ El plazo nominal de 3 días hábiles equivale a 30 horas laborables, considerand
 Por exigencias de cumplimiento regulatorio (RQNF-005), las decisiones formalizadas son inalterables y no admiten borrado ni edición directa. Ante un error material de liquidación, el supervisor debe ingresar un caso complementario vinculado (RQF-003) donde se exponga la rectificación justificada, garantizando la trazabilidad integral requerida por la CMF y auditores externos.
 
 ---
+
+> **Hallazgo de verificación local (Entrega 2):** la bandeja y `GET /api/v1/review-tray/cases` muestran `***` en `CASO-SEED-002` y `CASO-SEED-003`, no el formato parcial ilustrado arriba. El seed guarda esos RUT ya enmascarados y el servicio vuelve a aplicar la máscara, por lo que se ocultan también los dígitos inicialmente visibles. La documentación describe el formato esperado para un RUT completo; el comportamiento observado queda pendiente de decisión del equipo. No se modificó la lógica ni el seed.
 
 *Fin del Manual Operativo - Plataforma MIRA 2026*
