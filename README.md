@@ -9,6 +9,20 @@ MIRA (*Modelo Inteligente de Revisión Asistida*) es una aplicación de demostra
 - **Base de datos:** PostgreSQL 16, en el puerto `5432`.
 - **Contenedores:** Docker Compose coordina los tres servicios. Al iniciar el backend se aplican automáticamente las migraciones de Prisma.
 
+## ¿Para qué sirve la aplicación?
+
+MIRA muestra un flujo de demostración para revisar solicitudes ficticias de reembolso de gastos médicos. Calcula un puntaje a partir de señales de evaluación y, según los umbrales configurados, determina si el caso puede aprobarse automáticamente o debe pasar a revisión humana. Una alerta de fraude también deriva el caso a una persona: MIRA no ejecuta un rechazo automático.
+
+En la **bandeja de revisión** se pueden priorizar los casos pendientes según su estado y plazo hábil, buscar por identificador o causal y abrir un expediente para consultar sus antecedentes. El detalle reúne el documento de ejemplo, los hallazgos marcados sobre la evidencia, el desglose de señales, el puntaje y el motivo de derivación. El operador puede revisar la recomendación y registrar una resolución con su justificación; las discrepancias quedan disponibles para auditoría. La sección de umbrales permite consultar y administrar los valores usados por el flujo.
+
+### Ejemplos incluidos
+
+- **`CASO-SEED-001`:** puntaje 94; supera el umbral de aprobación de 90 y representa una aprobación automática.
+- **`CASO-SEED-002`:** puntaje 74,3; queda bajo el umbral de 90 y aparece en la bandeja para revisión humana, con sus señales y evidencia ficticia.
+- **`CASO-SEED-003`:** incluye una alerta de fraude. Se deriva a revisión humana por fraude, independientemente de su puntaje; no es un rechazo automático.
+
+Los casos y documentos son datos sintéticos para explorar y probar la aplicación, no expedientes reales ni una recomendación financiera o médica.
+
 ## Requisitos
 
 - Docker Desktop instalado y en ejecución, con Docker Compose v2.
