@@ -101,29 +101,14 @@ Durante la generación de las especificaciones mediante IA, el agente tomó cier
 
 ## 4. Proporción de Autoría: Agente de IA vs. Equipo Humano
 
-Para evaluar la productividad, autonomía y control de calidad en el proceso de desarrollo asistido por IA, se midió la proporción de texto y decisiones entre el agente y el equipo humano:
+Para evaluar la productividad, autonomía y control de calidad en el proceso de desarrollo asistido por IA, se registran por separado los conteos reproducibles del historial y la atribución de autoría, que requiere clasificar los commits.
 
 ### Métricas Cuantitativas de Código / Especificación
 
-| Artefacto de Especificación | Líneas Iniciales (Agente - Commit `184d9a3`) | Líneas Modificadas / Clarificadas (Feedback Humano - Commit `8310291`) | Total Líneas Finales | % Redactado por Agente | % Refinado / Dirigido por Humanos |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| `specs/001-bandeja-revision-asistida/spec.md` | 154 | +28 / -9 | 165 | 83% | 17% |
-| `specs/002-puntaje-decision-umbrales/spec.md` | 163 | +21 / -6 | 173 | 88% | 12% |
-| **Total Global** | **317** | **+49 / -15** | **338** | **85.5%** | **14.5%** |
+| Artefacto de especificación | Líneas en `184d9a3` | Cambios en `8310291` (añadidas / eliminadas) | Cambio neto | Líneas en `8310291` |
+| :--- | :---: | :---: | :---: | :---: |
+| `specs/001-bandeja-revision-asistida/spec.md` | 154 | +19 / -9 | +10 | 164 |
+| `specs/002-puntaje-decision-umbrales/spec.md` | 163 | +15 / -6 | +9 | 172 |
+| **Total** | **317** | **+34 / -15** | **+19** | **336** |
 
-### Análisis Cualitativo de la Distribución del Esfuerzo
-
-1. **Generación por el Agente (~85% del volumen textual)**:
-   - Redacción completa de las historias de usuario en formato estándar de industria (*Como... Quiero... Para...*).
-   - Estructuración de escenarios BDD (*Dado... Cuando... Entonces...*) cubriendo caminos felices y excepciones.
-   - Creación de matrices de trazabilidad, definición de pruebas funcionales asociadas (`PF-XX`), criterios de éxito medibles (`SC-XX`) y modelado de entidades de dominio.
-   - Búsqueda y transcripción de citas textuales exactas desde `Descripción del proyecto.docx` para justificar los nuevos requerimientos.
-
-2. **Dirección, Intervención y Reescritura Humana (~15% directo, 100% de la gobernanza)**:
-   - **Formulación del requerimiento inicial**: Instrucción de mantener numeración formal de `LLMS.docx` y crear la serie `RQF-020` a `RQF-024`.
-   - **Corrección de sesgos de automatización**: Rechazo del cómputo continuo 24/7 y fijación de horario laboral hábil chileno.
-   - **Diseño del protocolo de concurrencia**: Instrucción explícita de combinar alternativas ("combinar A y C") para habilitar lectura concurrente con lease de edición atómico.
-   - **Alineación con la Constitución**: Ratificación del Principio II (prohibición de rechazo o cierre automático) frente al vencimiento de SLA.
-   - **Formalización de Gobernanza**: Instrucción de evaluar impacto en la bitácora de `LLMS.docx` y exigir la formalización de `DEC-13` y `DEC-14`.
-
-**Conclusión:** El agente de IA actuó como un redactor técnico de altísima velocidad y rigurosidad formal, mientras que el equipo humano ejerció un control estricto de arquitectura y negocio, impidiendo que supuestos autónomos del modelo alteraran las reglas operativas de la aseguradora.
+Los cambios añadidos/eliminados se obtuvieron de `git show --numstat 8310291`; el conteo inicial corresponde a `184d9a3`. Los porcentajes de autoría que aparecían en versiones anteriores de esta tabla no se deducen de estos conteos y se omiten. La atribución por commit y los porcentajes se completarán en la Fase 6, una vez que el equipo clasifique la autoría de cada commit.
