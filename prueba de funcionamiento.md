@@ -4,9 +4,9 @@ Guía rápida para levantar MIRA y comprobar que funciona en Windows con PowerSh
 
 ## 1. Abrir el proyecto
 
-Abre PowerShell en la carpeta del proyecto:
+Abre PowerShell en la carpeta del proyecto donde lo clonaste:
 
-```powershell
+```powershell(en mi caso nikolas)
 Set-Location "C:\Users\a7xsl\OneDrive\Escritorio\LLMS\Trabajo2\Entregas_DSLLMs"
 ```
 
@@ -18,7 +18,7 @@ Este comando sirve tanto si Docker está detenido como si ya está corriendo:
 docker compose up -d --build
 ```
 
-No borra los datos guardados en la base. **No ejecutes `docker compose down -v`**, porque elimina también el volumen de PostgreSQL.
+No borra los datos guardados en la base. **No ejecutes `docker compose down -v`**, porque elimina también el volumen de PostgreSQL.(SIEMPRE Y CUANDO LO NESESITES, SINO DA LO MISMO)
 
 Comprueba el estado:
 
@@ -36,7 +36,17 @@ docker compose logs --tail 50 backend
 
 Busca el mensaje `Backend MIRA iniciado exitosamente`. Si todavía no aparece, espera unos segundos y consulta los logs otra vez.
 
-## 4. Probar la aplicación en el navegador
+## 4. Cargar los datos de demostración en la primera instalación
+
+Si acabas de clonar el repositorio y es la primera vez que levantas MIRA en este equipo, carga los datos de demostración para que aparezcan casos y umbrales:
+
+```powershell
+docker compose exec backend node dist/prisma/seed.js
+```
+
+El seed carga `CASO-SEED-001`, `CASO-SEED-002` y `CASO-SEED-003`, además de los umbrales del flujo. **Ejecútalo una sola vez en la primera instalación**, siempre que no tengas datos anteriores de MIRA que quieras conservar: elimina casos, decisiones, señales, evidencias, operadores, flujos, umbrales y organizaciones existentes antes de recrear los ejemplos. Si ya usabas MIRA o tienes datos importantes, no lo ejecutes; pide ayuda para revisar la base antes. Al volver a iniciar Docker en el futuro, no repitas este paso.
+
+## 5. Probar la aplicación en el navegador
 
 Abre o actualiza:
 
@@ -44,7 +54,7 @@ Abre o actualiza:
 
 Si la página ya estaba abierta, recárgala con **Ctrl+F5**. Con los datos de demostración cargados, debe aparecer `CASO-SEED-002` en la bandeja.
 
-## 5. Verificar la bandeja desde PowerShell
+## 6. Verificar la bandeja desde PowerShell
 
 ```powershell
 $casos = Invoke-RestMethod http://localhost:3001/api/v1/review-tray/cases
@@ -53,7 +63,7 @@ $casos | Select-Object idCaso, puntajeConfianza, rutTitular
 
 Para `CASO-SEED-002`, se espera un puntaje de **74,3** y el RUT parcialmente enmascarado, por ejemplo `18.234.***-*`.
 
-## 6. Verificar el desglose y los umbrales
+## 7. Verificar el desglose y los umbrales
 
 Desglose del caso:
 
@@ -71,7 +81,7 @@ Invoke-RestMethod http://localhost:3001/api/v1/scoring/thresholds/flujo-reembols
 
 Se esperan **90** puntos para aprobación y **60** como mínimo basal.
 
-## 7. Detener Docker
+## 8. Detener Docker
 
 Cuando termines, puedes detener los servicios conservando los datos:
 
