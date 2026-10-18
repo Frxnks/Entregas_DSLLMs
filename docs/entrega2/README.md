@@ -89,10 +89,12 @@ graph LR
 
 ---
 
-## 4. Estado del Proyecto y Pasos Siguientes
+## 4. Estado verificado del incremento y siguientes pasos
 
-Con la culminación de la fase de análisis cruzado (`/speckit-analyze`) y la resolución integral de las brechas de datos privados y dependencias:
-1. **Especificaciones y Plan Técnico**: Se encuentran 100% sincronizados con la arquitectura de micro-módulos en NestJS (`ScoringModule`, `ReviewTrayModule`, `CommonModule`), Next.js 14 y PostgreSQL 16 con Prisma.
-2. **Tareas de Implementación**: Quedaron consolidadas **61 tareas ejecutables** (31 en `001-bandeja-revision-asistida` y 30 en `002-puntaje-decision-umbrales`), libres de dependencias circulares y con trazabilidad biunívoca hacia todos los requisitos RQF y RQNF.
-3. **Auditoría de Calidad**: 0 incidentes críticos (CRITICAL), 0 requerimientos huérfanos y 100% de cobertura normativa alcanzada.
-4. **Próximo Paso**: El proyecto cuenta con certificación formal para iniciar la fase de construcción de código mediante `/speckit-implement`, comenzando por **`002-puntaje-decision-umbrales`** (infraestructura base, base de datos y scoring) y continuando con **`001-bandeja-revision-asistida`** (bandeja de liquidación, visor y leases).
+La implementación de F1 y F4 ya existe en el repositorio; `/speckit-implement` no es el siguiente paso. El estado documentado aquí se limita a lo inspeccionado y ejecutado durante la verificación:
+
+1. **Código y arquitectura**: existen los módulos NestJS, la interfaz Next.js, PostgreSQL/Prisma y los artefactos SDD de F1 y F4. La existencia de la implementación no implica que todos los criterios de aceptación o NFR estén verificados.
+2. **Pruebas ejecutadas**: pasaron 16 suites/172 pruebas backend, 3 suites/41 pruebas del subconjunto `test:e2e`, el typecheck del frontend y 6 pruebas Playwright. Las limitaciones y brechas por requisito están en la [matriz de pruebas](./evidencia/matriz_pruebas.md).
+3. **Verificación funcional de F4**: los escenarios de API evaluados cumplieron sus resultados esperados, pero el desglose de `CASO-SEED-002` suma 74,25 mientras el registro persiste 74,0. El detalle está en [verificacion_F4.md](./evidencia/verificacion_F4.md); la causa sigue pendiente y no se alteró la lógica.
+4. **Hallazgo de interfaz**: la bandeja muestra `***` como RUT para los casos seed, porque el dato ya enmascarado se vuelve a enmascarar en el servicio. Se documentó sin cambiar lógica ni seed; la decisión sobre su corrección queda pendiente del equipo.
+5. **Siguientes pasos**: resolver con el equipo las desviaciones y brechas registradas, completar las verificaciones/correcciones documentales pendientes y confirmar la clasificación de autoría para la Fase 6. No se declara cobertura normativa del 100% con la evidencia disponible.
