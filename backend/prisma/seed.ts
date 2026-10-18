@@ -290,7 +290,7 @@ async function main() {
         esAlertaFraude: false,
         resultado: 'FAVORABLE',
         descripcion: 'Identidad del asegurado y beneficiario coinciden con la póliza',
-        ubicacionHallazgo: { page: 1, x: 100, y: 100, width: 300, height: 50 },
+        ubicacionHallazgo: { page: 1, x: 48, y: 145, width: 350, height: 42 },
       },
       {
         idSenal: 'sen-seed-003-2',
@@ -305,7 +305,7 @@ async function main() {
         esAlertaFraude: false,
         resultado: 'FAVORABLE',
         descripcion: 'Metadatos estándar de archivo PDF',
-        ubicacionHallazgo: { page: 1, x: 100, y: 200, width: 300, height: 60 },
+        ubicacionHallazgo: { page: 1, x: 48, y: 45, width: 500, height: 75 },
       },
       {
         idSenal: 'sen-seed-003-3',
@@ -320,7 +320,7 @@ async function main() {
         esAlertaFraude: true,
         resultado: 'ADVERSO',
         descripcion: 'Manipulación digital de píxeles detectada en el recuadro del monto total (tipografía inconsistente)',
-        ubicacionHallazgo: { page: 1, x: 310, y: 520, width: 140, height: 45 },
+        ubicacionHallazgo: { page: 1, x: 298, y: 526, width: 244, height: 54 },
       },
     ],
   });
