@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="612" height="792" viewBox="0 0 612 792" role="img" aria-labelledby="title description">
+  <title id="title">Boleta médica ficticia con hallazgo de manipulación</title>
+  <desc id="description">Documento de demostración MIRA. El monto total está resaltado como hallazgo de revisión.</desc>
+  <rect width="612" height="792" fill="#f1f5f9"/>
+  <rect x="26" y="24" width="560" height="744" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="56" y="67" fill="#0f172a" font-family="Arial, sans-serif" font-size="21" font-weight="700">CENTRO MEDICO SAN CRISTOBAL</text>
+  <text x="56" y="91" fill="#475569" font-family="Arial, sans-serif" font-size="12">RUT 76.543.210-K · DOCUMENTO FICTICIO PARA DEMOSTRACION</text>
+  <text x="56" y="111" fill="#475569" font-family="Arial, sans-serif" font-size="12">Av. Providencia 1234, Santiago · Prestaciones medicas</text>
+  <rect x="414" y="124" width="132" height="54" rx="4" fill="#fff" stroke="#334155" stroke-width="2"/>
+  <text x="480" y="146" text-anchor="middle" fill="#334155" font-family="Arial, sans-serif" font-size="11" font-weight="700">BOLETA ELECTRONICA</text>
+  <text x="480" y="164" text-anchor="middle" fill="#b91c1c" font-family="Arial, sans-serif" font-size="13" font-weight="700">N° 0048291</text>
+  <line x1="56" y1="132" x2="386" y2="132" stroke="#cbd5e1"/>
+  <text x="56" y="157" fill="#64748b" font-family="Arial, sans-serif" font-size="11">PACIENTE</text>
+  <text x="56" y="176" fill="#0f172a" font-family="Arial, sans-serif" font-size="14" font-weight="700">Marcela Castillo Gomez</text>
+  <text x="56" y="207" fill="#64748b" font-family="Arial, sans-serif" font-size="11">FECHA DE ATENCION</text>
+  <text x="56" y="226" fill="#0f172a" font-family="Arial, sans-serif" font-size="13">15 de septiembre de 2026</text>
+  <rect x="56" y="260" width="500" height="36" fill="#e2e8f0"/>
+  <text x="70" y="283" fill="#334155" font-family="Arial, sans-serif" font-size="12" font-weight="700">DETALLE DE PRESTACIONES</text>
+  <text x="530" y="283" text-anchor="end" fill="#334155" font-family="Arial, sans-serif" font-size="12" font-weight="700">MONTO</text>
+  <text x="70" y="326" fill="#334155" font-family="Arial, sans-serif" font-size="13">Consulta medica broncopulmonar</text>
+  <text x="530" y="326" text-anchor="end" fill="#334155" font-family="Arial, sans-serif" font-size="13">$45.000</text>
+  <line x1="70" y1="340" x2="542" y2="340" stroke="#e2e8f0"/>
+  <text x="70" y="370" fill="#334155" font-family="Arial, sans-serif" font-size="13">Espirometria y broncodilatador</text>
+  <text x="530" y="370" text-anchor="end" fill="#334155" font-family="Arial, sans-serif" font-size="13">$25.000</text>
+  <line x1="70" y1="384" x2="542" y2="384" stroke="#e2e8f0"/>
+  <text x="70" y="414" fill="#334155" font-family="Arial, sans-serif" font-size="13">Radiografia de torax</text>
+  <text x="530" y="414" text-anchor="end" fill="#334155" font-family="Arial, sans-serif" font-size="13">$22.000</text>
+  <line x1="70" y1="428" x2="542" y2="428" stroke="#e2e8f0"/>
+  <text x="70" y="473" fill="#475569" font-family="Arial, sans-serif" font-size="13">Subtotal</text>
+  <text x="530" y="473" text-anchor="end" fill="#475569" font-family="Arial, sans-serif" font-size="13">$92.000</text>
+  <text x="70" y="503" fill="#475569" font-family="Arial, sans-serif" font-size="13">Bonificacion Isapre / Fonasa</text>
+  <text x="530" y="503" text-anchor="end" fill="#475569" font-family="Arial, sans-serif" font-size="13">-$47.000</text>
+  <rect x="298" y="526" width="244" height="54" rx="4" fill="#fff7ed" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="312" y="548" fill="#7f1d1d" font-family="Arial, sans-serif" font-size="13" font-weight="700">TOTAL A PAGAR</text>
+  <text x="528" y="561" text-anchor="end" fill="#b91c1c" font-family="Arial, sans-serif" font-size="19" font-weight="700">$45.000</text>
+  <text x="56" y="634" fill="#b91c1c" font-family="Arial, sans-serif" font-size="12" font-weight="700">EJEMPLO FICTICIO · HALLAZGO DE MANIPULACION RESALTADO</text>
+  <line x1="56" y1="680" x2="556" y2="680" stroke="#cbd5e1"/>
+  <text x="56" y="704" fill="#64748b" font-family="Arial, sans-serif" font-size="10">Representacion sintetica para pruebas del visor. No es un comprobante tributario.</text>
+  <text x="56" y="723" fill="#64748b" font-family="Arial, sans-serif" font-size="10">Datos y prestador ficticios · MIRA · Pagina 1 de 1</text>
+</svg>

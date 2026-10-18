@@ -267,9 +267,9 @@ async function main() {
     data: {
       idEvidencia: 'evi-seed-003',
       idCaso: caso3.idCaso,
-      nombreArchivo: 'boleta_manipulada_003.jpg',
-      tipoArchivo: 'IMAGEN_JPG',
-      urlAlmacenamiento: '/static/evidence/boleta_manipulada_003.jpg',
+      nombreArchivo: 'boleta_manipulada_003.svg',
+      tipoArchivo: 'IMAGEN_SVG',
+      urlAlmacenamiento: '/static/evidence/boleta_manipulada_003.svg',
       hashSha256: '35db403b284a7b50caeab84f9b33906703202f09ba07743cfc4ac67f5be97e17',
       esLegible: true,
     },

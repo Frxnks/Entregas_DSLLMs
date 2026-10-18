@@ -112,9 +112,9 @@ const SEED_CASES_MOCK: Record<string, CaseDetailDto> = {
     evidencias: [
       {
         idEvidencia: 'evi-seed-003',
-        nombreArchivo: 'boleta_manipulada_003.jpg',
-        tipoArchivo: 'IMAGEN_JPG',
-        urlAlmacenamiento: '/static/evidence/boleta_manipulada_003.jpg',
+        nombreArchivo: 'boleta_manipulada_003.svg',
+        tipoArchivo: 'IMAGEN_SVG',
+        urlAlmacenamiento: '/static/evidence/boleta_manipulada_003.svg',
         esLegible: true,
       },
     ],

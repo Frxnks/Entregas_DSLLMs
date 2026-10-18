@@ -47,4 +47,4 @@ COPY static ./static
 
 EXPOSE 3001
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npm run prisma:migrate && node dist/src/main.js"]
