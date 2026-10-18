@@ -58,7 +58,7 @@ async function main() {
   // 5. Operador Semilla
   const operador = await prisma.operador.create({
     data: {
-      idOperador: '11111111-1111-1111-1111-111111111111',
+      idOperador: '11111111-1111-4111-8111-111111111111',
       email: 'liquidador.demo@mira.cl',
       nombre: 'Carlos Liquidador Valenzuela',
       rut: '15.432.***-*',

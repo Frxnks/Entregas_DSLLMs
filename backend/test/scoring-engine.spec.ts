@@ -5,6 +5,7 @@ import { ScoringController } from '../src/scoring/scoring.controller';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { InputSenalDto, EvaluateCaseRequestDto } from '../src/scoring/dto/evaluate-case.dto';
 import { EstadoDecision, SugerenciaMIRA, CausalDerivacion } from '@prisma/client';
+import { DecisionRulesService } from '../src/scoring/decision-rules.service';
 
 describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Explicable)', () => {
   let service: ScoringEngineService;
@@ -23,6 +24,7 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ScoringEngineService,
+        DecisionRulesService,
         {
           provide: PrismaService,
           useValue: prismaMock,
@@ -393,6 +395,7 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
         controllers: [ScoringController],
         providers: [
           ScoringEngineService,
+          DecisionRulesService,
           {
             provide: PrismaService,
             useValue: prismaMock,

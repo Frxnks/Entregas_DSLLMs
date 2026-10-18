@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { EstadoDecision, SugerenciaMIRA, CausalDerivacion } from '@prisma/client';
+import { EstadoDecision, SugerenciaMIRA, CausalDerivacion, NivelPrioridad } from '@prisma/client';
 
 export class BoundingBoxDto {
   @IsOptional()
@@ -90,6 +90,10 @@ export class EvaluateCaseRequestDto {
   @ValidateNested({ each: true })
   @Type(() => InputSenalDto)
   senales: InputSenalDto[];
+
+  @IsOptional()
+  @IsBoolean({ message: 'El campo persistir debe ser un booleano.' })
+  persistir?: boolean;
 }
 
 export class EvaluationResultResponseDto {
@@ -101,4 +105,5 @@ export class EvaluationResultResponseDto {
   razonDerivacion: string;
   esFacturable: boolean;
   fechaVencimientoSLA: string;
+  nivelPrioridad?: NivelPrioridad | string;
 }

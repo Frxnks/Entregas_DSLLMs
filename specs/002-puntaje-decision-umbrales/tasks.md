@@ -66,13 +66,13 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T015 [P] [US2] Pruebas unitarias para precedencia absoluta de fraude y prohibición de rechazo 100% automático en `backend/test/fraud-precedence.spec.ts` [RQF-007, RQF-008, RQF-023, DEC-04]
+- [x] T015 [P] [US2] Pruebas unitarias para precedencia absoluta de fraude y prohibición de rechazo 100% automático en `backend/test/fraud-precedence.spec.ts` [RQF-007, RQF-008, RQF-023, DEC-04]
 
 ### Implementation for User Story 2
 
-- [ ] T016 [P] [US2] Implementar motor de reglas de decisión con jerarquía estricta (1º Fraude, 2º Mínimo de señal, 3º Puntaje global) en `backend/src/scoring/decision-rules.service.ts` [RQF-007, RQF-008, RQF-023, DEC-04]
-- [ ] T017 [US2] Integrar intercepción por señales de fraude en la determinación de veredicto asignando causal `FRAUDE` en `backend/src/scoring/scoring-engine.service.ts` [RQF-008, RQF-023]
-- [ ] T018 [US2] Persistir caso interceptado por fraude con estado `PENDIENTE_REVISION` y bandera no facturable (`esFacturable = false`) en `backend/src/scoring/scoring.controller.ts` [RQF-007, RQF-008, RQF-023, DEC-01, DEC-04]
+- [x] T016 [P] [US2] Implementar motor de reglas de decisión con jerarquía estricta (1º Fraude, 2º Mínimo de señal, 3º Puntaje global) en `backend/src/scoring/decision-rules.service.ts` [RQF-007, RQF-008, RQF-023, DEC-04]
+- [x] T017 [US2] Integrar intercepción por señales de fraude en la determinación de veredicto asignando causal `FRAUDE` en `backend/src/scoring/scoring-engine.service.ts` [RQF-008, RQF-023]
+- [x] T018 [US2] Persistir caso interceptado por fraude con estado `PENDIENTE_REVISION` y bandera no facturable (`esFacturable = false`) en `backend/src/scoring/scoring.controller.ts` [RQF-007, RQF-008, RQF-023, DEC-01, DEC-04]
 
 **Checkpoint**: User Stories 1 y 2 operativas de forma conjunta e independiente.
 

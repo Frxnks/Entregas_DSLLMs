@@ -68,14 +68,14 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T016 [P] [US2] Pruebas de integración para persistencia inalterable de decisión y marcado automático de discrepancia en `backend/test/case-resolution.spec.ts` [RQF-010, RQF-011, RQNF-005]
+- [x] T016 [P] [US2] Pruebas de integración para persistencia inalterable de decisión y marcado automático de discrepancia en `backend/test/case-resolution.spec.ts` [RQF-010, RQF-011, RQNF-005]
 
 ### Implementation for User Story 2
 
-- [ ] T017 [P] [US2] Implementar endpoints `POST /api/v1/review-tray/cases/:idCaso/decision` y `GET /api/v1/review-tray/discrepancies` en `backend/src/review-tray/review-tray.controller.ts` [RQF-010, RQF-011, RQNF-005]
-- [ ] T018 [US2] Implementar validación de motivo obligatorio, inserción inalterable, salvaguarda de control humano (no rechazo automático) y detección de discrepancia en `backend/src/review-tray/resolution.service.ts` [RQF-007, RQF-010, RQF-011, RQNF-005]
-- [ ] T019 [P] [US2] Desarrollar panel de acciones resolutivas con justificación obligatoria, control de veredicto humano y confirmación atómica en `frontend/src/components/PanelResolucion.tsx` [RQF-007, RQF-010, RQNF-005, RQNF-008]
-- [ ] T020 [US2] Integrar emisión de resolución y notificación de discrepancia en la pantalla de detalle en `frontend/src/app/bandeja/[idCaso]/page.tsx` [RQF-010, RQF-011, RQNF-008]
+- [x] T017 [P] [US2] Implementar endpoints `POST /api/v1/review-tray/cases/:idCaso/decision` y `GET /api/v1/review-tray/discrepancies` en `backend/src/review-tray/review-tray.controller.ts` [RQF-010, RQF-011, RQNF-005]
+- [x] T018 [US2] Implementar validación de motivo obligatorio, inserción inalterable, salvaguarda de control humano (no rechazo automático) y detección de discrepancia en `backend/src/review-tray/resolution.service.ts` [RQF-007, RQF-010, RQF-011, RQNF-005]
+- [x] T019 [P] [US2] Desarrollar panel de acciones resolutivas con justificación obligatoria, control de veredicto humano y confirmación atómica en `frontend/src/components/PanelResolucion.tsx` [RQF-007, RQF-010, RQNF-005, RQNF-008]
+- [x] T020 [US2] Integrar emisión de resolución y notificación de discrepancia en la pantalla de detalle en `frontend/src/app/bandeja/[idCaso]/page.tsx` [RQF-010, RQF-011, RQNF-008]
 
 **Checkpoint**: User Stories 1 y 2 operativas de forma conjunta e independiente.
 

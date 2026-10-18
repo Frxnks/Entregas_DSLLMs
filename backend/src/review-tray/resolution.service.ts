@@ -29,6 +29,14 @@ export class ResolutionService {
     dto: SubmitDecisionRequestDto,
     ipOperador?: string,
   ): Promise<DecisionResultDto> {
+    if (!dto.idOperador) {
+      throw new BadRequestException('El idOperador es obligatorio.');
+    }
+
+    if (!dto.tipoDecision) {
+      throw new BadRequestException('El tipo de decisión es obligatorio.');
+    }
+
     if (!dto.justificacion || dto.justificacion.trim().length < 10) {
       throw new BadRequestException(
         'La justificación explicativa es obligatoria y debe contener al menos 10 caracteres.',
@@ -107,17 +115,18 @@ export class ResolutionService {
    */
   private evaluarDiscrepancia(
     sugerenciaMIRA: SugerenciaMIRA,
-    tipoDecision: TipoDecisionEnum,
+    tipoDecision: TipoDecisionEnum | string,
   ): boolean {
-    if (sugerenciaMIRA === SugerenciaMIRA.APROBAR && tipoDecision !== TipoDecisionEnum.APROBADO) {
+    const decisionStr = String(tipoDecision).trim().toUpperCase();
+    if (sugerenciaMIRA === SugerenciaMIRA.APROBAR && decisionStr !== TipoDecisionEnum.APROBADO) {
       return true;
     }
-    if (sugerenciaMIRA === SugerenciaMIRA.RECHAZAR && tipoDecision !== TipoDecisionEnum.RECHAZADO) {
+    if (sugerenciaMIRA === SugerenciaMIRA.RECHAZAR && decisionStr !== TipoDecisionEnum.RECHAZADO) {
       return true;
     }
     if (
       sugerenciaMIRA === SugerenciaMIRA.SOLICITAR_ANTECEDENTES &&
-      tipoDecision !== TipoDecisionEnum.SOLICITAR_ANTECEDENTES
+      decisionStr !== TipoDecisionEnum.SOLICITAR_ANTECEDENTES
     ) {
       return true;
     }
@@ -142,7 +151,7 @@ export class ResolutionService {
       sugerenciaMIRA: d.caso.sugerenciaMIRA,
       decisionOperador: d.tipoDecision,
       justificacion: d.justificacion,
-      operadorNombre: d.operador.nombre,
+      operadorNombre: d.operador?.nombre || 'Operador',
       fechaDecision: d.fechaDecision.toISOString(),
     }));
   }

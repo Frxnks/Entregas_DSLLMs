@@ -15,10 +15,11 @@ import {
   CheckCircle2,
   Calendar,
 } from 'lucide-react';
-import { CaseDetailDto } from '@/types';
+import { CaseDetailDto, DecisionResultDto } from '@/types';
 import { apiClient } from '@/lib/api-client';
 import { VisorEvidencia } from '@/components/VisorEvidencia';
 import { DesgloseSenales } from '@/components/DesgloseSenales';
+import { PanelResolucion } from '@/components/PanelResolucion';
 
 // Datos de contingencia local para visualización offline inmediata (< 2s RQNF-008)
 const SEED_CASES_MOCK: Record<string, CaseDetailDto> = {
@@ -168,6 +169,22 @@ export default function DetalleCasoPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSignalId, setSelectedSignalId] = useState<string | null>(null);
+  const [decisionResult, setDecisionResult] = useState<DecisionResultDto | null>(null);
+
+  const handleDecisionSuccess = useCallback((result: DecisionResultDto) => {
+    setDecisionResult(result);
+    setCaso((prev) =>
+      prev
+        ? {
+            ...prev,
+            estadoCaso: 'RESUELTO',
+            bloqueadoPor: null,
+            operadorBloqueoId: null,
+            bloqueoExpiracion: null,
+          }
+        : null
+    );
+  }, []);
 
   const cargarCaso = useCallback(async () => {
     setLoading(true);
@@ -261,7 +278,13 @@ export default function DetalleCasoPage() {
               <h1 className="text-2xl font-black text-slate-900 tracking-tight font-mono">
                 {caso.idCaso}
               </h1>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-300">
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider border ${
+                  caso.estadoCaso === 'RESUELTO'
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                    : 'bg-slate-100 text-slate-700 border-slate-300'
+                }`}
+              >
                 {caso.estadoCaso.replace('_', ' ')}
               </span>
               {tieneFraude && (
@@ -281,7 +304,7 @@ export default function DetalleCasoPage() {
         {/* Indicadores de Concurrencia (Lease) y SLA */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Bloqueo / Lease */}
-          {caso.bloqueadoPor && (
+          {caso.bloqueadoPor && caso.estadoCaso !== 'RESUELTO' && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
               <Lock className="w-3.5 h-3.5 text-amber-600" />
               <span>En edición por: {caso.bloqueadoPor}</span>
@@ -291,7 +314,9 @@ export default function DetalleCasoPage() {
           {/* Semáforo SLA Hábil */}
           <div
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border ${
-              esProximoVencer
+              caso.estadoCaso === 'RESUELTO'
+                ? 'bg-slate-100 text-slate-700 border-slate-200'
+                : esProximoVencer
                 ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
                 : caso.estadoSLA === 'VENCIDO_ESCALADO'
                 ? 'bg-red-100 text-red-900 border-red-300'
@@ -300,11 +325,47 @@ export default function DetalleCasoPage() {
           >
             <Clock className="w-4 h-4" />
             <span>
-              SLA: {caso.tiempoRestanteHorasHabiles.toFixed(1)} hrs hábiles restantes
+              {caso.estadoCaso === 'RESUELTO'
+                ? 'Caso Concluido'
+                : `SLA: ${caso.tiempoRestanteHorasHabiles.toFixed(1)} hrs hábiles restantes`}
             </span>
           </div>
         </div>
       </div>
+
+      {/* Banner de Confirmación de Resolución Atómica (US2 - T020) */}
+      {decisionResult && (
+        <div
+          className={`rounded-xl border p-4 text-xs space-y-1.5 shadow-sm animate-fadeIn ${
+            decisionResult.marcaDiscrepancia
+              ? 'bg-amber-50 border-amber-300 text-amber-900'
+              : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+          }`}
+        >
+          <div className="flex items-center gap-2 font-bold text-sm">
+            <CheckCircle2
+              className={`w-5 h-5 flex-shrink-0 ${
+                decisionResult.marcaDiscrepancia ? 'text-amber-600' : 'text-emerald-600'
+              }`}
+            />
+            <span>
+              {decisionResult.marcaDiscrepancia
+                ? 'Resolución Registrada con Éxito (Discrepancia Auditada)'
+                : 'Resolución Registrada Exitosamente'}
+            </span>
+          </div>
+          <p className="leading-relaxed">
+            Se ha emitido y sellado la resolución{' '}
+            <strong className="underline uppercase font-bold">
+              {decisionResult.tipoDecision}
+            </strong>{' '}
+            para el caso <strong>{decisionResult.idCaso}</strong>.
+            {decisionResult.marcaDiscrepancia
+              ? ` Debido a que la decisión difiere de la recomendación de MIRA (${caso.sugerenciaMIRA}), el caso fue marcado automáticamente con marcaDiscrepancia = true en la base de auditoría inalterable.`
+              : ' El expediente ha transicionado a estado RESUELTO de manera append-only inalterable.'}
+          </p>
+        </div>
+      )}
 
       {/* 2. Barra Informativa del Titular Protegido (DEC-06, RQNF-003) */}
       <div className="bg-slate-50 rounded-lg border border-slate-200 p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
@@ -326,7 +387,7 @@ export default function DetalleCasoPage() {
         </div>
       </div>
 
-      {/* 3. Pantalla Consolidada: Visor de Evidencias y Desglose de Señales (RQF-009, SC-001) */}
+      {/* 3. Pantalla Consolidada: Visor de Evidencias, Desglose de Señales y Panel de Resolución */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Columna Izquierda: Visor Interactivo con Bounding Boxes (7 cols en lg) */}
         <div className="lg:col-span-7 space-y-4">
@@ -338,7 +399,7 @@ export default function DetalleCasoPage() {
           />
         </div>
 
-        {/* Columna Derecha: Desglose de Señales y Razón de Derivación (5 cols en lg) */}
+        {/* Columna Derecha: Desglose de Señales y Panel de Resolución */}
         <div className="lg:col-span-5 space-y-4">
           <DesgloseSenales
             puntajeConfianza={caso.puntajeConfianza}
@@ -349,6 +410,13 @@ export default function DetalleCasoPage() {
             evidencias={caso.evidencias}
             selectedSignalId={selectedSignalId}
             onSelectSignal={(id) => setSelectedSignalId(id)}
+          />
+
+          <PanelResolucion
+            idCaso={caso.idCaso}
+            sugerenciaMIRA={caso.sugerenciaMIRA}
+            estadoCaso={caso.estadoCaso}
+            onDecisionSuccess={handleDecisionSuccess}
           />
         </div>
       </div>

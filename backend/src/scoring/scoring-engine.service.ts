@@ -10,13 +10,23 @@ import {
   BreakdownSenalDto,
 } from './dto/case-breakdown.dto';
 import { ChileanCalendarUtil } from '../common/utils/chilean-calendar.util';
-import { EstadoDecision, SugerenciaMIRA, CausalDerivacion } from '@prisma/client';
+import {
+  EstadoCaso,
+  EstadoDecision,
+  SugerenciaMIRA,
+  CausalDerivacion,
+  NivelPrioridad,
+} from '@prisma/client';
+import { DecisionRulesService } from './decision-rules.service';
 
 @Injectable()
 export class ScoringEngineService {
   private readonly logger = new Logger(ScoringEngineService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly decisionRulesService: DecisionRulesService,
+  ) {}
 
   /**
    * Calcula el puntaje consolidado ponderado de las señales analizadas normalizado a escala 0-100 (RQF-004).
@@ -147,6 +157,7 @@ export class ScoringEngineService {
     }
 
     const umbralAprobacion = flujo.umbral?.valorAprobacion ?? 90.0;
+    const minimoBasalSeguridad = flujo.umbral?.minimoBasalSeguridad ?? 60.0;
     const puntajeConfianza = this.calcularPuntajePonderado(dto.senales);
     const ahora = new Date();
     const fechaVencimientoSLA = ChileanCalendarUtil.agregarDiasHabiles(
@@ -154,35 +165,68 @@ export class ScoringEngineService {
       3,
     ).toISOString();
 
-    let estadoDecision: EstadoDecision;
-    let sugerenciaMIRA: SugerenciaMIRA;
-    let causalDerivacion: CausalDerivacion;
-    let razonDerivacion: string;
-    let esFacturable: boolean;
+    const decision = this.decisionRulesService.evaluarReglas({
+      puntajeConfianza,
+      senales: dto.senales,
+      umbralAprobacion,
+      minimoBasalSeguridad,
+    });
 
-    if (puntajeConfianza >= umbralAprobacion) {
-      estadoDecision = EstadoDecision.APROBADO_AUTOMATICO;
-      sugerenciaMIRA = SugerenciaMIRA.APROBAR;
-      causalDerivacion = CausalDerivacion.NINGUNA;
-      razonDerivacion = `Puntaje de confianza sobresaliente (${puntajeConfianza}/100) que supera o iguala el umbral de aprobación de ${umbralAprobacion} puntos.`;
-      esFacturable = true; // DEC-01
-    } else {
-      estadoDecision = EstadoDecision.DERIVADO_REVISION_ASISTIDA;
-      sugerenciaMIRA = SugerenciaMIRA.APROBAR;
-      causalDerivacion = CausalDerivacion.PUNTAJE_INSUFICIENTE;
-      razonDerivacion = `Puntaje global insuficiente (${puntajeConfianza}/100) inferior al umbral de aprobación automática (${umbralAprobacion} puntos). Prohibición de rechazo automático conforme a DEC-04.`;
-      esFacturable = false;
+    // T018: Si el caso existe en base de datos o se solicita persistencia, actualizar o guardar
+    if (this.prisma.caso) {
+      const casoExistente = await this.prisma.caso.findUnique({
+        where: { idCaso: dto.idCaso },
+      });
+
+      const estadoCaso =
+        decision.estadoDecision === EstadoDecision.DERIVADO_REVISION_ASISTIDA
+          ? EstadoCaso.PENDIENTE_REVISION
+          : EstadoCaso.RESUELTO;
+
+      if (casoExistente && this.prisma.caso.update) {
+        await this.prisma.caso.update({
+          where: { idCaso: dto.idCaso },
+          data: {
+            puntajeConfianza,
+            estadoCaso,
+            estadoDecision: decision.estadoDecision,
+            sugerenciaMIRA: decision.sugerenciaMIRA,
+            causalDerivacion: decision.causalDerivacion,
+            razonDerivacion: decision.razonDerivacion,
+            nivelPrioridad: decision.nivelPrioridad,
+            esFacturable: decision.esFacturable,
+            fechaVencimientoSLA: new Date(fechaVencimientoSLA),
+          },
+        });
+      } else if (dto.persistir && this.prisma.caso.create) {
+        await this.prisma.caso.create({
+          data: {
+            idCaso: dto.idCaso,
+            idFlujo: dto.idFlujo,
+            puntajeConfianza,
+            estadoCaso,
+            estadoDecision: decision.estadoDecision,
+            sugerenciaMIRA: decision.sugerenciaMIRA,
+            causalDerivacion: decision.causalDerivacion,
+            razonDerivacion: decision.razonDerivacion,
+            nivelPrioridad: decision.nivelPrioridad,
+            esFacturable: decision.esFacturable,
+            fechaVencimientoSLA: new Date(fechaVencimientoSLA),
+          },
+        });
+      }
     }
 
     return {
       idCaso: dto.idCaso,
       puntajeConfianza,
-      estadoDecision,
-      sugerenciaMIRA,
-      causalDerivacion,
-      razonDerivacion,
-      esFacturable,
+      estadoDecision: decision.estadoDecision,
+      sugerenciaMIRA: decision.sugerenciaMIRA,
+      causalDerivacion: decision.causalDerivacion,
+      razonDerivacion: decision.razonDerivacion,
+      esFacturable: decision.esFacturable,
       fechaVencimientoSLA,
+      nivelPrioridad: decision.nivelPrioridad,
     };
   }
 }
