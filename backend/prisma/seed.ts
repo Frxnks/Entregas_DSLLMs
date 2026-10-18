@@ -204,7 +204,7 @@ async function main() {
         esAlertaFraude: false,
         resultado: 'INDETERMINADO',
         descripcion: 'Comprobante legible pero con arrugas y contraste deficiente',
-        ubicacionHallazgo: { page: 1, x: 80, y: 150, width: 200, height: 80 },
+        ubicacionHallazgo: { page: 1, x: 32, y: 28, width: 548, height: 72 },
       },
       {
         idSenal: 'sen-seed-002-2',
@@ -219,7 +219,7 @@ async function main() {
         esAlertaFraude: false,
         resultado: 'ADVERSO',
         descripcion: 'Desfase temporal de 45 días entre la consulta médica y la emisión del comprobante',
-        ubicacionHallazgo: { page: 1, x: 120, y: 450, width: 280, height: 60 },
+        ubicacionHallazgo: { page: 1, x: 300, y: 245, width: 280, height: 60 },
       },
       {
         idSenal: 'sen-seed-002-3',
@@ -234,7 +234,7 @@ async function main() {
         esAlertaFraude: false,
         resultado: 'FAVORABLE',
         descripcion: 'Prestador reconocido pero sin especialidad declarada',
-        ubicacionHallazgo: { page: 1, x: 100, y: 300, width: 250, height: 60 },
+        ubicacionHallazgo: { page: 1, x: 32, y: 310, width: 548, height: 125 },
       },
     ],
   });
