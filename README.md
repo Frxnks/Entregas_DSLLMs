@@ -31,7 +31,13 @@ docker compose ps
 
 Espera a que `mira-db` aparezca como `healthy` y a que `mira-backend` y `mira-frontend` estén `Up`. Luego abre **http://localhost:3000**. La página principal redirige a `/bandeja`.
 
-La base de datos se crea con las migraciones automáticamente. Para ver los registros si algo no inicia:
+El estado `Up` del backend no garantiza que ya terminaron las migraciones. Antes de cargar el seed o probar la API, revisa el log:
+
+```powershell
+docker compose logs backend
+```
+
+Continúa cuando aparezcan `All migrations have been successfully applied` y `Backend MIRA iniciado exitosamente`. Si aún no aparecen, vuelve a consultar los registros después de unos segundos. La base de datos se crea con las migraciones automáticamente. Para ver los registros si algo no inicia:
 
 ```powershell
 docker compose logs -f
@@ -88,6 +94,8 @@ Comprueba los tipos del frontend:
 ```powershell
 npm --prefix frontend run typecheck
 ```
+
+**Windows:** si PowerShell bloquea la ejecución de scripts de npm por la política de ejecución, usa los ejecutables `.cmd`: por ejemplo, `npm.cmd install`, `npx.cmd prisma generate` y `npm.cmd --prefix backend run test -- --runInBand`.
 
 El proyecto también define pruebas end-to-end con Jest para el backend y Playwright para el frontend. Se pueden ejecutar con `npm --prefix backend run test:e2e` y `npm --prefix frontend run test:e2e`, respectivamente; las pruebas de navegador pueden requerir instalar previamente los navegadores de Playwright.
 

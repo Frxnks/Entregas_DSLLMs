@@ -11,7 +11,7 @@
 
 El flujo **Spec-Driven Development (SDD)** contempla que, una vez redactadas las especificaciones técnicas iniciales, se debe someter el diseño a una fase de desambiguación y clarificación rigurosa (`/speckit-clarify`). El objetivo es detectar vacíos en reglas de negocio, zonas grises en la experiencia de usuario o inconsistencias operativas antes de iniciar la descomposición en tareas de ingeniería e implementación.
 
-Durante la sesión de clarificación de la Entrega 2, el agente analizó en profundidad las fuentes primarias ([docs/entrega1/Descripción del proyecto.docx](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega1/Descripción%20del%20proyecto.docx) y [docs/entrega1/LLMS.docx](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega1/LLMS.docx)), contrastándolas contra la [Constitución de MIRA](file:///home/franko/Codigos/Entregas_DSLLMs/.specify/memory/constitution.md) y los nuevos requisitos funcionales (`RQF-020` a `RQF-024`).
+Durante la sesión de clarificación de la Entrega 2, el agente analizó en profundidad las fuentes primarias ([docs/entrega1/Descripción del proyecto.docx](../entrega1/Descripci%C3%B3n%20del%20proyecto.docx) y [docs/entrega1/LLMS.docx](../entrega1/LLMS.docx)), contrastándolas contra la [Constitución de MIRA](../../.specify/memory/constitution.md) y los nuevos requisitos funcionales (`RQF-020` a `RQF-024`).
 
 Este documento registra:
 1. Las 5 preguntas estructuradas formuladas por el agente, sus citas textuales, opciones y resoluciones dictadas por el Representante del Cliente.
@@ -161,7 +161,7 @@ Durante el proceso, el agente identificó ambigüedades e intentó resolverlas o
 
 ## 4. Matriz Unificada de Decisiones (DEC-01 a DEC-14)
 
-Como resultado directo de la sesión de clarificación y del análisis de impacto sobre la bitácora formal de [docs/entrega1/LLMS.docx](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega1/LLMS.docx), se consolidó la siguiente matriz de decisiones del proyecto:
+Como resultado directo de la sesión de clarificación y del análisis de impacto sobre la bitácora formal de [docs/entrega1/LLMS.docx](../entrega1/LLMS.docx), se consolidó la siguiente matriz de decisiones del proyecto:
 
 | ID Decisión | Asunto / Principio Rector | Estado en Entrega 2 | Detalle del Impacto y Relación con Preguntas |
 | :--- | :--- | :--- | :--- |
@@ -184,7 +184,7 @@ Como resultado directo de la sesión de clarificación y del análisis de impact
 
 ## 5. Fichas Formales de las Nuevas Decisiones (`DEC-13` y `DEC-14`)
 
-Siguiendo la estructura formal de registro de decisiones consagrada en [docs/entrega1/LLMS.docx](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega1/LLMS.docx), se formalizan a continuación las dos nuevas decisiones técnicas y de negocio ratificadas por el Representante del Cliente:
+Siguiendo la estructura formal de registro de decisiones consagrada en [docs/entrega1/LLMS.docx](../entrega1/LLMS.docx), se formalizan a continuación las dos nuevas decisiones técnicas y de negocio ratificadas por el Representante del Cliente:
 
 ```text
 ================================================================================
