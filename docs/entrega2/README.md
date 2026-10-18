@@ -50,7 +50,7 @@ La documentación detallada exigida para esta entrega se organiza en los siguien
 ```mermaid
 graph LR
     subgraph E1["Entrega 1 (Análisis de Negocio)"]
-        H["11 Inconsistencias (H-01 a H-11)"] --> D["10 Decisiones (DEC-01 a DEC-10)"]
+        H["11 Inconsistencias (H-01 a H-11)"] --> D["DEC: README E1 lista 10; prueba.md define 11"]
         D --> R["18 RQF + 8 RQNF"]
     end
 
@@ -65,16 +65,18 @@ graph LR
     subgraph E2["Artefactos Finales Certificados"]
         ANA --> SP1["spec.md & tasks.md: F1 (31 tareas)"]
         ANA --> SP4["spec.md & tasks.md: F4 (30 tareas)"]
-        ANA --> DEC["Gobernanza Consolidada<br>DEC-01 a DEC-14 ratificadas<br>100% Cobertura / 0 Críticos"]
+        ANA --> DEC["Decisiones en CLARIFY: DEC-01 a DEC-14<br>Constitución: DEC-01 a DEC-12"]
     end
 ```
 
 ### Síntesis de Requisitos Funcionales y No Funcionales
-- **Requisitos de Entrega 1 integrados formalmente en F1 y F4:** `RQF-002` (legibilidad en visor), `RQF-004`, `RQF-005`, `RQF-006`, `RQF-007`, `RQF-008`, `RQF-009`, `RQF-010`, `RQF-011`, `RQF-013` (SSO precondición) y `RQF-015` (facturación exclusiva).
-- **Requisitos No Funcionales integrados con pruebas asociadas:** `RQNF-001` (acuse < 1s, PX-01), `RQNF-002` (asincronía, PX-02), `RQNF-003` (soberanía y PII, PX-03), `RQNF-004` (retención y cifrado, PX-04), `RQNF-005` (auditoría inalterable, PX-05), `RQNF-006` (resiliencia, PX-06), `RQNF-007` (volumen >15k, PX-07), `RQNF-008` (usabilidad < 2s, PX-08).
+- **Requisitos funcionales de Entrega 1 presentes en las tablas de F1/F4:** 10 IDs únicos: nueve eran Must en E1 (`RQF-002`, `RQF-004`, `RQF-005`, `RQF-006`, `RQF-007`, `RQF-008`, `RQF-009`, `RQF-010` y `RQF-011`) y `RQF-015` era Should en E1, aunque F4 lo clasifica Must. `RQF-013` se menciona como precondición SSO, pero no aparece como fila de requisito en las matrices de estas dos specs.
+- **Requisitos no funcionales referenciados por F1/F4:** los 8 IDs `RQNF-001` a `RQNF-008`; las matrices marcan 6 como Must (`001`–`006`) y 2 como Should (`007` y `008`). La presencia en las matrices no significa que todos cuenten con prueba automatizada de aceptación.
 - **Requisitos de Entrega 1 diferidos a especificaciones específicas:** `RQF-001`, `RQF-003`, `RQF-012` (Ingesta / Conectores), `RQF-014` (UI de supresión de titular, con backend preparado), `RQF-016` (Exportación de datos), `RQF-017` (Webhooks).
 - **Requisito descartado:** `RQF-018` (Migración de pilotos pasados, ratificado como *Won't*).
 - **Requisitos nuevos creados en Entrega 2:** `RQF-020` (Ubicación visual de hallazgos), `RQF-021` (SLA hábil y escalamiento), `RQF-022` (Mínimos por señal y piso basal 60 pts), `RQF-023` (Precedencia estricta de fraude y jerarquía), `RQF-024` (Lista de trabajo y concurrencia híbrida multiusuario).
+
+**Nota sobre los conteos:** `docs/entrega1/prueba.md` contiene 18 IDs RQF (`RQF-001`–`RQF-018`), 8 RQNF y definiciones `DEC-01`–`DEC-11`; en cambio, `docs/entrega1/README.md` enumera solo `DEC-01`–`DEC-10`. No se editó Entrega 1. Las dos tablas de requisitos de F1/F4 contienen 15 IDs RQF únicos (los 10 anteriores y los 5 nuevos `RQF-020`–`RQF-024`) y 8 IDs RQNF únicos. En decisiones, la matriz de `clarificacion_cambios.md` llega a `DEC-14`, mientras que la Constitución lista hasta `DEC-12`; la matriz y la Constitución son fuentes distintas y no se afirma aquí que sus rangos sean idénticos.
 
 ### Síntesis de Decisiones (DEC)
 - **Decisiones intactas:** `DEC-01`, `DEC-02`, `DEC-03`, `DEC-05`, `DEC-06`, `DEC-07`, `DEC-08`, `DEC-09`, `DEC-10`, `DEC-12`.
