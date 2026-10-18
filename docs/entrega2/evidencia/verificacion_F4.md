@@ -254,7 +254,7 @@ La respuesta JSON del endpoint fue:
 
 La implementación redondea el puntaje calculado a una décima; `74,25` da `74,3`, mientras que el registro persistido y la respuesta del desglose informan `74`.
 
-**Veredicto: no cumple la comprobación de consistencia exacta.** La suma de las señales no coincide con el puntaje almacenado: diferencia `0,25` antes del redondeo, o `0,3` comparando el valor redondeado con el persistido. Se registra la desviación; no se cambió el seed ni la lógica de negocio.
+**Veredicto de la verificación original: no cumple la comprobación de consistencia exacta.** La suma de las señales no coincide con el puntaje almacenado: diferencia `0,25` antes del redondeo, o `0,3` comparando el valor redondeado con el persistido. En ese momento no se cambió el seed ni la lógica de negocio; la corrección posterior queda registrada abajo.
 
 ## Resultado resumido
 
@@ -265,3 +265,9 @@ La implementación redondea el puntaje calculado a una décima; `74,25` da `74,3
 | C | 96,8 / `MINIMO_SENAL` | `DERIVADO_REVISION_ASISTIDA` | No | Cumple |
 | D | 80 / `PUNTAJE_INSUFICIENTE` | `DERIVADO_REVISION_ASISTIDA` | No | Cumple |
 | `CASO-SEED-002` | 74,25 calculado / 74 persistido | No aplica | No aplica | **No cumple consistencia** |
+
+### Seguimiento posterior: corrección del seed
+
+La observación anterior corresponde a la versión verificada en ese momento. Después se alinearon `puntajeConfianza`, la razón de derivación, el ejemplo de API y los fallbacks de UI con el redondeo de una décima ya implementado por el motor: 74,25 → 74,3. La prueba unitaria de scoring se actualizó para usar las señales reales 80/65/78 y los pesos 0,40/0,35/0,25.
+
+También se hizo idempotente el enmascaramiento: volver a aplicar la máscara al RUT parcial almacenado por el seed debe conservar `18.234.***-*`. El código y las pruebas unitarias cubren las correcciones; el resultado de la API con una base seed cargada queda pendiente de verificación porque no se volvió a ejecutar el seed.

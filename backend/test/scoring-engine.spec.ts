@@ -72,8 +72,8 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
       expect(puntaje).toBe(94.0);
     });
 
-    it('debe calcular el puntaje ponderado normalizado exacto para el Caso 2 (CASO-SEED-002 -> 74.0)', () => {
-      // 80*0.40 + 70*0.35 + 70*0.25 = 32.0 + 24.5 + 17.5 = 74.0
+    it('debe calcular el puntaje ponderado normalizado exacto para el Caso 2 (CASO-SEED-002 -> 74.3)', () => {
+      // 80*0.40 + 65*0.35 + 78*0.25 = 32.0 + 22.75 + 19.5 = 74.25, redondeado a una décima.
       const senales: InputSenalDto[] = [
         {
           tipoSenal: 'AUTENTICIDAD_DOCUMENTAL',
@@ -87,7 +87,7 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
         {
           tipoSenal: 'CONSISTENCIA_MONTOS',
           moduloOrigen: 'validador_montos_v1',
-          puntaje: 70.0,
+          puntaje: 65.0,
           pesoPonderacion: 0.35,
           umbralMinimo: 60.0,
           esAlertaFraude: false,
@@ -96,7 +96,7 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
         {
           tipoSenal: 'CRUCE_FUENTES',
           moduloOrigen: 'cruce_prestadores_v1',
-          puntaje: 70.0,
+          puntaje: 78.0,
           pesoPonderacion: 0.25,
           umbralMinimo: 60.0,
           esAlertaFraude: false,
@@ -105,7 +105,7 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
       ];
 
       const puntaje = service.calcularPuntajePonderado(senales);
-      expect(puntaje).toBe(74.0);
+      expect(puntaje).toBe(74.3);
     });
 
     it('debe retornar 0 si la lista de señales está vacía (ausencia de antecedentes no favorable)', () => {
@@ -446,4 +446,3 @@ describe('ScoringEngineService (User Story 1 - Cálculo de Puntaje y Desglose Ex
     });
   });
 });
-

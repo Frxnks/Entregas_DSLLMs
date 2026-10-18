@@ -73,6 +73,8 @@ CASO-SEED-003 cargado (Derivado Fraude, Prioridad ALTA, Alerta Activa)
 Semillas cargadas exitosamente.
 ```
 
+**Nota de seguimiento:** esta salida conserva el resultado histórico de la verificación inicial. El seed fue ajustado después para persistir `74.3` en `CASO-SEED-002`, consistente con el redondeo a una décima del motor; el seed no se volvió a ejecutar durante esa corrección.
+
 Las consultas a la base confirmaron 1 flujo y 3 casos.
 
 ### Frontend

@@ -47,7 +47,7 @@ Al ingresar a la ruta `/bandeja`, el liquidador dispone de un entorno de trabajo
 +---------------------------------------------------------------------------------------------------+
 |  ID Caso        Fecha       Asegurado        Puntaje    Sugerencia   SLA Restante    Acción       |
 |  CASO-SEED-003  17/10 14:00 M*** C*** (RUT)  75.9 pts   RECHAZAR     14h hábiles     Revisar      |
-|  CASO-SEED-002  17/10 16:30 R*** F*** (RUT)  74.0 pts   APROBAR      48h hábiles     Revisar      |
+|  CASO-SEED-002  17/10 16:30 R*** F*** (RUT)  74.3 pts   APROBAR      48h hábiles     Revisar      |
 +---------------------------------------------------------------------------------------------------+
 ```
 
@@ -156,6 +156,6 @@ Por exigencias de cumplimiento regulatorio (RQNF-005), las decisiones formalizad
 
 ---
 
-> **Hallazgo de verificación local (Entrega 2):** la bandeja y `GET /api/v1/review-tray/cases` muestran `***` en `CASO-SEED-002` y `CASO-SEED-003`, no el formato parcial ilustrado arriba. El seed guarda esos RUT ya enmascarados y el servicio vuelve a aplicar la máscara, por lo que se ocultan también los dígitos inicialmente visibles. La documentación describe el formato esperado para un RUT completo; el comportamiento observado queda pendiente de decisión del equipo. No se modificó la lógica ni el seed.
+> **Hallazgo y corrección de verificación local (Entrega 2):** la primera ejecución mostró `***` en `CASO-SEED-002` y `CASO-SEED-003`, porque el seed ya guarda RUT enmascarados y el servicio aplicaba la máscara por segunda vez. El enmascarador ahora preserva los valores que ya tienen el formato parcial esperado (`18.234.***-*`), así que el enmascaramiento repetido es idempotente. El resultado debe confirmarse tras cargar el seed actualizado.
 
 *Fin del Manual Operativo - Plataforma MIRA 2026*

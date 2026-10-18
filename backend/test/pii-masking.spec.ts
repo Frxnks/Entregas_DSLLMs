@@ -20,6 +20,10 @@ describe('PiiMaskingService', () => {
       expect(enmascarado).toBe('18.234.***-*');
     });
 
+    it('debe preservar un RUT que ya está enmascarado', () => {
+      expect(service.enmascararRut('18.234.***-*')).toBe('18.234.***-*');
+    });
+
     it('debe retornar cadena vacía si el RUT es nulo o indefinido', () => {
       expect(service.enmascararRut(null)).toBe('');
       expect(service.enmascararRut(undefined)).toBe('');

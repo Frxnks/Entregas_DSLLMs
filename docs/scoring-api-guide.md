@@ -226,7 +226,7 @@ Todos los endpoints se encuentran prefijados bajo la ruta `/api/v1/scoring` y op
 ```json
 {
   "idCaso": "CASO-SEED-002",
-  "puntajeConfianza": 74.0,
+  "puntajeConfianza": 74.3,
   "umbralAprobacion": 90.0,
   "alertaFraudeActiva": false,
   "senales": [
@@ -285,7 +285,7 @@ Todos los endpoints se encuentran prefijados bajo la ruta `/api/v1/scoring` y op
 }
 ```
 
-**Nota de verificación del seed:** las señales reales del caso son 80 × 0,40, 65 × 0,35 y 78 × 0,25; su suma ponderada es 74,25, mientras el registro persiste `puntajeConfianza: 74.0`. La diferencia está registrada como no resuelta en [verificacion_F4.md](entrega2/evidencia/verificacion_F4.md); no debe interpretarse este ejemplo como evidencia de redondeo ni como una modificación de la regla de scoring.
+**Nota de cálculo del seed:** las señales reales del caso son 80 × 0,40, 65 × 0,35 y 78 × 0,25; la suma es 74,25 y el motor de scoring la redondea a una décima, por lo que el valor persistido es `puntajeConfianza: 74.3`.
 
 ---
 

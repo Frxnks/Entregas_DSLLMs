@@ -10,6 +10,7 @@ export class PiiMaskingService {
    */
   public enmascararRut(rut: string | null | undefined): string {
     if (!rut || typeof rut !== 'string') return '';
+    if (/^\d{1,2}(?:\.\d{3})+\.\*\*\*-\*$/.test(rut)) return rut;
     const limpio = rut.replace(/[^0-9kK]/g, '').toUpperCase();
     if (limpio.length < 8) return '***';
 

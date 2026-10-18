@@ -53,9 +53,9 @@ const FALLBACK_CASES: CaseSummaryDto[] = [
   {
     idCaso: 'CASO-SEED-002',
     fechaIngreso: new Date().toISOString(),
-    puntajeConfianza: 74.0,
+    puntajeConfianza: 74.3,
     razonDerivacion:
-      'Puntaje global insuficiente (74/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
+      'Puntaje global insuficiente (74.3/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
     sugerenciaMIRA: 'APROBAR',
     nivelPrioridad: 'MEDIA',
     alertaFraude: false,

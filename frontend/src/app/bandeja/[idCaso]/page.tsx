@@ -27,11 +27,11 @@ const SEED_CASES_MOCK: Record<string, CaseDetailDto> = {
   'CASO-SEED-002': {
     idCaso: 'CASO-SEED-002',
     fechaIngreso: new Date().toISOString(),
-    puntajeConfianza: 74.0,
+    puntajeConfianza: 74.3,
     estadoCaso: 'PENDIENTE_REVISION',
     sugerenciaMIRA: 'APROBAR',
     razonDerivacion:
-      'Puntaje global insuficiente (74/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
+      'Puntaje global insuficiente (74.3/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
     causalDerivacion: 'PUNTAJE_INSUFICIENTE',
     fechaVencimientoSLA: new Date(Date.now() + 48 * 3600 * 1000).toISOString(),
     tiempoRestanteHorasHabiles: 48.0,

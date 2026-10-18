@@ -153,7 +153,7 @@ async function main() {
   });
   console.log(`CASO-SEED-001 cargado (Aprobado Automático, Facturable: true)`);
 
-  // 7. CASO-SEED-002: Derivado a revisión asistida por puntaje insuficiente (74 pts)
+  // 7. CASO-SEED-002: Derivado a revisión asistida por puntaje insuficiente (74.3 pts)
   const ahora = new Date();
   const vencimientoSlaCaso2 = new Date(ahora.getTime() + 3 * 24 * 3600 * 1000); // 3 días hábiles
   const caso2 = await prisma.caso.create({
@@ -161,11 +161,11 @@ async function main() {
       idCaso: 'CASO-SEED-002',
       idFlujo: flujo.idFlujo,
       fechaIngreso: ahora,
-      puntajeConfianza: 74.0,
+      puntajeConfianza: 74.3,
       estadoCaso: EstadoCaso.PENDIENTE_REVISION,
       estadoDecision: EstadoDecision.DERIVADO_REVISION_ASISTIDA,
       sugerenciaMIRA: SugerenciaMIRA.APROBAR,
-      razonDerivacion: 'Puntaje global insuficiente (74/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
+      razonDerivacion: 'Puntaje global insuficiente (74.3/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04.',
       causalDerivacion: CausalDerivacion.PUNTAJE_INSUFICIENTE,
       fechaVencimientoSLA: vencimientoSlaCaso2,
       nivelPrioridad: NivelPrioridad.MEDIA,
@@ -238,7 +238,7 @@ async function main() {
       },
     ],
   });
-  console.log(`CASO-SEED-002 cargado (Derivado Revisión, Prioridad MEDIA, 74 pts)`);
+  console.log(`CASO-SEED-002 cargado (Derivado Revisión, Prioridad MEDIA, 74.3 pts)`);
 
   // 8. CASO-SEED-003: Derivado por Fraude (75.9 pts, Sugerencia RECHAZAR, Prioridad ALTA)
   const vencimientoSlaCaso3 = new Date(ahora.getTime() + 14 * 3600 * 1000); // 14 horas restantes (< 24h: PROXIMO_A_VENCER)
