@@ -45,14 +45,14 @@
 
 > **NOTE: Escribir estas pruebas primero y verificar que fallen antes de implementar**
 
-- [ ] T010 [P] [US1] Pruebas unitarias y de contrato para cálculo ponderado (0-100) y desglose estructurado de señales en `backend/test/scoring-engine.spec.ts` [RQF-004, RQNF-001, RQNF-008]
+- [x] T010 [P] [US1] Pruebas unitarias y de contrato para cálculo ponderado (0-100) y desglose estructurado de señales en `backend/test/scoring-engine.spec.ts` [RQF-004, RQNF-001, RQNF-008]
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Crear DTOs de solicitud y respuesta de evaluación de caso con tipado estricto en `backend/src/scoring/dto/evaluate-case.dto.ts` y `backend/src/scoring/dto/case-breakdown.dto.ts` [RQF-004, RQNF-001]
-- [ ] T012 [US1] Implementar servicio de cálculo ponderado de señales normalizado a escala 0-100 en `backend/src/scoring/scoring-engine.service.ts` [RQF-004, RQNF-008]
-- [ ] T013 [US1] Implementar endpoints de evaluación `POST /api/v1/scoring/evaluate` y consulta de desglose `GET /api/v1/scoring/cases/:idCaso/breakdown` en `backend/src/scoring/scoring.controller.ts` [RQF-004, RQNF-001, RQNF-008]
-- [ ] T014 [US1] Registrar y configurar módulo de scoring con inyección de dependencias en `backend/src/scoring/scoring.module.ts` y `backend/src/app.module.ts` [RQF-004, RQNF-001]
+- [x] T011 [P] [US1] Crear DTOs de solicitud y respuesta de evaluación de caso con tipado estricto en `backend/src/scoring/dto/evaluate-case.dto.ts` y `backend/src/scoring/dto/case-breakdown.dto.ts` [RQF-004, RQNF-001]
+- [x] T012 [US1] Implementar servicio de cálculo ponderado de señales normalizado a escala 0-100 en `backend/src/scoring/scoring-engine.service.ts` [RQF-004, RQNF-008]
+- [x] T013 [US1] Implementar endpoints de evaluación `POST /api/v1/scoring/evaluate` y consulta de desglose `GET /api/v1/scoring/cases/:idCaso/breakdown` en `backend/src/scoring/scoring.controller.ts` [RQF-004, RQNF-001, RQNF-008]
+- [x] T014 [US1] Registrar y configurar módulo de scoring con inyección de dependencias en `backend/src/scoring/scoring.module.ts` y `backend/src/app.module.ts` [RQF-004, RQNF-001]
 
 **Checkpoint**: User Story 1 completamente funcional. El cálculo de puntaje y el desglose de componentes pueden invocarse y testearse de forma independiente.
 

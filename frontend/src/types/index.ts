@@ -100,6 +100,7 @@ export interface CaseDetailDto {
   senales: SenalDto[];
   rutTitular?: string;
   nombreTitular?: string;
+  bloqueadoPor?: string | null;
   operadorBloqueoId?: string | null;
   bloqueoExpiracion?: string | null;
 }

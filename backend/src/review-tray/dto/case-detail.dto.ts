@@ -17,6 +17,7 @@ export class EvidenciaDetailDto {
 
 export class SenalDetailDto {
   idSenal: string;
+  idEvidencia?: string | null;
   tipoSenal: string;
   moduloOrigen: string;
   puntaje: number;
@@ -43,6 +44,7 @@ export class CaseDetailDto {
   rutTitular?: string | null;
   nombreTitular?: string | null;
   bloqueadoPor?: string | null;
+  operadorBloqueoId?: string | null;
   bloqueoExpiracion?: string | null;
   evidencias: EvidenciaDetailDto[];
   senales: SenalDetailDto[];

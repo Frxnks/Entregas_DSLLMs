@@ -46,15 +46,15 @@
 
 > **NOTE: Escribir estas pruebas primero y verificar que fallen antes de implementar**
 
-- [ ] T010 [P] [US1] Pruebas unitarias y de integración para endpoint de detalle de caso con hallazgos espaciales en `backend/test/case-detail.spec.ts` [RQF-009, RQF-020, RQNF-008]
+- [x] T010 [P] [US1] Pruebas unitarias y de integración para endpoint de detalle de caso con hallazgos espaciales en `backend/test/case-detail.spec.ts` [RQF-009, RQF-020, RQNF-008]
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Implementar endpoint `GET /api/v1/review-tray/cases/:idCaso` con mapeo de evidencias, señales y coordenadas en `backend/src/review-tray/review-tray.controller.ts` [RQF-009, RQF-020]
-- [ ] T012 [US1] Implementar consulta de detalle y armado de `CaseDetailDto` con manejo de excepciones de legibilidad en `backend/src/review-tray/review-tray.service.ts` [RQF-002, RQF-009, RQF-020]
-- [ ] T013 [P] [US1] Desarrollar componente de visor de evidencias con soporte de PDF/imágenes y resaltado espacial de hallazgos en `frontend/src/components/VisorEvidencia.tsx` [RQF-020, RQNF-008]
-- [ ] T014 [P] [US1] Desarrollar componente de desglose de señales y razón explícita de derivación en `frontend/src/components/DesgloseSenales.tsx` [RQF-009, RQNF-008]
-- [ ] T015 [US1] Construir página de detalle y visor consolidado del caso derivado en `frontend/src/app/bandeja/[idCaso]/page.tsx` [RQF-009, RQF-020, RQNF-008]
+- [x] T011 [P] [US1] Implementar endpoint `GET /api/v1/review-tray/cases/:idCaso` con mapeo de evidencias, señales y coordenadas en `backend/src/review-tray/review-tray.controller.ts` [RQF-009, RQF-020]
+- [x] T012 [US1] Implementar consulta de detalle y armado de `CaseDetailDto` con manejo de excepciones de legibilidad en `backend/src/review-tray/review-tray.service.ts` [RQF-002, RQF-009, RQF-020]
+- [x] T013 [P] [US1] Desarrollar componente de visor de evidencias con soporte de PDF/imágenes y resaltado espacial de hallazgos en `frontend/src/components/VisorEvidencia.tsx` [RQF-020, RQNF-008]
+- [x] T014 [P] [US1] Desarrollar componente de desglose de señales y razón explícita de derivación en `frontend/src/components/DesgloseSenales.tsx` [RQF-009, RQNF-008]
+- [x] T015 [US1] Construir página de detalle y visor consolidado del caso derivado en `frontend/src/app/bandeja/[idCaso]/page.tsx` [RQF-009, RQF-020, RQNF-008]
 
 **Checkpoint**: User Story 1 completamente operativa. El operador puede inspeccionar cualquier caso derivado y ubicar espacialmente los hallazgos en la evidencia.
 

@@ -124,6 +124,7 @@ export class ReviewTrayService {
       rutTitular: rutMostrado,
       nombreTitular: nombreMostrado,
       bloqueadoPor: leaseActivo ? caso.operadorBloqueo?.nombre || caso.operadorBloqueoId : null,
+      operadorBloqueoId: leaseActivo ? caso.operadorBloqueoId : null,
       bloqueoExpiracion:
         leaseActivo && caso.bloqueoExpiracion ? caso.bloqueoExpiracion.toISOString() : null,
       evidencias: caso.evidencias.map((e) => ({
@@ -136,6 +137,7 @@ export class ReviewTrayService {
       })),
       senales: caso.senales.map((s) => ({
         idSenal: s.idSenal,
+        idEvidencia: s.idEvidencia || null,
         tipoSenal: s.tipoSenal,
         moduloOrigen: s.moduloOrigen,
         puntaje: s.puntaje,
