@@ -4,9 +4,9 @@
 **Fecha:** 17 de Octubre de 2026  
 **Autores / Revisores:** Dante Chávez, Nikolas Lagos (Representante del Cliente), Franko Moraga y Felipe Caru  
 **Artefactos Técnicos de Referencia:**
-- [Plan de Implementación Técnica (`specs/001-bandeja-revision-asistida/plan.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/plan.md)
-- [Modelo de Datos y Prisma Schema (`specs/001-bandeja-revision-asistida/data-model.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/specs/001-bandeja-revision-asistida/data-model.md)
-- [Bitácora de Decisiones y Clarificación (`docs/entrega2/clarificacion_cambios.md`)](file:///home/franko/Codigos/Entregas_DSLLMs/docs/entrega2/clarificacion_cambios.md)
+- [Plan de Implementación Técnica (`specs/001-bandeja-revision-asistida/plan.md`)](../../specs/001-bandeja-revision-asistida/plan.md)
+- [Modelo de Datos y Prisma Schema (`specs/001-bandeja-revision-asistida/data-model.md`)](../../specs/001-bandeja-revision-asistida/data-model.md)
+- [Bitácora de Decisiones y Clarificación (`docs/entrega2/clarificacion_cambios.md`)](clarificacion_cambios.md)
 
 ---
 
@@ -52,7 +52,7 @@ graph TD
 * **Supuesto en la Entrega 1:**
   En el Modelo de Dominio de la Entrega 1, la entidad `Umbral` se definió con dos atributos numéricos: `valorAprobacion` y `valorRevision`. Asimismo, la sección §2.6 del levantamiento inicial indicaba que *"sobre 85 puntos se aprueba automáticamente, entre 60 y 84 se deriva a revisión humana, y bajo 60 se escala o se rechaza por riesgo alto"*, asumiendo que existía un puntaje mínimo por debajo del cual el sistema emitía un rechazo automático sin intervención humana.
 * **Por qué se invalidó al bajar al diseño técnico:**
-  Al confrontar este modelo con la [Constitución de MIRA](file:///home/franko/Codigos/Entregas_DSLLMs/.specify/memory/constitution.md) y la decisión `DEC-04`, se constató una incompatibilidad legal insalvable: **MIRA tiene prohibido categóricamente emitir rechazos 100% automáticos sobre siniestros de personas**. Por lo tanto, no existe un "umbral de corte inferior": absolutamente todo caso cuyo puntaje sea inferior al umbral de aprobación automática (fijado en 90 puntos por `DEC-11`), o que presente señales de fraude o mínimos incumplidos, DEBE derivarse a revisión asistida. Mantener `valorRevision` en la base de datos habría inducido a programar una rama de rechazo automático en el motor de reglas.
+  Al confrontar este modelo con la [Constitución de MIRA](../../.specify/memory/constitution.md) y la decisión `DEC-04`, se constató una incompatibilidad legal insalvable: **MIRA tiene prohibido categóricamente emitir rechazos 100% automáticos sobre siniestros de personas**. Por lo tanto, no existe un "umbral de corte inferior": absolutamente todo caso cuyo puntaje sea inferior al umbral de aprobación automática (fijado en 90 puntos por `DEC-11`), o que presente señales de fraude o mínimos incumplidos, DEBE derivarse a revisión asistida. Mantener `valorRevision` en la base de datos habría inducido a programar una rama de rechazo automático en el motor de reglas.
 * **Quién lo detectó:**
   **El Equipo de Ingeniería y el Representante del Cliente** durante el alineamiento constitucional de la Entrega 2.
 * **Solución técnica adoptada en E2:**
