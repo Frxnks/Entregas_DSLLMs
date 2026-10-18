@@ -148,8 +148,8 @@ Accesible para usuarios con perfil de **Administrador de Riesgo**, este módulo 
 ### ¿Qué ocurre si se interrumpe la conexión con los modelos de IA externos? (PX-06)
 La bandeja de revisión asistida opera sobre la infraestructura local de contingencia. Los casos derivados y sus evidencias permanecen resguardados en almacenamiento local, permitiendo que el liquidador continúe revisando y resolviendo casos con normalidad sin degradar el servicio ni arriesgar la pérdida de información.
 
-### ¿Qué sucede si un caso supera las 72 horas hábiles sin resolverse?
-El motor de temporizadores escala automáticamente el expediente al estado `VENCIDO_ESCALADO`, marcándolo con la máxima prioridad visual y despachando una alerta al supervisor de siniestros para su asignación inmediata.
+### ¿Qué sucede si un caso supera el plazo de 3 días hábiles sin resolverse?
+El plazo nominal de 3 días hábiles equivale a 30 horas laborables, considerando jornadas de lunes a viernes de 08:30 a 18:30 (10 horas por día) y excluyendo noches, fines de semana y feriados nacionales. Al vencer, el sistema escala el expediente al estado `VENCIDO_ESCALADO`, lo marca con prioridad visual máxima y alerta al supervisor para su asignación.
 
 ### ¿Se puede rectificar una decisión humana emitida por error?
 Por exigencias de cumplimiento regulatorio (RQNF-005), las decisiones formalizadas son inalterables y no admiten borrado ni edición directa. Ante un error material de liquidación, el supervisor debe ingresar un caso complementario vinculado (RQF-003) donde se exponga la rectificación justificada, garantizando la trazabilidad integral requerida por la CMF y auditores externos.
