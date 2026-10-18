@@ -86,13 +86,13 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T019 [P] [US3] Pruebas unitarias para control de mínimos individuales por señal y emisión de aprobación automática en `backend/test/threshold-decision.spec.ts` [RQF-005, RQF-022, DEC-01]
+- [x] T019 [P] [US3] Pruebas unitarias para control de mínimos individuales por señal y emisión de aprobación automática en `backend/test/threshold-decision.spec.ts` [RQF-005, RQF-022, DEC-01]
 
 ### Implementation for User Story 3
 
-- [ ] T020 [P] [US3] Implementar verificación de umbral de aprobación y control de mínimo basal de seguridad (60 puntos) en `backend/src/scoring/decision-rules.service.ts` [RQF-005, RQF-022]
-- [ ] T021 [US3] Generar causal de derivación (`MINIMO_SENAL` o `PUNTAJE_INSUFICIENTE`) con razón explicativa en lenguaje natural en `backend/src/scoring/scoring-engine.service.ts` [RQF-007, RQF-008, RQF-022, DEC-04]
-- [ ] T022 [US3] Configurar emisión de estado `APROBADO_AUTOMATICO` y marca de facturación comercial (`esFacturable = true`) únicamente ante aprobación concluyente en `backend/src/scoring/scoring.controller.ts` [RQF-005, RQF-015, DEC-01]
+- [x] T020 [P] [US3] Implementar verificación de umbral de aprobación y control de mínimo basal de seguridad (60 puntos) en `backend/src/scoring/decision-rules.service.ts` [RQF-005, RQF-022]
+- [x] T021 [US3] Generar causal de derivación (`MINIMO_SENAL` o `PUNTAJE_INSUFICIENTE`) con razón explicativa en lenguaje natural en `backend/src/scoring/scoring-engine.service.ts` [RQF-007, RQF-008, RQF-022, DEC-04]
+- [x] T022 [US3] Configurar emisión de estado `APROBADO_AUTOMATICO` y marca de facturación comercial (`esFacturable = true`) únicamente ante aprobación concluyente en `backend/src/scoring/scoring.controller.ts` [RQF-005, RQF-015, DEC-01]
 
 **Checkpoint**: Árbol de decisiones completo (aprobación automática concluyente, derivación por fraude, derivación por mínimos y derivación por puntaje) validado.
 

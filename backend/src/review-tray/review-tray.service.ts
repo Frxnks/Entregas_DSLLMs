@@ -14,10 +14,34 @@ export class ReviewTrayService {
   ) {}
 
   /**
+   * Actualiza a VENCIDO_ESCALADO los casos cuyo SLA expiró sin resolución (RQF-021).
+   */
+  async actualizarCasosVencidos(ahora: Date = new Date()): Promise<number> {
+    if (!this.prisma.caso.updateMany) {
+      return 0;
+    }
+    const res = await this.prisma.caso.updateMany({
+      where: {
+        estadoCaso: {
+          in: [EstadoCaso.PENDIENTE_REVISION, EstadoCaso.EN_REVISION],
+        },
+        fechaVencimientoSLA: {
+          lte: ahora,
+        },
+      },
+      data: {
+        estadoCaso: EstadoCaso.VENCIDO_ESCALADO,
+      },
+    });
+    return res.count;
+  }
+
+  /**
    * Obtiene la lista de casos derivados para la bandeja de revisión asistida (RQF-008, RQF-021, RQF-024).
    */
   async listarCasos(estado?: EstadoCaso, prioridad?: NivelPrioridad): Promise<CaseSummaryDto[]> {
     const ahora = new Date();
+    await this.actualizarCasosVencidos(ahora);
 
     const casos = await this.prisma.caso.findMany({
       where: {
@@ -48,17 +72,33 @@ export class ReviewTrayService {
       ],
     });
 
-    return casos.map((caso) => {
+    const prioridadPeso: Record<string, number> = {
+      ALTA: 1,
+      MEDIA: 2,
+      BAJA: 3,
+    };
+
+    const casosOrdenados = [...casos].sort((a, b) => {
+      const pesoA = prioridadPeso[a.nivelPrioridad] ?? 99;
+      const pesoB = prioridadPeso[b.nivelPrioridad] ?? 99;
+      if (pesoA !== pesoB) return pesoA - pesoB;
+      return new Date(a.fechaVencimientoSLA).getTime() - new Date(b.fechaVencimientoSLA).getTime();
+    });
+
+    return casosOrdenados.map((caso) => {
       const horasRestantes = ChileanCalendarUtil.calcularHorasHabilesRestantes(
         ahora,
         caso.fechaVencimientoSLA,
       );
       const estadoSLA = ChileanCalendarUtil.determinarEstadoSLA(horasRestantes);
       const tieneFraude =
-        caso.senales.some((s) => s.esAlertaFraude) || caso.causalDerivacion === 'FRAUDE';
+        caso.senales?.some((s) => s.esAlertaFraude) || caso.causalDerivacion === 'FRAUDE';
 
       const leaseActivo =
         caso.operadorBloqueoId && caso.bloqueoExpiracion && caso.bloqueoExpiracion > ahora;
+
+      const rutMostrado = this.piiMaskingService.enmascararRut(caso.rutTitular);
+      const nombreMostrado = this.piiMaskingService.enmascararNombre(caso.nombreTitular);
 
       return {
         idCaso: caso.idCaso,
@@ -70,6 +110,10 @@ export class ReviewTrayService {
         alertaFraude: tieneFraude,
         tiempoRestanteHorasHabiles: horasRestantes,
         estadoSLA,
+        estadoCaso: caso.estadoCaso,
+        causalDerivacion: caso.causalDerivacion,
+        rutTitular: rutMostrado,
+        nombreTitular: nombreMostrado,
         bloqueadoPor: leaseActivo ? caso.operadorBloqueo?.nombre || caso.operadorBloqueoId : null,
       };
     });
@@ -93,6 +137,20 @@ export class ReviewTrayService {
     }
 
     const ahora = new Date();
+    if (
+      (caso.estadoCaso === EstadoCaso.PENDIENTE_REVISION ||
+        caso.estadoCaso === EstadoCaso.EN_REVISION) &&
+      caso.fechaVencimientoSLA <= ahora
+    ) {
+      if (this.prisma.caso.update) {
+        await this.prisma.caso.update({
+          where: { idCaso },
+          data: { estadoCaso: EstadoCaso.VENCIDO_ESCALADO },
+        });
+      }
+      caso.estadoCaso = EstadoCaso.VENCIDO_ESCALADO;
+    }
+
     const horasRestantes = ChileanCalendarUtil.calcularHorasHabilesRestantes(
       ahora,
       caso.fechaVencimientoSLA,

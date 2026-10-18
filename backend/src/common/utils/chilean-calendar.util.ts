@@ -91,8 +91,12 @@ export class ChileanCalendarUtil {
     if (diaSemana === 0 || diaSemana === 6) {
       return false; // Domingo o Sábado
     }
+    const year = fecha.getFullYear();
+    const month = String(fecha.getMonth() + 1).padStart(2, '0');
+    const day = String(fecha.getDate()).padStart(2, '0');
+    const fechaLocalStr = `${year}-${month}-${day}`;
     const fechaIso = fecha.toISOString().split('T')[0];
-    return !this.FERIADOS_CHILE.has(fechaIso);
+    return !this.FERIADOS_CHILE.has(fechaLocalStr) && !this.FERIADOS_CHILE.has(fechaIso);
   }
 
   /**

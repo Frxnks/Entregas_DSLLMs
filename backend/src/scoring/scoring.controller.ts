@@ -13,6 +13,7 @@ import {
   EvaluationResultResponseDto,
 } from './dto/evaluate-case.dto';
 import { CaseBreakdownResponseDto } from './dto/case-breakdown.dto';
+import { EstadoDecision } from '@prisma/client';
 
 @Controller('scoring')
 export class ScoringController {
@@ -23,7 +24,12 @@ export class ScoringController {
   async evaluateCase(
     @Body() dto: EvaluateCaseRequestDto,
   ): Promise<EvaluationResultResponseDto> {
-    return this.scoringEngineService.evaluarCaso(dto);
+    const result = await this.scoringEngineService.evaluarCaso(dto);
+    // DEC-01 / RQF-015: Garantizar facturación comercial únicamente ante APROBADO_AUTOMATICO concluyente
+    return {
+      ...result,
+      esFacturable: result.estadoDecision === EstadoDecision.APROBADO_AUTOMATICO,
+    };
   }
 
   @Get('cases/:idCaso/breakdown')

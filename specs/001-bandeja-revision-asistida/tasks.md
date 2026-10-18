@@ -89,14 +89,14 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T021 [P] [US3] Pruebas unitarias para cómputo de SLA hábil chileno y control de leases de 15 min en `backend/test/sla-concurrency.spec.ts` [RQF-021, RQF-024]
+- [x] T021 [P] [US3] Pruebas unitarias para cómputo de SLA hábil chileno y control de leases de 15 min en `backend/test/sla-concurrency.spec.ts` [RQF-021, RQF-024]
 
 ### Implementation for User Story 3
 
-- [ ] T022 [P] [US3] Implementar endpoints `GET /api/v1/review-tray/cases` y `POST /api/v1/review-tray/cases/:idCaso/lease` en `backend/src/review-tray/review-tray.controller.ts` [RQF-021, RQF-024]
-- [ ] T023 [US3] Implementar consulta de casos derivados con cálculo dinámico de horas hábiles restantes y estado de lease en `backend/src/review-tray/review-tray.service.ts` [RQF-021, RQF-024]
-- [ ] T024 [P] [US3] Desarrollar componente de indicador de SLA y semáforo visual (verde/ámbar/rojo) en `frontend/src/components/BadgeSLA.tsx` [RQF-021, RQNF-008]
-- [ ] T025 [US3] Construir interfaz principal de la bandeja de trabajo con tabla priorizada y filtros en `frontend/src/app/bandeja/page.tsx` [RQF-008, RQF-021, RQF-024, RQNF-008]
+- [x] T022 [P] [US3] Implementar endpoints `GET /api/v1/review-tray/cases` y `POST /api/v1/review-tray/cases/:idCaso/lease` en `backend/src/review-tray/review-tray.controller.ts` [RQF-021, RQF-024]
+- [x] T023 [US3] Implementar consulta de casos derivados con cálculo dinámico de horas hábiles restantes y estado de lease en `backend/src/review-tray/review-tray.service.ts` [RQF-021, RQF-024]
+- [x] T024 [P] [US3] Desarrollar componente de indicador de SLA y semáforo visual (verde/ámbar/rojo) en `frontend/src/components/BadgeSLA.tsx` [RQF-021, RQNF-008]
+- [x] T025 [US3] Construir interfaz principal de la bandeja de trabajo con tabla priorizada y filtros en `frontend/src/app/bandeja/page.tsx` [RQF-008, RQF-021, RQF-024, RQNF-008]
 
 **Checkpoint**: Todas las historias de usuario de la especificación F1 se encuentran implementadas y probadas.
 

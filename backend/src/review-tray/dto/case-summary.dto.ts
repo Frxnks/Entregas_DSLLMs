@@ -31,4 +31,20 @@ export class CaseSummaryDto {
   @IsOptional()
   @IsString()
   bloqueadoPor?: string | null;
+
+  @IsOptional()
+  @IsString()
+  estadoCaso?: string;
+
+  @IsOptional()
+  @IsString()
+  causalDerivacion?: string;
+
+  @IsOptional()
+  @IsString()
+  rutTitular?: string | null;
+
+  @IsOptional()
+  @IsString()
+  nombreTitular?: string | null;
 }

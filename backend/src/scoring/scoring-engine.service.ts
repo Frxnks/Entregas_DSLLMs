@@ -62,6 +62,7 @@ export class ScoringEngineService {
     idCaso: string,
     senales: InputSenalDto[],
     umbralAprobacion: number = 90.0,
+    minimoBasalSeguridad: number = 60.0,
   ): CaseBreakdownResponseDto {
     const puntajeConfianza = this.calcularPuntajePonderado(senales);
     const alertaFraudeActiva = senales.some((s) => s.esAlertaFraude);
@@ -70,7 +71,7 @@ export class ScoringEngineService {
       const umbralMinimo =
         s.umbralMinimo !== undefined && s.umbralMinimo !== null
           ? s.umbralMinimo
-          : 60.0; // Basal de seguridad MVP
+          : minimoBasalSeguridad; // Basal de seguridad MVP
       return {
         tipoSenal: s.tipoSenal,
         moduloOrigen: s.moduloOrigen,
@@ -114,19 +115,26 @@ export class ScoringEngineService {
     }
 
     const umbralAprobacion = caso.flujo?.umbral?.valorAprobacion ?? 90.0;
+    const minimoBasalSeguridad = caso.flujo?.umbral?.minimoBasalSeguridad ?? 60.0;
     const alertaFraudeActiva = caso.senales.some((s) => s.esAlertaFraude);
 
-    const senalesDesglose: BreakdownSenalDto[] = caso.senales.map((s) => ({
-      tipoSenal: s.tipoSenal,
-      moduloOrigen: s.moduloOrigen,
-      puntaje: s.puntaje,
-      pesoPonderacion: s.pesoPonderacion,
-      umbralMinimo: s.umbralMinimo ?? 60.0,
-      cumpleMinimo: s.cumpleMinimo,
-      esAlertaFraude: s.esAlertaFraude,
-      descripcion: s.descripcion,
-      ubicacionHallazgo: (s.ubicacionHallazgo as any) || undefined,
-    }));
+    const senalesDesglose: BreakdownSenalDto[] = caso.senales.map((s) => {
+      const umbralMinimo =
+        s.umbralMinimo !== undefined && s.umbralMinimo !== null
+          ? s.umbralMinimo
+          : minimoBasalSeguridad;
+      return {
+        tipoSenal: s.tipoSenal,
+        moduloOrigen: s.moduloOrigen,
+        puntaje: s.puntaje,
+        pesoPonderacion: s.pesoPonderacion,
+        umbralMinimo,
+        cumpleMinimo: s.cumpleMinimo,
+        esAlertaFraude: s.esAlertaFraude,
+        descripcion: s.descripcion,
+        ubicacionHallazgo: (s.ubicacionHallazgo as any) || undefined,
+      };
+    });
 
     return {
       idCaso: caso.idCaso,

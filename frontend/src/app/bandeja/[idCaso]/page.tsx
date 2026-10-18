@@ -20,6 +20,7 @@ import { apiClient } from '@/lib/api-client';
 import { VisorEvidencia } from '@/components/VisorEvidencia';
 import { DesgloseSenales } from '@/components/DesgloseSenales';
 import { PanelResolucion } from '@/components/PanelResolucion';
+import { BadgeSLA } from '@/components/BadgeSLA';
 
 // Datos de contingencia local para visualización offline inmediata (< 2s RQNF-008)
 const SEED_CASES_MOCK: Record<string, CaseDetailDto> = {
@@ -312,24 +313,19 @@ export default function DetalleCasoPage() {
           )}
 
           {/* Semáforo SLA Hábil */}
-          <div
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border ${
-              caso.estadoCaso === 'RESUELTO'
-                ? 'bg-slate-100 text-slate-700 border-slate-200'
-                : esProximoVencer
-                ? 'bg-amber-100 text-amber-900 border-amber-300 animate-pulse'
-                : caso.estadoSLA === 'VENCIDO_ESCALADO'
-                ? 'bg-red-100 text-red-900 border-red-300'
-                : 'bg-emerald-50 text-emerald-800 border-emerald-200'
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            <span>
-              {caso.estadoCaso === 'RESUELTO'
-                ? 'Caso Concluido'
-                : `SLA: ${caso.tiempoRestanteHorasHabiles.toFixed(1)} hrs hábiles restantes`}
-            </span>
-          </div>
+          {caso.estadoCaso === 'RESUELTO' ? (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border bg-slate-100 text-slate-700 border-slate-200">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Caso Concluido</span>
+            </div>
+          ) : (
+            <BadgeSLA
+              horasRestantes={caso.tiempoRestanteHorasHabiles}
+              estadoSLA={caso.estadoSLA}
+              modo="completo"
+              tamano="md"
+            />
+          )}
         </div>
       </div>
 

@@ -83,6 +83,10 @@ export interface CaseSummaryDto {
   tiempoRestanteHorasHabiles: number;
   estadoSLA: EstadoSLA;
   bloqueadoPor?: string | null;
+  estadoCaso?: EstadoCaso;
+  causalDerivacion?: CausalDerivacion;
+  rutTitular?: string | null;
+  nombreTitular?: string | null;
 }
 
 export interface CaseDetailDto {
