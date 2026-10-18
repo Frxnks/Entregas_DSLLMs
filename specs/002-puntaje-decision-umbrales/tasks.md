@@ -123,9 +123,9 @@
 
 **Propósito**: Verificación de atributos de calidad no funcionales, validación de integridad y documentación técnica de la funcionalidad.
 
-- [ ] T027 [P] Implementar pruebas de verificación extra-funcional para acuse < 1s (PX-01), procesamiento no bloqueante (PX-02), soberanía local sin egreso de PII (PX-03), inalterabilidad append-only (PX-05) y tolerancia a caídas (PX-06) en `backend/test/extra-functional.e2e-spec.ts` [RQNF-001, RQNF-002, RQNF-003, RQNF-005, RQNF-006]
-- [ ] T028 [P] Ejecutar validación completa de los escenarios declarados en `specs/002-puntaje-decision-umbrales/quickstart.md` [RQF-004, RQF-005, RQF-015, RQF-022, RQF-023, DEC-01, DEC-04]
-- [ ] T029 Documentar manual de referencia de contratos API y reglas de negocio de scoring en `docs/scoring-api-guide.md` [RQF-006, RQNF-008]
+- [x] T027 [P] Implementar pruebas de verificación extra-funcional para acuse < 1s (PX-01), procesamiento no bloqueante (PX-02), soberanía local sin egreso de PII (PX-03), inalterabilidad append-only (PX-05) y tolerancia a caídas (PX-06) en `backend/test/extra-functional.e2e-spec.ts` [RQNF-001, RQNF-002, RQNF-003, RQNF-005, RQNF-006]
+- [x] T028 [P] Ejecutar validación completa de los escenarios declarados en `specs/002-puntaje-decision-umbrales/quickstart.md` [RQF-004, RQF-005, RQF-015, RQF-022, RQF-023, DEC-01, DEC-04]
+- [x] T029 Documentar manual de referencia de contratos API y reglas de negocio de scoring en `docs/scoring-api-guide.md` [RQF-006, RQNF-008]
 
 ---
 
