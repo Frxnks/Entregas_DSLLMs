@@ -12,10 +12,10 @@
 
 **Propósito**: Inicialización de la estructura técnica del monorepositorio, contenedores Docker y dependencias base del motor de evaluación.
 
-- [ ] T001 Crear estructura base del proyecto para backend NestJS y frontend Next.js en `package.json` y `docker-compose.yml` [RQNF-001, RQNF-008]
-- [ ] T002 Inicializar aplicación backend NestJS con dependencias de TypeScript, Prisma ORM, Jest y Supertest en `backend/package.json` y `backend/tsconfig.json` [RQNF-001]
-- [ ] T003 [P] Configurar reglas de linter y formateador de código en `backend/.eslintrc.js` y `backend/.prettierrc` [RQNF-005]
-- [ ] T004 [P] Configurar módulo de archivos estáticos para servir documentos y evidencias de prueba en `backend/src/static-files.module.ts` [RQNF-004]
+- [x] T001 Crear estructura base del proyecto para backend NestJS y frontend Next.js en `package.json` y `docker-compose.yml` [RQNF-001, RQNF-008]
+- [x] T002 Inicializar aplicación backend NestJS con dependencias de TypeScript, Prisma ORM, Jest y Supertest en `backend/package.json` y `backend/tsconfig.json` [RQNF-001]
+- [x] T003 [P] Configurar reglas de linter y formateador de código en `backend/.eslintrc.js` y `backend/.prettierrc` [RQNF-005]
+- [x] T004 [P] Configurar módulo de archivos estáticos para servir documentos y evidencias de prueba en `backend/src/static-files.module.ts` [RQNF-004]
 
 ---
 
@@ -25,11 +25,11 @@
 
 **⚠️ CRITICAL**: Ninguna historia de usuario puede implementarse hasta completar esta fase.
 
-- [ ] T005 Definir esquema de base de datos relacional con modelos `Caso`, `Senal`, `Umbral`, `AuditoriaUmbral`, `Evidencia`, `Operador` y `Decision` en `backend/prisma/schema.prisma` [RQF-004, RQF-005, RQF-006, RQNF-005]
-- [ ] T006 [P] Generar migración inicial de PostgreSQL con índices compuestos para optimización de consultas en `backend/prisma/migrations/0_init/migration.sql` [RQNF-007]
-- [ ] T007 [P] Implementar servicio de conexión a base de datos y ciclo de vida en `backend/src/prisma/prisma.service.ts` y `backend/src/prisma/prisma.module.ts` [RQNF-001, RQNF-005]
-- [ ] T008 [P] Configurar filtro global para manejo unificado de excepciones HTTP y códigos de estado en `backend/src/common/filters/http-exception.filter.ts` [RQNF-001]
-- [ ] T009 Implementar script de inicialización de semillas con los 3 casos emblemáticos (`CASO-SEED-001`, `CASO-SEED-002`, `CASO-SEED-003`) y evidencias mock en `backend/prisma/seed.ts` [RQF-004, RQF-005, RQF-008, RQF-023, DEC-01, DEC-04]
+- [x] T005 Definir esquema de base de datos relacional con modelos `Caso`, `Senal`, `Umbral`, `AuditoriaUmbral`, `Evidencia`, `Operador` y `Decision` en `backend/prisma/schema.prisma` [RQF-004, RQF-005, RQF-006, RQNF-005]
+- [x] T006 [P] Generar migración inicial de PostgreSQL con índices compuestos para optimización de consultas en `backend/prisma/migrations/0_init/migration.sql` [RQNF-007]
+- [x] T007 [P] Implementar servicio de conexión a base de datos y ciclo de vida en `backend/src/prisma/prisma.service.ts` y `backend/src/prisma/prisma.module.ts` [RQNF-001, RQNF-005]
+- [x] T008 [P] Configurar filtro global para manejo unificado de excepciones HTTP y códigos de estado en `backend/src/common/filters/http-exception.filter.ts` [RQNF-001]
+- [x] T009 Implementar script de inicialización de semillas con los 3 casos emblemáticos (`CASO-SEED-001`, `CASO-SEED-002`, `CASO-SEED-003`) y evidencias mock en `backend/prisma/seed.ts` [RQF-004, RQF-005, RQF-008, RQF-023, DEC-01, DEC-04]
 
 **Checkpoint**: Base de datos operativa y semillas precalculadas cargadas. Las historias de usuario de scoring pueden comenzar en paralelo.
 

@@ -12,10 +12,10 @@
 
 **Propósito**: Inicialización de la infraestructura técnica del entorno orquestado Docker, configuración de Next.js 14 y librerías cliente.
 
-- [ ] T001 Configurar orquestación de servicios en `docker-compose.yml` para base de datos PostgreSQL, backend NestJS y frontend Next.js 14 [RQNF-001, RQNF-008]
-- [ ] T002 Inicializar aplicación frontend Next.js 14 con TypeScript, Tailwind CSS y componentes de shadcn/ui en `frontend/package.json` y `frontend/tailwind.config.js` [RQNF-008]
-- [ ] T003 [P] Configurar layout global con soporte 100% en idioma español y navegación en `frontend/src/app/layout.tsx` [RQNF-008]
-- [ ] T004 [P] Implementar cliente HTTP tipado para consumo de la API REST del backend en `frontend/src/lib/api-client.ts` [RQNF-001, RQNF-008]
+- [x] T001 Configurar orquestación de servicios en `docker-compose.yml` para base de datos PostgreSQL, backend NestJS y frontend Next.js 14 [RQNF-001, RQNF-008]
+- [x] T002 Inicializar aplicación frontend Next.js 14 con TypeScript, Tailwind CSS y componentes de shadcn/ui en `frontend/package.json` y `frontend/tailwind.config.js` [RQNF-008]
+- [x] T003 [P] Configurar layout global con soporte 100% en idioma español y navegación en `frontend/src/app/layout.tsx` [RQNF-008]
+- [x] T004 [P] Implementar cliente HTTP tipado para consumo de la API REST del backend en `frontend/src/lib/api-client.ts` [RQNF-001, RQNF-008]
 
 ---
 
@@ -25,12 +25,12 @@
 
 **⚠️ CRITICAL**: Ninguna historia de usuario puede implementarse hasta completar esta fase.
 
-- [ ] T005 Configurar módulo `ReviewTrayModule` y estructura de servicios en `backend/src/review-tray/review-tray.module.ts` e integrarlo en `backend/src/app.module.ts` [RQNF-001]
-- [ ] T006 [P] Implementar utilitario de calendario hábil de Chile (lunes a viernes 08:30 a 18:30 hrs, feriados oficiales) en `backend/src/common/utils/chilean-calendar.util.ts` [RQF-021]
-- [ ] T007 [P] Implementar servicio de control de concurrencia y arriendo temporal (lease de 15 min renovable con heartbeat) en `backend/src/review-tray/concurrency.service.ts` [RQF-024]
-- [ ] T008 [P] Implementar servicio de persistencia inalterable append-only para registro de decisiones en `backend/src/review-tray/resolution.service.ts` [RQF-010, RQNF-005]
-- [ ] T008b [P] Implementar servicio y utilitarios de enmascaramiento de PII (RUTs y nombres chilenos) para DTOs salientes y sanitización de logs en `backend/src/common/services/pii-masking.service.ts` [RQNF-003, DEC-06]
-- [ ] T009 Implementar DTOs para consultas de lista, detalle, leases y resolución en `backend/src/review-tray/dto/case-summary.dto.ts` y `backend/src/review-tray/dto/case-detail.dto.ts` [RQF-009, RQF-010, RQF-020, RQF-024]
+- [x] T005 Configurar módulo `ReviewTrayModule` y estructura de servicios en `backend/src/review-tray/review-tray.module.ts` e integrarlo en `backend/src/app.module.ts` [RQNF-001]
+- [x] T006 [P] Implementar utilitario de calendario hábil de Chile (lunes a viernes 08:30 a 18:30 hrs, feriados oficiales) en `backend/src/common/utils/chilean-calendar.util.ts` [RQF-021]
+- [x] T007 [P] Implementar servicio de control de concurrencia y arriendo temporal (lease de 15 min renovable con heartbeat) en `backend/src/review-tray/concurrency.service.ts` [RQF-024]
+- [x] T008 [P] Implementar servicio de persistencia inalterable append-only para registro de decisiones en `backend/src/review-tray/resolution.service.ts` [RQF-010, RQNF-005]
+- [x] T008b [P] Implementar servicio y utilitarios de enmascaramiento de PII (RUTs y nombres chilenos) para DTOs salientes y sanitización de logs en `backend/src/common/services/pii-masking.service.ts` [RQNF-003, DEC-06]
+- [x] T009 Implementar DTOs para consultas de lista, detalle, leases y resolución en `backend/src/review-tray/dto/case-summary.dto.ts` y `backend/src/review-tray/dto/case-detail.dto.ts` [RQF-009, RQF-010, RQF-020, RQF-024]
 
 **Checkpoint**: Infraestructura base de concurrencia y cómputo de SLA operativa. Las historias de usuario de la bandeja asistida pueden comenzar en paralelo.
 

@@ -1,0 +1,199 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum EstadoCaso {
+  INGRESADO
+  EVALUADO
+  PENDIENTE_REVISION
+  EN_REVISION
+  RESUELTO
+  VENCIDO_ESCALADO
+}
+
+enum EstadoDecision {
+  APROBADO_AUTOMATICO
+  DERIVADO_REVISION_ASISTIDA
+}
+
+enum SugerenciaMIRA {
+  APROBAR
+  RECHAZAR
+  SOLICITAR_ANTECEDENTES
+}
+
+enum CausalDerivacion {
+  FRAUDE
+  MINIMO_SENAL
+  PUNTAJE_INSUFICIENTE
+  NINGUNA
+}
+
+enum NivelPrioridad {
+  ALTA
+  MEDIA
+  BAJA
+}
+
+enum TipoDecisionOperador {
+  APROBADO
+  RECHAZADO
+  SOLICITAR_ANTECEDENTES
+}
+
+enum RolOperador {
+  LIQUIDADOR
+  SUPERVISOR
+  ADMIN_RIESGO
+}
+
+model Organizacion {
+  idOrganizacion String   @id @default(uuid())
+  rut            String   @unique
+  nombre         String
+  fechaCreacion  DateTime @default(now())
+  flujos         Flujo[]
+
+  @@map("organizaciones")
+}
+
+model Flujo {
+  idFlujo          String            @id @default(uuid())
+  idOrganizacion   String
+  nombre           String
+  version          String            @default("1.0.0")
+  estado           String            @default("ACTIVO")
+  fechaCreacion    DateTime          @default(now())
+  organizacion     Organizacion      @relation(fields: [idOrganizacion], references: [idOrganizacion])
+  umbral           Umbral?
+  auditoriasUmbral AuditoriaUmbral[]
+  casos            Caso[]
+
+  @@map("flujos")
+}
+
+model Umbral {
+  idUmbral             String   @id @default(uuid())
+  idFlujo              String   @unique
+  valorAprobacion      Float    @default(90.0) // DEC-11: Umbral inicial de marcha blanca en 90 puntos
+  minimoBasalSeguridad Float    @default(60.0) // RQF-022: Mínimo basal de seguridad para señales críticas
+  version              Int      @default(1)
+  fechaActualizacion   DateTime @updatedAt
+  flujo                Flujo    @relation(fields: [idFlujo], references: [idFlujo])
+
+  @@map("umbrales")
+}
+
+model AuditoriaUmbral {
+  idAuditoria             String   @id @default(uuid())
+  idFlujo                 String
+  valorAprobacionAnterior Float
+  valorAprobacionNuevo    Float
+  minimoBasalAnterior     Float
+  minimoBasalNuevo        Float
+  usuarioModificador      String
+  fechaModificacion       DateTime @default(now())
+  flujo                   Flujo    @relation(fields: [idFlujo], references: [idFlujo])
+
+  @@map("auditorias_umbral")
+}
+
+model Caso {
+  idCaso              String           @id // Identificador único permanente de negocio (ej. CASO-SEED-001)
+  idFlujo             String
+  fechaIngreso        DateTime         @default(now())
+  puntajeConfianza    Float            // 0 a 100
+  estadoCaso          EstadoCaso       @default(INGRESADO)
+  estadoDecision      EstadoDecision
+  sugerenciaMIRA      SugerenciaMIRA
+  razonDerivacion     String?
+  causalDerivacion    CausalDerivacion @default(NINGUNA)
+  fechaVencimientoSLA DateTime
+  nivelPrioridad      NivelPrioridad   @default(MEDIA)
+  esFacturable        Boolean          @default(false) // DEC-01
+  rutTitular          String?          // PII protegido: RUT del asegurado (DEC-06, RQNF-003)
+  nombreTitular       String?          // PII protegido: Nombre completo del titular
+  hashTitular         String?          // Hash SHA-256 del RUT para trazabilidad inalterable (DEC-05)
+  esAnonimizado       Boolean          @default(false) // Flag de derecho de supresión ejercido (DEC-05)
+  operadorBloqueoId   String?
+  bloqueoExpiracion   DateTime?
+  flujo               Flujo            @relation(fields: [idFlujo], references: [idFlujo])
+  operadorBloqueo     Operador?        @relation("OperadorBloqueo", fields: [operadorBloqueoId], references: [idOperador])
+  evidencias          Evidencia[]
+  senales             Senal[]
+  decision            Decision?
+
+  @@index([estadoCaso, nivelPrioridad, fechaVencimientoSLA])
+  @@map("casos")
+}
+
+model Evidencia {
+  idEvidencia        String   @id @default(uuid())
+  idCaso             String
+  nombreArchivo      String
+  tipoArchivo        String
+  urlAlmacenamiento  String
+  hashSha256         String
+  esLegible          Boolean  @default(true)
+  motivoIlegibilidad String?
+  fechaCarga         DateTime @default(now())
+  caso               Caso     @relation(fields: [idCaso], references: [idCaso])
+  senales            Senal[]
+
+  @@map("evidencias")
+}
+
+model Senal {
+  idSenal           String     @id @default(uuid())
+  idCaso            String
+  idEvidencia       String?
+  tipoSenal         String
+  moduloOrigen      String
+  puntaje           Float      // 0 a 100
+  pesoPonderacion   Float      // 0 a 1
+  umbralMinimo      Float?
+  cumpleMinimo      Boolean    @default(true)
+  esAlertaFraude    Boolean    @default(false) // DEC-04, RQF-023
+  resultado         String
+  descripcion       String
+  ubicacionHallazgo Json?      // { page: number, x: number, y: number, width: number, height: number }
+  caso              Caso       @relation(fields: [idCaso], references: [idCaso])
+  evidencia         Evidencia? @relation(fields: [idEvidencia], references: [idEvidencia])
+
+  @@index([idCaso, esAlertaFraude])
+  @@map("senales")
+}
+
+model Operador {
+  idOperador      String       @id @default(uuid())
+  email           String       @unique
+  nombre          String
+  rut             String
+  rol             RolOperador  @default(LIQUIDADOR)
+  activo          Boolean      @default(true)
+  decisiones      Decision[]
+  casosBloqueados Caso[]       @relation("OperadorBloqueo")
+
+  @@map("operadores")
+}
+
+model Decision {
+  idDecision        String               @id @default(uuid())
+  idCaso            String               @unique // Relación 1 a 1 inmutable
+  idOperador        String
+  tipoDecision      TipoDecisionOperador
+  justificacion     String               // Motivo obligatorio
+  fechaDecision     DateTime             @default(now())
+  marcaDiscrepancia Boolean              @default(false) // RQF-011
+  esInalterable     Boolean              @default(true)  // RQNF-005 (append-only)
+  ipOperador        String?
+  caso              Caso                 @relation(fields: [idCaso], references: [idCaso])
+  operador          Operador             @relation(fields: [idOperador], references: [idOperador])
+
+  @@map("decisiones")
+}

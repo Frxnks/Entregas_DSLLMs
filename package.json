@@ -1,0 +1,38 @@
+{
+  "name": "mira-plataforma",
+  "version": "1.0.0",
+  "description": "MIRA - Plataforma de Puntaje, Decisión por Umbrales y Bandeja de Revisión Asistida",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:migrate": "docker compose exec backend npx prisma migrate deploy",
+    "docker:seed": "docker compose exec backend npx prisma db seed",
+    "test": "npm --prefix backend run test && npm --prefix frontend run test",
+    "test:backend": "npm --prefix backend run test",
+    "test:frontend": "npm --prefix frontend run test",
+    "test:e2e": "npm --prefix backend run test:e2e && npm --prefix frontend run test:e2e"
+  },
+  "keywords": [
+    "mira",
+    "scoring",
+    "review-tray",
+    "chile",
+    "human-in-the-loop",
+    "nextjs",
+    "nestjs"
+  ],
+  "author": "Equipo MIRA",
+  "license": "UNLICENSED"
+}

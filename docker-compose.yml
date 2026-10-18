@@ -1,0 +1,67 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: mira-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mira_db
+      POSTGRES_USER: mira_user
+      POSTGRES_PASSWORD: mira_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mira-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mira_user -d mira_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mira-backend
+    restart: unless-stopped
+    environment:
+      PORT: 3001
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://mira_user:mira_password@db:5432/mira_db?schema=public"
+      CORS_ORIGIN: "http://localhost:3000"
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mira-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mira-frontend
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: "http://localhost:3001/api/v1"
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - mira-network
+
+networks:
+  mira-network:
+    name: mira-network
+    driver: bridge
+
+volumes:
+  postgres_data:
+    name: postgres_data
+    driver: local
