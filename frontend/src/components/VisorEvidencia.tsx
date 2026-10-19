@@ -325,7 +325,13 @@ export function VisorEvidencia({
 
           {/* 4. Capa SVG/HTML de Superposición de Bounding Boxes (RQF-020) */}
           {showBoundingBoxes && (
-            <div className="absolute inset-0 pointer-events-none">
+            <div
+              className={`absolute pointer-events-none ${
+                isPdf || imageError
+                  ? 'inset-0'
+                  : 'left-1/2 top-1/2 aspect-[612/792] w-full -translate-x-1/2 -translate-y-1/2'
+              }`}
+            >
               {senalesConHallazgo.map((s) => {
                 const box = s.ubicacionHallazgo as BoundingBox;
                 if (!box) return null;

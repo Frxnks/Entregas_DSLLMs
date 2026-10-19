@@ -99,6 +99,57 @@ test.describe('F1 - Bandeja de Revisión Asistida (E2E Flujo Completo)', () => {
     await expect(page.locator('text=COHERENCIA_FECHAS').first()).toBeVisible();
   });
 
+  test('US1 / RQF-020: Los hallazgos naranjas del caso 003 se alinean con identidad y folio', async ({
+    page,
+  }) => {
+    await page.route('**/api/v1/review-tray/cases/CASO-SEED-003', (route) => route.abort());
+    await page.goto('/bandeja/CASO-SEED-003');
+
+    const identidad = page.locator('div[title^="CRUCE_FUENTES:"]');
+    await expect(identidad).toBeVisible();
+    const autenticidad = page.locator('div[title^="AUTENTICIDAD_DOCUMENTAL:"]');
+    await expect(autenticidad).toBeVisible();
+
+    const highlightAlignment = await page
+      .locator('.relative.bg-white.shadow-xl')
+      .evaluate((documentPage) => {
+        const image = documentPage.querySelector('img');
+        if (!image) throw new Error('No se encontró la imagen de evidencia');
+
+        const imageRect = image.getBoundingClientRect();
+        const getBox = (selector: string) => {
+          const element = documentPage.querySelector<HTMLElement>(selector);
+          if (!element) throw new Error(`No se encontró el resaltado ${selector}`);
+          const rect = element.getBoundingClientRect();
+          return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+        };
+        const expectedBox = (box: { x: number; y: number; width: number; height: number }) => ({
+          x: imageRect.x + (box.x / 612) * imageRect.width,
+          y: imageRect.y + (box.y / 792) * imageRect.height,
+          width: (box.width / 612) * imageRect.width,
+          height: (box.height / 792) * imageRect.height,
+        });
+
+        return {
+          identity: getBox('div[title^="CRUCE_FUENTES:"]'),
+          expectedIdentity: expectedBox({ x: 52, y: 162, width: 190, height: 23 }),
+          authenticity: getBox('div[title^="AUTENTICIDAD_DOCUMENTAL:"]'),
+          expectedAuthenticity: expectedBox({ x: 414, y: 124, width: 132, height: 54 }),
+        };
+      });
+
+    for (const key of ['identity', 'authenticity'] as const) {
+      const actual = highlightAlignment[key];
+      const expected = highlightAlignment[
+        key === 'identity' ? 'expectedIdentity' : 'expectedAuthenticity'
+      ];
+      expect(Math.abs(actual.x - expected.x)).toBeLessThan(1);
+      expect(Math.abs(actual.y - expected.y)).toBeLessThan(1);
+      expect(Math.abs(actual.width - expected.width)).toBeLessThan(1);
+      expect(Math.abs(actual.height - expected.height)).toBeLessThan(1);
+    }
+  });
+
   test('US2 / RQF-010: Emisión de resolución formal con motivo obligatorio y confirmación atómica', async ({
     page,
   }) => {
