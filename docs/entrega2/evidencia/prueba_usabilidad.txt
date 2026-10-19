@@ -1,0 +1,63 @@
+PRUEBA DE USABILIDAD — MIRA
+
+Fecha: __________________________
+Nombre del evaluador: __________________________
+Equipo: __________________________
+Quién observa: __________________________
+
+INSTRUCCIONES PARA QUIEN OBSERVA
+1. Lea cada tarea en voz alta tal como está escrita.
+2. No explique la interfaz ni ayude a completar la tarea.
+3. Inicie el cronómetro cuando termine de leer cada tarea.
+4. Detenga el cronómetro cuando la persona diga que terminó.
+5. Anote dudas, errores y comentarios sin corregir a la persona.
+
+TAREA 1 — ENCONTRAR EL CASO CON ALERTA DE FRAUDE
+Texto de la tarea:
+En la bandeja, encuentra el caso que tiene una alerta de fraude y explica por qué fue derivado a revisión.
+
+URL de inicio: http://localhost:3000/bandeja
+Resultado esperado: Encuentra CASO-SEED-003 e identifica que fue derivado por una alerta de fraude relacionada con manipulación digital de la boleta. El fraude tiene prioridad sobre el puntaje.
+
+¿Completó? (Sí/No/Con ayuda) | Tiempo (min:seg) | Dificultades observadas
+____________________________ | ________________ | _______________________
+
+TAREA 2 — REVISAR Y DECIDIR CASO-SEED-002
+Texto de la tarea:
+Abre CASO-SEED-002. Revisa sus señales y registra una decisión con una justificación de al menos 10 caracteres.
+
+URL de inicio: http://localhost:3000/bandeja
+Resultado esperado: Abre el caso, revisa el puntaje y las señales en el detalle, elige una decisión, escribe una justificación y confirma. La pantalla muestra que la decisión quedó registrada y el caso pasó a RESUELTO.
+
+¿Completó? (Sí/No/Con ayuda) | Tiempo (min:seg) | Dificultades observadas
+____________________________ | ________________ | _______________________
+
+TAREA 3 — CAMBIAR Y VERIFICAR EL UMBRAL
+Texto de la tarea:
+En Configuración, cambia el umbral de aprobación de 90 a 88 y verifica que el cambio quedó registrado en el historial.
+
+URL de inicio: http://localhost:3000/configuracion
+Resultado esperado: El valor actual queda en 88. La nueva fila del historial muestra el cambio de 90 a 88, el usuario modificador y la fecha y hora.
+
+¿Completó? (Sí/No/Con ayuda) | Tiempo (min:seg) | Dificultades observadas
+____________________________ | ________________ | _______________________
+
+PREGUNTAS DE CIERRE
+1. ¿Qué fue lo más confuso?
+________________________________________________________________________
+________________________________________________________________________
+
+2. ¿Qué cambiarías de la página?
+________________________________________________________________________
+________________________________________________________________________
+
+3. En una escala de 1 a 5, ¿qué tan fácil fue usarla? (1 = muy difícil, 5 = muy fácil)
+Nota: ______ / 5
+
+RESUMEN FINAL
+Tareas completadas: ______ / 3
+Tiempo promedio (min:seg): __________________
+Problemas observados:
+________________________________________________________________________
+________________________________________________________________________
+________________________________________________________________________

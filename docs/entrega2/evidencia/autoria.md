@@ -10,13 +10,13 @@
 - El merge `a3da8b5` no se cuenta como cambio independiente. El cambio del README se atribuye al commit fuente `2a2078f`, evitando duplicarlo.
 - Los 12 commits con prefijo `[IA]` se atribuyen al agente. Los commits anteriores se clasifican según las respuestas del equipo a la consulta commit por commit.
 - Los archivos binarios no tienen líneas numstat; se excluyen de los porcentajes de líneas.
-- `46a31b1` queda **sin atribuir**: la respuesta recibida en ese campo fue una preferencia sobre consolidar commits, no una clasificación de autoría. Sus 2 líneas se excluyen del denominador de los porcentajes hasta recibir esa clasificación.
+- `46a31b1` se atribuye al **equipo**, según la clasificación explícita recibida del usuario. Sus 2 líneas se incluyen en los porcentajes.
 
 ## Cambios por commit
 
 | Commit | Autoría declarada | backend +/− | frontend +/− | specs +/− | docs +/− | otros +/− | Total +/− |
 |---|---|---:|---:|---:|---:|---:|---:|
-| `46a31b1` Initial commit | Pendiente | 0/0 | 0/0 | 0/0 | 0/0 | 2/0 | 2/0 |
+| `46a31b1` Initial commit | Equipo | 0/0 | 0/0 | 0/0 | 0/0 | 2/0 | 2/0 |
 | `446e083` Análisis de incongruencias | Agente | 0/0 | 0/0 | 0/0 | 0/0 | 218/2 | 218/2 |
 | `fc278b4` Crear prueba.md | Agente | 0/0 | 0/0 | 0/0 | 0/0 | 1/0 | 1/0 |
 | `dee62df` Actualizar prueba.md | Agente | 0/0 | 0/0 | 0/0 | 0/0 | 555/0 | 555/0 |
@@ -69,12 +69,11 @@
 
 ## Porcentajes según la clasificación recibida
 
-El porcentaje se calcula sobre líneas añadidas más eliminadas de los commits atribuidos, no sobre tamaño final de los archivos. Se excluyen los 2 renglones del commit inicial aún sin clasificación; por eso estos porcentajes son provisionales respecto del total completo del historial.
+El porcentaje se calcula sobre líneas añadidas más eliminadas de los commits atribuidos, no sobre tamaño final de los archivos. La clasificación recibida incluye las dos líneas del commit inicial.
 
 | Autoría | Commits atribuibles | Añadidas | Eliminadas | Líneas cambiadas | % de líneas añadidas atribuibles | % de líneas eliminadas atribuibles | % del total de líneas atribuibles |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Agente | 36 | 41.337 | 1.465 | 42.802 | 99,53 % | 97,99 % | 99,48 % |
-| Equipo | 1 | 195 | 30 | 225 | 0,47 % | 2,01 % | 0,52 % |
-| Sin clasificar (`46a31b1`) | 1 | 2 | 0 | 2 | Excluido | Excluido | Excluido |
+| Agente | 36 | 41.337 | 1.465 | 42.802 | 99,53 % | 97,99 % | 99,47 % |
+| Equipo | 2 | 197 | 30 | 227 | 0,47 % | 2,01 % | 0,53 % |
 
-**Pendiente para cerrar la atribución total:** indicar si `46a31b1` fue generado por el agente o por el equipo. No se infirió esa autoría a partir del contenido del commit.
+La atribución de `46a31b1` como equipo fue indicada explícitamente por el usuario; no se infirió del autor Git ni del contenido del commit. Los porcentajes de líneas totales usan como denominador las 43.029 líneas añadidas más eliminadas, incluidas las dos líneas del commit inicial.

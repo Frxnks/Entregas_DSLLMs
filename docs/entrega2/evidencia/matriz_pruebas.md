@@ -108,3 +108,18 @@ El alcance funcional Must se toma de las matrices de F1 y F4 en `specs/001-bande
 - **PX-08 F4:** no se encontró medición automatizada específica del desglose bajo 500 ms.
 
 Los IDs PF/PX exactos son los de [Entrega 1](../../entrega1/prueba.md); los requisitos y casos incorporados posteriormente se cotejaron con las specs de [F1](../../../specs/001-bandeja-revision-asistida/spec.md) y [F4](../../../specs/002-puntaje-decision-umbrales/spec.md).
+
+## Reejecución de Fase G (2026-10-18)
+
+Se volvieron a ejecutar los comandos de backend, frontend y e2e sobre la revisión documental basada en `main` (`ef03787`), sin modificar código.
+
+| Comando | Resultado observado |
+|---|---|
+| `npm.cmd --prefix backend run test -- --runInBand` | 16 suites aprobadas, 172 pruebas aprobadas, 0 fallidas. |
+| `npm.cmd --prefix frontend run typecheck` | Exit code 0; sin errores de TypeScript. |
+| `npm.cmd --prefix backend run test:e2e -- --runInBand` | 3 suites aprobadas, 41 pruebas aprobadas, 0 fallidas. |
+| `npm.cmd --prefix frontend run test:e2e -- --reporter=list` | 2 pruebas aprobadas y 4 fallidas de 6. PX-08 midió 476 ms antes de fallar al no encontrar `CASO-SEED-002`; las otras fallas de presencia/navegación/resolución/discrepancias también dependen de los datos semilla esperados. |
+
+Al momento de la ejecución, `GET /api/v1/review-tray/cases` devolvió `CASO-SEED-003`, bloqueado por Ana, y no devolvió `CASO-SEED-002`. Los logs de Compose mostraban una decisión previa de `CASO-SEED-002` y cambios posteriores de umbral. No se recargó el seed porque el script elimina casos, decisiones, auditorías y otros datos de la base compartida. Por ello, las cuatro fallas de Playwright se reportan como resultado de la ejecución sobre el estado de datos disponible, no como un fallo de compilación o una prueba aislada con datos demo limpios.
+
+Las pruebas Playwright de evidencia/bounding boxes y de pantalla de calibración son las dos aprobadas; sus límites de interceptaciones siguen aplicando. No se altera el resultado histórico de las seis pruebas aprobadas anteriormente en el clon aislado `mira-clean3` (`localhost:13020`): fue otra ejecución, con otro estado y entorno.
