@@ -14,7 +14,7 @@ PF-02 [F1] | Abrir un caso con evidencia ilegible; el visor informa la causa en 
 PF-04 [F4] | Ejecutar scoring sobre un caso con evidencia completa y comprobar puntaje entre 0 y 100 y desglose por señal. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
 PF-05 [F4] | Con umbral 90 y sin fraude, procesar caso con puntaje 93; comprobar aprobación automática sin intervención humana. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
 PF-06 [F4] | Cambiar umbral 90 a 85; comprobar que se guardan usuario, fecha/hora, valor anterior y nuevo, y que se conserva la versión anterior. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
-PF-06b [F4] | Intentar publicar un flujo sin módulos de análisis activos; comprobar que se rechaza y el flujo no queda publicado. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
+PF-06b [F4] | Intentar publicar un flujo sin módulos de análisis activos; comprobar que se rechaza y el flujo no queda publicado. | [ ] Aceptado  [ ] Aceptado con observación  [X] Rechazado | No hay prueba identificada que demuestre el comportamiento. Rechazado para esta aceptación por falta de evidencia; no implica que se haya demostrado un fallo funcional. |
 PF-07 [F1/F4] | Procesar caso con puntaje 45 bajo el umbral; comprobar que no hay rechazo automático y se deriva a revisión humana. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
 PF-08 [F1/F4] | Procesar caso con puntaje 95 y alerta de fraude; comprobar que se deriva a revisión pese al puntaje alto. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
 PF-09 [F1] | Abrir caso desde bandeja; comprobar en una pantalla evidencia, puntaje, señales y razón de derivación. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
@@ -26,13 +26,21 @@ CRITERIOS NO FUNCIONALES (PX)
 
 Criterio | Cómo se demuestra | Resultado (Aceptado / Aceptado con observación / Rechazado) | Observación
 PX-01 [F1/F4] | Ejecutar la prueba de rendimiento definida en Entrega 1 para API bajo carga; verificar el umbral de respuesta allí establecido. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
-PX-02 [F4] | Procesar expediente con 12 documentos y 8 fotos; verificar acuse menor a 1 segundo y resultado notificado sin bloquear al cliente. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
+PX-02 [F4] | Procesar expediente con 12 documentos y 8 fotos; verificar acuse menor a 1 segundo y resultado notificado sin bloquear al cliente. | [ ] Aceptado  [X] Aceptado con observación  [ ] Rechazado | Hay pruebas con mocks, pero no demuestran el procesamiento asíncrono end-to-end con 12 documentos y 8 fotos ni la notificación no bloqueante en entorno integrado. |
 PX-03 [F1/F4] | Inspeccionar tráfico saliente a modelos externos con fragmentos de evidencia; comprobar cero coincidencias de RUT o nombres completos. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
-PX-04 [F1] | Solicitar expediente de 120 días ya migrado a almacenamiento frío; comprobar recuperación íntegra en 10 segundos o menos. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
+PX-04 [F1] | Solicitar expediente de 120 días ya migrado a almacenamiento frío; comprobar recuperación íntegra en 10 segundos o menos. | [ ] Aceptado  [X] Aceptado con observación  [ ] Rechazado | No se demostró recuperación de un expediente migrado a almacenamiento frío en 10 segundos o menos; las pruebas de hash/metadatos no cubren ese escenario. |
 PX-05 [F1/F4] | Intentar modificar auditoría con perfil administrador; comprobar rechazo y registro del intento. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
-PX-06 [F1/F4] | Simular caída de proveedor externo durante 3 horas mientras llegan casos; comprobar encolado sin pérdida y notificación a DPRIME y al cliente. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
+PX-06 [F1/F4] | Simular caída de proveedor externo durante 3 horas mientras llegan casos; comprobar encolado sin pérdida y notificación a DPRIME y al cliente. | [ ] Aceptado  [X] Aceptado con observación  [ ] Rechazado | Las pruebas de fallos con mocks no demuestran una caída de 3 horas, encolado sin pérdida ni las notificaciones requeridas en infraestructura integrada. |
 PX-07 [F4] | Ejecutar carga sostenida de 15.000 casos en un mes calendario; comprobar que no se degrada el tiempo de respuesta comprometido. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
-PX-08 [F1/F4] | Una persona operadora sin capacitación previa resuelve su primer caso sin ayuda; medir que cada pantalla carga en menos de 2 segundos. | [ ] Aceptado  [ ] Aceptado con observación  [ ] Rechazado | __________________
+PX-08 [F1/F4] | Una persona operadora sin capacitación previa resuelve su primer caso sin ayuda; medir que cada pantalla carga en menos de 2 segundos. | [ ] Aceptado  [ ] Aceptado con observación  [X] Rechazado | No se realizó una sesión observada con una persona externa sin experiencia previa; por tanto, no hay evidencia para aceptar el criterio en esta entrega. Este rechazo es por falta de evidencia y no demuestra un fallo de usabilidad. |
+
+PROTOCOLO PARA REEVALUAR USABILIDAD PX-08
+
+1. Invitar a una persona que no conozca MIRA ni haya usado antes la aplicación. No darle capacitación ni instrucciones sobre los controles.
+2. Preparar una instancia de prueba aislada y desechable, cargar el seed y confirmar que CASO-SEED-002 está libre. No usar una base compartida; el seed elimina datos existentes.
+3. Dar únicamente esta tarea: "Revisa el caso que requiere atención en la bandeja y toma la decisión que consideres correcta, dejando el motivo correspondiente". No ayudar ni responder preguntas sobre cómo usar la interfaz.
+4. Observar y registrar si completa la resolución sin ayuda, las dificultades/errores y el tiempo de carga de cada pantalla. Confirmar en la aplicación/API que el caso quedó RESUELTO.
+5. Si se realiza esta reevaluación, actualizar el resultado PX-08 con la evidencia y mediciones reales. Si la persona requiere ayuda o no puede resolver el caso, mantener Rechazado; si lo completa sin ayuda pero hay observaciones, usar Aceptado con observación. Aceptar solo si completa la tarea sin ayuda y todas las pantallas cumplen el límite de 2 segundos.
 
 INTEGRANTES PRESENTES — FIRMA O NOMBRE
 
