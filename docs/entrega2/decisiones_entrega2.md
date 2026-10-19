@@ -28,3 +28,12 @@
 **Quién decidió:** Representante del cliente, por segunda vez.
 
 **Fecha:** 2026-10-18.
+
+## Fe de erratas: Numeración de DEC en la Entrega 1
+
+Las fichas del cuerpo y el README de la Entrega 1 usan numeración desplazada respecto de las decisiones formalizadas en la bitácora. Para las referencias a decisiones de Entrega 1, se cita la numeración del anexo, que abarca `DEC-01` a `DEC-12`. Las equivalencias de los hallazgos afectados son:
+
+- H-03 → DEC-03
+- H-04 → DEC-04
+- H-07 → DEC-07
+- H-11 → DEC-11

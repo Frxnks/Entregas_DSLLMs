@@ -67,7 +67,7 @@ flowchart TD
 * **Citas Textuales de Fuentes:**
   > - **`Descripción del proyecto.docx` — §2.6**: *"Cuando el puntaje sea suficiente pero alguna señal individual esté por debajo de su mínimo, el caso debe derivarse a revisión aunque el total lo permita. El detalle de qué señales tienen mínimo propio y cuáles son sus valores está pendiente de definir con el área de riesgo del cliente piloto... Los valores de referencia son: sobre 85, el caso se aprueba automáticamente... bajo 60, se escala o se rechaza por riesgo alto."*  
   > - **`Descripción del proyecto.docx` — ENT3 (Sebastián Alarcón)**: *"Un número entre cero y cien esconde que las señales miden cosas distintas. Un ochenta y siete por documentos perfectos y biometría regular no es lo mismo que un ochenta y siete por todo mediocre... Por eso insisto en los mínimos por señal, aunque nadie ha definido cuáles son."*  
-  > - **`LLMS.docx` — DEC-07 / DEC-11**: *"Para el piloto, el umbral de aprobación automática es de 90 puntos."*
+  > - **`LLMS.docx` — DEC-11 (anexo)**: *"Para el piloto, el umbral de aprobación automática es de 90 puntos."*
 * **Opciones Presentadas:**
   - **A (Recomendada):** Aplicar un mínimo basal de seguridad de 60 puntos a las señales críticas de documentos en el MVP, editable por el Administrador de Riesgo.
   - **B:** Operar sin mínimos por señal por defecto (mínimo = 0), evaluando exclusivamente el puntaje total hasta que el cliente configure mínimos explícitos.

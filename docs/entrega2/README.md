@@ -52,7 +52,7 @@ La documentación detallada exigida para esta entrega se organiza en los siguien
 ```mermaid
 graph LR
     subgraph E1["Entrega 1 (Análisis de Negocio)"]
-        H["11 Inconsistencias (H-01 a H-11)"] --> D["DEC: README E1 lista 10; prueba.md define 11"]
+        H["11 Inconsistencias (H-01 a H-11)"] --> D["DEC: anexo E1 DEC-01 a DEC-12; fichas y README con numeración desplazada"]
         D --> R["18 RQF + 8 RQNF"]
     end
 
@@ -78,7 +78,7 @@ graph LR
 - **Requisito descartado:** `RQF-018` (Migración de pilotos pasados, ratificado como *Won't*).
 - **Requisitos nuevos creados en Entrega 2:** `RQF-020` (Ubicación visual de hallazgos), `RQF-021` (SLA hábil y escalamiento), `RQF-022` (Mínimos por señal y piso basal 60 pts), `RQF-023` (Precedencia estricta de fraude y jerarquía), `RQF-024` (Lista de trabajo y concurrencia híbrida multiusuario).
 
-**Nota sobre los conteos:** `docs/entrega1/prueba.md` contiene 18 IDs RQF (`RQF-001`–`RQF-018`), 8 RQNF y definiciones `DEC-01`–`DEC-11`; en cambio, `docs/entrega1/README.md` enumera solo `DEC-01`–`DEC-10`. No se editó Entrega 1. Las dos tablas de requisitos de F1/F4 contienen 15 IDs RQF únicos (los 10 anteriores y los 5 nuevos `RQF-020`–`RQF-024`) y 8 IDs RQNF únicos. En decisiones, la matriz de `clarificacion_cambios.md` llega a `DEC-14`, mientras que la Constitución lista hasta `DEC-12`; DEC-15 y DEC-16 se registran en [`decisiones_entrega2.md`](decisiones_entrega2.md). La matriz y la Constitución son fuentes distintas y no se afirma aquí que sus rangos sean idénticos.
+**Nota sobre los conteos:** `docs/entrega1/prueba.md` contiene 18 IDs RQF (`RQF-001`–`RQF-018`), 8 RQNF y el anexo registra `DEC-01` a `DEC-12`. Las fichas del cuerpo y el README de Entrega 1 usan numeración desplazada; para citar decisiones se toma como referencia el anexo. No se editó Entrega 1. Las dos tablas de requisitos de F1/F4 contienen 15 IDs RQF únicos (los 10 anteriores y los 5 nuevos `RQF-020`–`RQF-024`) y 8 IDs RQNF únicos. En decisiones, la matriz de `clarificacion_cambios.md` llega a `DEC-14`, mientras que la Constitución lista hasta `DEC-12`; DEC-15 y DEC-16 se registran en [`decisiones_entrega2.md`](decisiones_entrega2.md). La matriz y la Constitución son fuentes distintas y no se afirma aquí que sus rangos sean idénticos.
 
 ### Síntesis de Decisiones (DEC)
 - **Decisiones intactas:** `DEC-01`, `DEC-02`, `DEC-03`, `DEC-05`, `DEC-06`, `DEC-07`, `DEC-08`, `DEC-09`, `DEC-10`, `DEC-12`.
