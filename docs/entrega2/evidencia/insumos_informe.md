@@ -115,9 +115,9 @@ Los tres indicadores son **supuesto del equipo, definición no confirmada por el
 |---|---|---|
 | Cobertura de trazabilidad | Requisitos Must E1 en alcance con cadena documental completa / requisitos Must E1 en alcance | 15/15 = **100 %** de enlaces documentales. La limitación de aceptación se aclara en §2. |
 | Estabilidad de requisitos | Requisitos sin cambio / requisitos E1 en alcance | 14/18 = **77,78 %**; al lado: 4 modificados, 5 nuevos y 1 descartado (fuera del alcance). |
-| Proporción de autoría | Líneas escritas por agente / líneas totales; complemento del equipo / total | Según [autoria.md](./autoria.md): agente 42.802/43.029 = **99,47 %**; equipo 227/43.029 = **0,53 %**. |
+| Proporción de cambios por rol | Líneas cambiadas atribuidas a cada rol / líneas cambiadas totales (añadidas + eliminadas) | Según [autoria.md](./autoria.md): contenido atribuido al agente 42.802/43.029 = **99,47 %**; corrección/integración del equipo 225/43.029 = **0,52 %**; autoría inicial confirmada del equipo 2/43.029 = **0,00 %** redondeado. |
 
-La autoría toma `autoria.md` como fuente y mide cambios de líneas por commits alcanzables desde `e845bb0`, no el tamaño final de los archivos. La autoría de las dos líneas de `46a31b1` ya está clasificada como **equipo** por confirmación explícita del usuario; no queda margen pendiente por esas líneas en esta fuente.
+El conteo de `autoria.md` mide líneas cambiadas por commits alcanzables desde `e845bb0`, no el tamaño final de los archivos, y no captura dirección, decisiones ni verificación. `1f32bef` se clasifica como corrección e integración del equipo de contenido producido por el agente, no como autoría original del contenido integrado. Las dos líneas de `46a31b1` son autoría inicial del equipo por confirmación explícita del usuario.
 
 ## 7. Comparación de backlogs Entrega 1 vs Entrega 2
 

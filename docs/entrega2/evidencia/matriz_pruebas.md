@@ -79,6 +79,21 @@ El alcance funcional Must se toma de las matrices de F1 y F4 en `specs/001-bande
 | F1 | RQNF-008 (Should) | PX-08 | Playwright reportó 477 ms para cargar `/bandeja`; el resto de la suite aprobó. Esto prueba un escenario con el entorno/cache disponible, no la facilidad de uso de una persona sin capacitación. |
 | F4 | RQNF-008 (Should) | PX-08 | Las pruebas del desglose cubren estructura; no hay medición específica contra el umbral <500 ms del PX-08 F4. |
 
+### Estado de aceptación de criterios no demostrados
+
+“Con observación” indica que la evidencia disponible no demuestra el criterio completo; no equivale a aceptación. No se registra “Rechazado” solo por falta de prueba.
+
+| Caso | Estado | Observación |
+|---|---|---|
+| PX-01 | Con observación | No probado íntegramente: las mediciones puntuales y solicitudes simuladas no demuestran el p95 de aceptación bajo carga integrada y persistente. |
+| PX-02 | Con observación | No probado: no hay demostración end-to-end del procesamiento asíncrono real de evidencia pesada. |
+| PX-03 | Con observación | No probado íntegramente: las pruebas de sanitización no demuestran residencia territorial ni ausencia de egreso de PII en infraestructura real. |
+| PX-04 | Con observación | No probado: cifrado en tránsito/reposo y retención de evidencia no tienen evidencia de aceptación. |
+| PX-05 | Con observación | No probado íntegramente: las pruebas con mocks no demuestran persistencia, privilegios ni auditoría durable en una base desplegada. |
+| PX-06 | Con observación | No probado: las simulaciones no certifican disponibilidad mensual ni recuperación de infraestructura. |
+| PX-07 | Con observación | No probado: no se encontró prueba de carga sostenida para el volumen indicado. |
+| PF-06b | Con observación | No probado: no se identificó prueba que rechace la publicación de un flujo sin módulos activos. |
+
 ## Casos Must de Entrega 1 sin contraparte directa en las specs actuales
 
 - **PF-06b:** figura como caso Must de Entrega 1 para rechazar publicación de un flujo sin módulos analíticos. No aparece en la matriz de requisitos/casos de F4 E2 ni en los archivos automatizados identificados.
@@ -122,4 +137,4 @@ Se volvieron a ejecutar los comandos de backend, frontend y e2e sobre la revisi�
 
 Al momento de la ejecución, `GET /api/v1/review-tray/cases` devolvió `CASO-SEED-003`, bloqueado por Ana, y no devolvió `CASO-SEED-002`. Los logs de Compose mostraban una decisión previa de `CASO-SEED-002` y cambios posteriores de umbral. No se recargó el seed porque el script elimina casos, decisiones, auditorías y otros datos de la base compartida. Por ello, las cuatro fallas de Playwright se reportan como resultado de la ejecución sobre el estado de datos disponible, no como un fallo de compilación o una prueba aislada con datos demo limpios.
 
-Las pruebas Playwright de evidencia/bounding boxes y de pantalla de calibración son las dos aprobadas; sus límites de interceptaciones siguen aplicando. No se altera el resultado histórico de las seis pruebas aprobadas anteriormente en el clon aislado `mira-clean3` (`localhost:13020`): fue otra ejecución, con otro estado y entorno.
+Las pruebas Playwright de evidencia/bounding boxes y de pantalla de calibración son las dos aprobadas; sus límites de interceptaciones siguen aplicando. No se altera el resultado histórico de las seis pruebas aprobadas anteriormente en el clon aislado `mira-clean3` (`localhost:13020`): fue otra ejecución, con otro estado y entorno. Para disponer de un único resultado previo al tag, queda pendiente repetir Playwright en un entorno aislado con la base de prueba limpia y el seed recién cargado; no se deben combinar los resultados de esa corrida con la ejecución del Compose compartido.

@@ -8,7 +8,7 @@
 - Se cuentan líneas añadidas y eliminadas por `git diff --numstat`; las celdas se expresan como `añadidas/eliminadas`.
 - Las carpetas se agrupan por primer directorio: `backend`, `frontend`, `specs`, `docs` y `otros` (raíz y demás directorios).
 - El merge `a3da8b5` no se cuenta como cambio independiente. El cambio del README se atribuye al commit fuente `2a2078f`, evitando duplicarlo.
-- Los 12 commits con prefijo `[IA]` se atribuyen al agente. Los commits anteriores se clasifican según las respuestas del equipo a la consulta commit por commit.
+- Los 12 commits con prefijo `[IA]` se atribuyen al agente. Los commits anteriores se clasifican según las respuestas del equipo a la consulta commit por commit. Se distingue la autoría inicial de la revisión/corrección e integración de contenido producido por el agente.
 - Los archivos binarios no tienen líneas numstat; se excluyen de los porcentajes de líneas.
 - `46a31b1` se atribuye al **equipo**, según la clasificación explícita recibida del usuario. Sus 2 líneas se incluyen en los porcentajes.
 
@@ -42,7 +42,7 @@
 | `24799d5` Avance fase 5 | Agente | 1269/59 | 906/37 | 9/9 | 0/0 | 0/0 | 2184/105 |
 | `38f03b9` Avance fase 6 | Agente | 1837/5 | 1176/25 | 10/10 | 159/0 | 48/0 | 3230/40 |
 | `450e2ff` Avance fase 7 | Agente | 1258/0 | 0/0 | 3/3 | 368/0 | 0/0 | 1629/3 |
-| `1f32bef` Correcciones Compose | Equipo | 45/5 | 3/3 | 0/0 | 0/0 | 147/22 | 195/30 |
+| `1f32bef` Correcciones Compose | Equipo: corrección e integración de salida del agente (no autoría original) | 45/5 | 3/3 | 0/0 | 0/0 | 147/22 | 195/30 |
 | `a89ae03` `[IA]` Inicio seguro y PowerShell | Agente | 0/0 | 0/0 | 0/0 | 0/0 | 9/1 | 9/1 |
 | `be6583d` `[IA]` Evidencia de clon limpio | Agente | 0/0 | 0/0 | 0/0 | 109/0 | 0/0 | 109/0 |
 | `459522e` `[IA]` Evidencia de scoring F4 | Agente | 0/0 | 0/0 | 0/0 | 267/0 | 0/0 | 267/0 |
@@ -67,13 +67,14 @@
 | `otros` | 18.813 | 1.102 | 19.915 |
 | **Total** | **41.534** | **1.495** | **43.029** |
 
-## Porcentajes según la clasificación recibida
+## Porcentajes por rol en los cambios
 
-El porcentaje se calcula sobre líneas añadidas más eliminadas de los commits atribuidos, no sobre tamaño final de los archivos. La clasificación recibida incluye las dos líneas del commit inicial.
+El porcentaje se calcula sobre líneas añadidas más eliminadas por commit, no sobre el tamaño final de los archivos. La clasificación separa los cambios escritos por el agente de la corrección/integración del commit `1f32bef` y de las dos líneas de autoría inicial del equipo. Por ello, el porcentaje de cambios del commit `1f32bef` no significa que el equipo haya escrito originalmente todo el contenido que integra.
 
-| Autoría | Commits atribuibles | Añadidas | Eliminadas | Líneas cambiadas | % de líneas añadidas atribuibles | % de líneas eliminadas atribuibles | % del total de líneas atribuibles |
+| Rol atribuido | Commits | Añadidas | Eliminadas | Líneas cambiadas | % de líneas añadidas | % de líneas eliminadas | % del total de líneas |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Agente | 36 | 41.337 | 1.465 | 42.802 | 99,53 % | 97,99 % | 99,47 % |
-| Equipo | 2 | 197 | 30 | 227 | 0,47 % | 2,01 % | 0,53 % |
+| Agente (autoría de contenido) | 36 | 41.337 | 1.465 | 42.802 | 99,53 % | 97,99 % | 99,47 % |
+| Equipo (corrección e integración de salida del agente) | 1 | 195 | 30 | 225 | 0,47 % | 2,01 % | 0,52 % |
+| Equipo (autoría inicial confirmada) | 1 | 2 | 0 | 2 | 0,00 % | 0,00 % | 0,00 % |
 
-La atribución de `46a31b1` como equipo fue indicada explícitamente por el usuario; no se infirió del autor Git ni del contenido del commit. Los porcentajes de líneas totales usan como denominador las 43.029 líneas añadidas más eliminadas, incluidas las dos líneas del commit inicial.
+La atribución de `46a31b1` como autoría inicial del equipo fue indicada explícitamente por el usuario; no se infirió del autor Git ni del contenido del commit. La clasificación de `1f32bef` como corrección e integración del equipo también sigue la indicación explícita del usuario y no implica autoría original del README, Dockerfile ni imagen incorporados en ese commit. Los porcentajes de líneas totales usan como denominador las 43.029 líneas añadidas más eliminadas, incluidas las dos líneas del commit inicial. El equipo contribuyó además mediante dirección, decisiones y verificación, aportes que este conteo de líneas no mide.

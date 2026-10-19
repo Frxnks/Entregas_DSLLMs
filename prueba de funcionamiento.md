@@ -36,15 +36,15 @@ docker compose logs --tail 50 backend
 
 Busca el mensaje `Backend MIRA iniciado exitosamente`. Si todavía no aparece, espera unos segundos y consulta los logs otra vez.
 
-## 4. Cargar los datos de demostración en la primera instalación
+## 4. Cargar o reponer los datos de demostración
 
-Si acabas de clonar el repositorio y es la primera vez que levantas MIRA en este equipo, carga los datos de demostración para que aparezcan casos y umbrales:
+Para una instalación nueva, carga los datos de demostración para que aparezcan casos y umbrales. Antes de una sesión de usabilidad que requiera `CASO-SEED-002` libre, repón también el seed en una base de pruebas aislada y desechable:
 
 ```powershell
 docker compose exec backend node dist/prisma/seed.js
 ```
 
-El seed carga `CASO-SEED-001`, `CASO-SEED-002` y `CASO-SEED-003`, además de los umbrales del flujo. **Ejecútalo una sola vez en la primera instalación**, siempre que no tengas datos anteriores de MIRA que quieras conservar: elimina casos, decisiones, señales, evidencias, operadores, flujos, umbrales y organizaciones existentes antes de recrear los ejemplos. Si ya usabas MIRA o tienes datos importantes, no lo ejecutes; pide ayuda para revisar la base antes. Al volver a iniciar Docker en el futuro, no repitas este paso.
+El seed carga `CASO-SEED-001`, `CASO-SEED-002` y `CASO-SEED-003`, además de los umbrales del flujo. **Es destructivo**: elimina casos, decisiones, señales, evidencias, operadores, flujos, umbrales y organizaciones existentes antes de recrear los ejemplos. Ejecútalo solo en una base desechable dedicada a la prueba; no lo ejecutes en una base compartida ni en una instalación con datos que quieras conservar. Al volver a iniciar Docker no es necesario repetirlo, salvo que se necesite restablecer esos datos demo para una nueva sesión y se haya confirmado que la base es aislada. Después de la tarea de usabilidad, verifica que `CASO-SEED-002` haya pasado a `RESUELTO`.
 
 ## 5. Probar la aplicación en el navegador
 
