@@ -9,6 +9,20 @@ MIRA (*Modelo Inteligente de Revisión Asistida*) es una aplicación de demostra
 - **Base de datos:** PostgreSQL 16, en el puerto `5432`.
 - **Contenedores:** Docker Compose coordina los tres servicios. Al iniciar el backend se aplican automáticamente las migraciones de Prisma.
 
+## ¿Para qué sirve la aplicación?
+
+MIRA demuestra la revisión de solicitudes ficticias de reembolso de gastos médicos. Calcula un puntaje a partir de señales y umbrales configurados, y puede derivar casos a revisión humana. Una alerta de fraude tiene prioridad y también deriva el caso a una persona. MIRA presenta sugerencias, pero la decisión de los casos en revisión la registra el liquidador; no hay aprobación ni rechazo automático para esos casos.
+
+En la **bandeja de revisión** se pueden priorizar los casos pendientes según su estado y plazo hábil, buscar por identificador o causal y abrir un expediente para consultar sus antecedentes. El detalle reúne el documento de ejemplo, los hallazgos marcados sobre la evidencia, el desglose de señales, el puntaje y el motivo de derivación. El operador puede revisar la sugerencia y registrar una decisión con su justificación; las discrepancias quedan disponibles para auditoría. La sección de umbrales permite consultar y administrar los valores usados por el flujo.
+
+### Ejemplos incluidos
+
+- **`CASO-SEED-001`:** puntaje 94; en el seed de demostración figura aprobado automáticamente.
+- **`CASO-SEED-002`:** puntaje persistido 74,0; queda bajo el umbral de 90 y aparece en la bandeja para revisión humana, con sus señales y evidencia ficticia. La sugerencia no reemplaza la decisión del liquidador.
+- **`CASO-SEED-003`:** incluye una alerta de fraude. Se deriva a revisión humana por fraude, independientemente de su puntaje; no es un rechazo automático.
+
+Los casos y documentos son datos sintéticos para explorar y probar la aplicación, no expedientes reales ni una recomendación financiera o médica.
+
 ## Requisitos
 
 - Docker Desktop instalado y en ejecución, con Docker Compose v2.
@@ -117,6 +131,7 @@ Los datos de PostgreSQL se conservan en el volumen `postgres_data`. **No uses `d
 
 ## Documentación adicional
 
+- [Prueba de funcionamiento paso a paso](prueba%20de%20funcionamiento.md)
 - [Guía operativa de la bandeja de revisión](docs/review-tray-operator-guide.md)
 - [Guía de la API de scoring](docs/scoring-api-guide.md)
 - [Quickstart con escenarios de validación](specs/001-bandeja-revision-asistida/quickstart.md)
