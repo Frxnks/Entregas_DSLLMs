@@ -269,7 +269,7 @@ Conforme a la restricción crítica de contorno que prohíbe el uso de modelos d
 - **Razón de Derivación**: "Puntaje global insuficiente (74/100) inferior al umbral de aprobación automática configurado (90 puntos). Prohibición de rechazo automático conforme a DEC-04".
 - **Comportamiento en F1**: Estado `PENDIENTE_REVISION`, Prioridad `MEDIA`.
 - **SLA**: Plazo límite a 3 días hábiles desde el ingreso (Semáforo `EN_PLAZO`).
-- **Ubicación de Hallazgos (`ubicacionHallazgo`)**: Coordenadas `{ page: 1, x: 120, y: 450, width: 280, height: 60 }` sobre el campo de fecha de emisión.
+- **Ubicación de Hallazgos (`ubicacionHallazgo`)**: Autenticidad `{ page: 1, x: 24, y: 24, width: 560, height: 80 }` sobre el encabezado; coherencia de fechas `{ page: 1, x: 300, y: 247, width: 280, height: 46 }` sobre la fecha; cruce de fuentes `{ page: 1, x: 24, y: 343, width: 316, height: 30 }` sobre la prestación y especialidad.
 - **Facturación Comercial**: `esFacturable = false` (DEC-01).
 - **Evidencia Ficticia**: `/static/evidence/bono_desfase_002.pdf`.
 

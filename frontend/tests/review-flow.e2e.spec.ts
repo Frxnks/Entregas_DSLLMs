@@ -99,6 +99,102 @@ test.describe('F1 - Bandeja de Revisión Asistida (E2E Flujo Completo)', () => {
     await expect(page.locator('text=COHERENCIA_FECHAS').first()).toBeVisible();
   });
 
+  test('US1 / RQF-020: Los hallazgos del caso 002 coinciden con el documento completo y se pueden recorrer', async ({
+    page,
+  }) => {
+    await page.route('**/api/v1/review-tray/cases/CASO-SEED-002', (route) => route.abort());
+    await page.goto('/bandeja/CASO-SEED-002');
+    await expect(page.locator('text=bono_desfase_002.pdf').first()).toBeVisible();
+
+    const documentPage = page.locator('.relative.bg-white.shadow-xl');
+    await documentPage.scrollIntoViewIfNeeded();
+    await documentPage.evaluate((element) => {
+      if (element.parentElement) element.parentElement.scrollTop = 0;
+    });
+    const pageMetrics = await documentPage.evaluate((documentPage) => {
+      const viewport = documentPage.parentElement;
+      const header = documentPage.querySelector('h2');
+      const pageFooter = Array.from(documentPage.querySelectorAll('span')).find(
+        (element) => element.textContent?.trim() === 'Página 1 de 1'
+      );
+      const signalBox = (type: string) =>
+        documentPage.querySelector<HTMLElement>(`div[title^="${type}:"]`);
+      const dateLabel = Array.from(documentPage.querySelectorAll('span')).find(
+        (element) => element.textContent?.trim() === 'Fecha de Atención Médica'
+      );
+      const dateValue = Array.from(documentPage.querySelectorAll('span')).find(
+        (element) => element.textContent?.trim() === '15 de Septiembre de 2026'
+      );
+      const specialty = Array.from(documentPage.querySelectorAll('span')).find(
+        (element) => element.textContent?.trim() === 'Consulta Médica Especialidad Broncopulmonar'
+      );
+      const authenticityBox = signalBox('AUTENTICIDAD_DOCUMENTAL');
+      const dateBox = signalBox('COHERENCIA_FECHAS');
+      const crossReferenceBox = signalBox('CRUCE_FUENTES');
+
+      if (
+        !viewport ||
+        !header ||
+        !pageFooter ||
+        !dateLabel ||
+        !dateValue ||
+        !specialty ||
+        !authenticityBox ||
+        !dateBox ||
+        !crossReferenceBox
+      ) {
+        throw new Error('Falta contenido o un hallazgo esperado en el caso 002');
+      }
+
+      const bounds = (element: Element) => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+      };
+      const contains = (outer: Element, inner: Element) => {
+        const a = bounds(outer);
+        const b = bounds(inner);
+        return (
+          b.left >= a.left &&
+          b.right <= a.right &&
+          b.top >= a.top &&
+          b.bottom <= a.bottom
+        );
+      };
+      const pageRect = bounds(documentPage);
+      const viewportRect = bounds(viewport);
+
+      return {
+        pageStartsAtViewportTop: pageRect.top >= viewportRect.top,
+        pageHeight: documentPage.getBoundingClientRect().height,
+        viewportHeight: viewport.clientHeight,
+        headerIsHighlighted: contains(authenticityBox, header),
+        dateLabelIsHighlighted: contains(dateBox, dateLabel),
+        dateIsHighlighted: contains(dateBox, dateValue),
+        specialtyIsHighlighted: contains(crossReferenceBox, specialty),
+      };
+    });
+
+    expect(pageMetrics.pageStartsAtViewportTop).toBe(true);
+    expect(pageMetrics.pageHeight).toBeGreaterThan(pageMetrics.viewportHeight);
+    expect(pageMetrics.headerIsHighlighted).toBe(true);
+    expect(pageMetrics.dateLabelIsHighlighted).toBe(true);
+    expect(pageMetrics.dateIsHighlighted).toBe(true);
+    expect(pageMetrics.specialtyIsHighlighted).toBe(true);
+
+    const viewer = documentPage.locator('..');
+    const footerIsScrollableIntoView = await viewer.evaluate((element) => {
+      element.scrollTop = element.scrollHeight;
+      const pageFooter = Array.from(element.querySelectorAll('span')).find(
+        (span) => span.textContent?.trim() === 'Página 1 de 1'
+      );
+      if (!pageFooter) return false;
+      const footerRect = pageFooter.getBoundingClientRect();
+      const viewerRect = element.getBoundingClientRect();
+      return footerRect.top >= viewerRect.top && footerRect.bottom <= viewerRect.bottom;
+    });
+    expect(footerIsScrollableIntoView).toBe(true);
+  });
+
   test('US1 / RQF-020: Los hallazgos naranjas del caso 003 se alinean con identidad y folio', async ({
     page,
   }) => {

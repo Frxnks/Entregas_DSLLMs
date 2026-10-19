@@ -189,7 +189,7 @@ export function VisorEvidencia({
       )}
 
       {/* 3. Lienzo Principal de Visualización de Documento y Superposición de Bounding Boxes */}
-      <div className="relative flex-1 bg-slate-100 overflow-auto min-h-[460px] max-h-[680px] p-4 flex items-center justify-center">
+      <div className="relative flex-1 bg-slate-100 overflow-auto min-h-[460px] max-h-[680px] p-4 flex items-start justify-start">
         <div
           style={{
             transform: `scale(${zoomLevel / 100})`,
@@ -198,7 +198,7 @@ export function VisorEvidencia({
             width: `${DOC_WIDTH}px`,
             minHeight: `${DOC_HEIGHT}px`,
           }}
-          className="relative bg-white shadow-xl rounded border border-slate-300 select-none overflow-hidden"
+          className="relative mx-auto flex-none bg-white shadow-xl rounded border border-slate-300 select-none overflow-hidden"
         >
           {/* Fondo del documento: Renderizado de Imagen o Plantilla Documental Mock */}
           {activeEvidencia && !isPdf && !imageError ? (

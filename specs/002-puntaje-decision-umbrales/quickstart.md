@@ -54,7 +54,7 @@ docker compose exec backend npx prisma db seed
   - `estadoCaso`: `PENDIENTE_REVISION`.
   - `puntajeConfianza`: 74.0 (< 90).
   - `razonDerivacion`: Contiene texto explicativo en lenguaje claro.
-  - `ubicacionHallazgo`: Contiene coordenadas `{ page: 1, x: 120, y: 450, width: 280, height: 60 }`.
+  - `ubicacionHallazgo` de coherencia de fechas: `{ page: 1, x: 300, y: 247, width: 280, height: 46 }`, alineada con la fecha de atención del documento simulado.
   - `tiempoRestanteHorasHabiles`: Calculado según días laborables de Chile.
 
 ### Escenario 3: Precedencia Absoluta de Fraude y Registro de Discrepancia (Caso 3: CASO-SEED-003)
