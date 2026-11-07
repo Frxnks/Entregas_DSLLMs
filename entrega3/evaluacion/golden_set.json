@@ -2,10 +2,10 @@
   "version": "1.0.0",
   "purpose": "Evaluación documental del RAG; no consulta SQLite",
   "client_validation": {
-    "status": "pending",
-    "representative": null,
-    "date": null,
-    "note": "Debe validarlo el representante del cliente antes de la primera ejecución completa del pipeline."
+    "status": "approved",
+    "representative": "Nikolas",
+    "date": "2026-11-07",
+    "note": "Aprobación de Nikolas informada por el usuario en este chat el 2026-11-07: 'Ya la revisó y aprobó'. Se conservan las 20 preguntas y respuestas de la versión revisada. Ver validacion_representante.md."
   },
   "questions": [
     {"id":"R01","type":"answerable","question":"¿Puede el asistente aprobar o rechazar un caso?","should_answer":true,"expected_evidence":[{"code":"FAQ-OPE","version":"2","section":"¿Puedo pedirle al asistente"}],"expected_answer":"No; explica, muestra reglas y prepara solicitudes, pero la decisión corresponde al operador."},
