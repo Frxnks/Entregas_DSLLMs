@@ -45,6 +45,7 @@ class ProviderResult:
     model: str
     tool_calls: list[dict] = field(default_factory=list)
     tool_results: list[dict] = field(default_factory=list)
+    usage: list[dict] = field(default_factory=list)
 
 
 class RateLimiter:
@@ -70,27 +71,35 @@ class GeminiProvider:
         self.client = genai.Client(api_key=settings.gemini_api_key)
         self.limiter = RateLimiter(settings.gemini_min_interval_seconds)
         self.tool = types.Tool(function_declarations=TOOL_DECLARATIONS)
+        self.usage: list[dict] = []
+        self.last_model = settings.gemini_model
 
     async def answer(self, message: str, gateway: Gateway) -> ProviderResult:
         safe_message = sanitize_for_llm(message, self.known_names)
         contents: list[Any] = [types.Content(role="user", parts=[types.Part.from_text(text=safe_message)])]
         calls: list[dict] = []
         results: list[dict] = []
+        self.usage = []
         model = self.settings.gemini_model
         for _ in range(6):
             response = await self._generate(model, contents)
+            if not response.candidates or not response.candidates[0].content:
+                raise RuntimeError("Gemini devolvió una respuesta vacía o bloqueada")
             candidate_content = response.candidates[0].content
             contents.append(candidate_content)
             function_calls = response.function_calls or []
             if not function_calls:
-                return ProviderResult(response.text or "", model, calls, results)
+                return ProviderResult(response.text or "", self.last_model, calls, results, list(self.usage))
             response_parts = []
             for function_call in function_calls:
+                if function_call.name not in {item["name"] for item in TOOL_DECLARATIONS}:
+                    raise RuntimeError("Gemini solicitó una herramienta no permitida")
                 arguments = dict(function_call.args or {})
                 calls.append({"name": function_call.name, "arguments": sanitize_for_llm(arguments, self.known_names)})
                 result = await gateway.call(function_call.name, arguments)
                 safe_result = sanitize_for_llm(result, self.known_names)
-                results.append({"name": function_call.name, "result": safe_result})
+                # Conserva el token para la interfaz local; nunca se envía al LLM.
+                results.append({"name": function_call.name, "result": result})
                 response_parts.append(types.Part.from_function_response(name=function_call.name, response=safe_result))
             contents.append(types.Content(role="user", parts=response_parts))
         raise RuntimeError("El modelo excedió el máximo de pasos de herramientas")
@@ -104,21 +113,26 @@ class GeminiProvider:
             for attempt in range(self.settings.gemini_max_retries):
                 await self.limiter.wait()
                 try:
-                    return await self.client.aio.models.generate_content(
+                    response = await self.client.aio.models.generate_content(
                         model=candidate_model,
                         contents=contents,
                         config=types.GenerateContentConfig(
                             system_instruction=SYSTEM_INSTRUCTION,
-                            tools=[self.tool], temperature=0.1,
+                            tools=[self.tool], temperature=0.1, max_output_tokens=4096,
+                            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
                         ),
                     )
+                    self.last_model = candidate_model
+                    usage = response.usage_metadata
+                    self.usage.append({"model": candidate_model, "tokens": usage.model_dump(mode="json") if usage else None})
+                    return response
                 except Exception as exc:
                     last_error = exc
                     retryable = any(code in str(exc).lower() for code in ("429", "503", "resource_exhausted", "unavailable"))
                     if not retryable or attempt + 1 >= self.settings.gemini_max_retries:
                         break
                     await asyncio.sleep(min(30.0, 2 ** attempt * 2.0))
-        raise RuntimeError(f"El proveedor de IA no respondió: {last_error}")
+        raise RuntimeError(f"El proveedor de IA no respondió ({type(last_error).__name__}); revise cuota, modelo y configuración local")
 
 
 class DemoProvider:

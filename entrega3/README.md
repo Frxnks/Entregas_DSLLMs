@@ -15,6 +15,23 @@ Esta carpeta contiene el caso de uso CU-1 de MIRA. El asistente explica por qué
 
 ## Inicio local en Windows
 
+### Ver la demo ya preparada en este computador
+
+Desde PowerShell:
+
+```powershell
+cd B:\Descargas\Entregas_DSLLMs
+.\entrega3\iniciar-demo.ps1
+```
+
+Abra `http://localhost:3000/asistente`. El script inicia MCP, API y frontend en segundo plano, usa el modo demostración sin Gemini y guarda logs/temporales dentro de `entrega3/var` en B:. Requiere el entorno, el índice y la compilación del frontend ya preparados. Si un puerto está ocupado conserva el proceso existente.
+
+Seleccione U-01 para consultar, U-02 para probar el rol supervisor o U-03 para comprobar el bloqueo de solicitudes. Puede preguntar: «¿Existe una contradicción vigente entre los umbrales 80 y 85 para aprobación automática?».
+
+El informe PDF está en `informe/Informe_Entrega_3_MIRA.pdf` y la presentación en `presentacion/Presentacion_Entrega_3_MIRA.pptx`. Son borradores: falta la revisión visual de la presentación, la validación del representante y la evaluación de generación con Gemini. El modo demo tiene respuestas limitadas y no sustituye esa evaluación.
+
+### Preparar otra instalación
+
 Requiere Python 3.12 y Node.js 20. Desde la raíz del repositorio:
 
 ```powershell

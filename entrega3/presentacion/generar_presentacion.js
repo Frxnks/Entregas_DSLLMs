@@ -122,7 +122,11 @@ pptx.addSection({ title: 'Diseño' });
   node(3.38, 1.52, 2.1, 'FastAPI', 'sesión y coordinación', HEX.teal);
   node(6.00, 1.52, 2.1, 'Gemini', 'selección de herramientas', HEX.gold);
   node(8.62, 1.52, 2.1, 'FastMCP', 'permisos y contratos', HEX.coral);
-  [[2.87,3.33],[5.49,5.95],[8.11,8.57]].forEach(v => s.addShape(pptx.ShapeType.chevron, { x: v[0], y: 1.77, w: 0.36, h: 0.35, fill: { color: HEX.muted }, line: noLine }));
+  [[2.87,3.33],[5.49,5.95]].forEach(v => s.addShape(pptx.ShapeType.chevron, { x: v[0], y: 1.77, w: 0.36, h: 0.35, fill: { color: HEX.muted }, line: noLine }));
+  s.addShape(pptx.ShapeType.line, { x: 4.43, y: 2.48, w: 0, h: 0.55, line: { color: HEX.teal, width: 2 } });
+  s.addShape(pptx.ShapeType.line, { x: 4.43, y: 3.03, w: 5.24, h: 0, line: { color: HEX.teal, width: 2 } });
+  s.addShape(pptx.ShapeType.line, { x: 9.67, y: 3.03, w: 0, h: -0.55, line: { color: HEX.teal, width: 2, endArrowType: 'triangle' } });
+  tx(s, 'Cliente MCP en la API', { x: 5.1, y: 3.18, w: 3.6, h: 0.22, fontSize: 13, color: HEX.teal, align: 'center' });
   s.addShape(pptx.ShapeType.line, { x: 9.67, y: 2.5, w: 0, h: 1.0, line: { color: HEX.coral, width: 2, beginArrowType: 'none', endArrowType: 'triangle' } });
   s.addShape(pptx.ShapeType.line, { x: 9.67, y: 3.48, w: -2.1, h: 0.72, line: { color: HEX.teal, width: 2, endArrowType: 'triangle' } });
   s.addShape(pptx.ShapeType.line, { x: 9.67, y: 3.48, w: 2.1, h: 0.72, line: { color: HEX.coral, width: 2, endArrowType: 'triangle' } });
@@ -159,8 +163,8 @@ pptx.addSection({ title: 'Diseño' });
     rect(s, 8.45, 1.52 + i * 2.15, 4.12, 1.72, i === 0 ? HEX.light : HEX.mint, 0.14, { color: i === 0 ? HEX.line : HEX.sea, width: 1 });
     pill(s, c[0], 8.72, 1.76 + i * 2.15, 1.35, c[4]);
     tx(s, c[1], { x: 10.25, y: 1.84 + i * 2.15, w: 1.95, h: 0.2, fontSize: 12, color: HEX.muted, align: 'right' });
-    tx(s, c[2], { x: 8.72, y: 2.38 + i * 2.15, w: 1.6, h: 0.25, fontSize: 16, bold: true, color: c[4] });
-    tx(s, c[3], { x: 10.15, y: 2.28 + i * 2.15, w: 2.05, h: 0.55, fontSize: 12.5, color: HEX.ink, valign: 'mid' });
+    tx(s, c[2], { x: 8.72, y: 2.30 + i * 2.15, w: 3.5, h: 0.28, fontSize: 16, bold: true, color: c[4] });
+    tx(s, c[3], { x: 8.72, y: 2.73 + i * 2.15, w: 3.5, h: 0.30, fontSize: 12.5, color: HEX.ink, valign: 'mid' });
   });
   pill(s, 'Elección: secciones completas', 8.88, 6.02, 3.25, HEX.coral);
   tx(s, 'Conserva condiciones normativas completas sin aumentar k.', { x: 8.62, y: 6.55, w: 3.78, h: 0.3, fontSize: 12.5, color: HEX.muted, align: 'center' });
@@ -257,7 +261,7 @@ pptx.addSection({ title: 'Evidencia' });
   const items = [
     ['D1', 'Cita abierta', 'fuente, sección y versión'], ['D2', 'Abstención', 'pregunta sin respaldo'],
     ['D3', 'Conflicto', '80 frente a 85'], ['D4', 'Traza MCP', 'vigente frente a derogada'],
-    ['D5', 'Confirmación', 'preparar → confirmar → releer'], ['D6', 'Guardrail', 'rol, estado o tercera solicitud'],
+    ['D5', 'Confirmar', 'preparar → confirmar → releer'], ['D6', 'Guardrail', 'rol, estado o tercera solicitud'],
     ['D7', 'Cliente CLI', 'Streamable HTTP'], ['D8', 'Imprevista', 'respuesta con el mismo método'],
   ];
   items.forEach((it, i) => {
