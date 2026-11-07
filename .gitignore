@@ -35,6 +35,13 @@ playwright-report/
 .DS_Store
 Thumbs.db
 
+# Entrega 3: entorno, secretos y artefactos reproducibles
+entrega3/.venv/
+entrega3/service/.env
+entrega3/var/
+entrega3/**/__pycache__/
+entrega3/**/*.pyc
+
 # Prisma / DB local files
 *.sqlite
 *.sqlite-journal

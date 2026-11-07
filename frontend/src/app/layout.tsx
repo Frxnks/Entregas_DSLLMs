@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ShieldCheck, Inbox, Sliders, FileText, UserCheck } from 'lucide-react';
+import { ShieldCheck, Inbox, Sliders, FileText, UserCheck, Bot } from 'lucide-react';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function RootLayout({
                         MIRA
                       </span>
                       <span className="text-xs bg-sky-950 text-sky-300 font-semibold px-2 py-0.5 rounded border border-sky-800">
-                        v2.0
+                        v3.0
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 font-medium hidden sm:block">
@@ -48,6 +48,13 @@ export default function RootLayout({
 
               {/* Menú de Navegación Central */}
               <nav className="flex items-center space-x-1 sm:space-x-2">
+                <Link
+                  href="/asistente"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors"
+                >
+                  <Bot className="w-4 h-4 text-violet-400" />
+                  <span>Asistente</span>
+                </Link>
                 <Link
                   href="/bandeja"
                   className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800 transition-colors"

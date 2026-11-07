@@ -1,0 +1,427 @@
+{
+  "generated_at": "2026-11-07T04:03:39.186930+00:00",
+  "validation": {
+    "total": 20,
+    "counts": {
+      "answerable": 12,
+      "unanswerable": 4,
+      "current_conflict": 2,
+      "version_change": 2
+    },
+    "documents": 6,
+    "client_validation": {
+      "status": "pending",
+      "representative": null,
+      "date": null,
+      "note": "Debe validarlo el representante del cliente antes de la primera ejecución completa del pipeline."
+    }
+  },
+  "experiments": [
+    {
+      "strategy": "sections",
+      "top_k": 4,
+      "backend": "semantic-chroma",
+      "recall_at_k_questions": 0.8125,
+      "recall_at_k_fragments": 0.85,
+      "results": [
+        {
+          "id": "R01",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "FAQ-OPE:v2:section:01",
+            "FAQ-OPE:v2:section:03",
+            "PRO-ANT:v1:section:04",
+            "MAN-REV:v1:section:03"
+          ]
+        },
+        {
+          "id": "R02",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "MAN-REV:v1:section:02",
+            "MAN-REV:v1:section:03",
+            "FAQ-OPE:v2:section:01",
+            "MAN-REV:v1:section:01"
+          ]
+        },
+        {
+          "id": "R03",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "POL-DEC:v2:section:03",
+            "CAT-SEN:v3:section:02",
+            "POL-DEC:v1:section:02",
+            "MAN-REV:v1:section:06"
+          ]
+        },
+        {
+          "id": "R04",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:section:04",
+            "POL-DEC:v2:section:03",
+            "POL-DEC:v1:section:02",
+            "POL-DEC:v1:section:04"
+          ]
+        },
+        {
+          "id": "R05",
+          "expected": 1,
+          "found": 0,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "POL-DEC:v1:section:02",
+            "POL-DEC:v2:section:03",
+            "CAT-SEN:v3:section:04",
+            "POL-DEC:v2:section:02"
+          ]
+        },
+        {
+          "id": "R06",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:section:01",
+            "POL-DEC:v2:section:04",
+            "CAT-SEN:v3:section:06",
+            "POL-DEC:v2:section:03"
+          ]
+        },
+        {
+          "id": "R07",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:section:01",
+            "POL-DEC:v2:section:06",
+            "POL-DEC:v2:section:04",
+            "POL-DEC:v2:section:03"
+          ]
+        },
+        {
+          "id": "R08",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:section:01",
+            "PRO-ANT:v1:section:05",
+            "PRO-ANT:v1:section:02",
+            "POL-DEC:v2:section:07"
+          ]
+        },
+        {
+          "id": "R09",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:section:04",
+            "PRO-ANT:v1:section:03",
+            "PRO-ANT:v1:section:05",
+            "PRO-ANT:v1:section:01"
+          ]
+        },
+        {
+          "id": "R10",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:section:04",
+            "PRO-ANT:v1:section:03",
+            "PRO-ANT:v1:section:01",
+            "PRO-ANT:v1:section:05"
+          ]
+        },
+        {
+          "id": "R11",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:section:03",
+            "PRO-ANT:v1:section:01",
+            "PRO-ANT:v1:section:04",
+            "MAN-REV:v1:section:01"
+          ]
+        },
+        {
+          "id": "R12",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:section:03",
+            "PRO-ANT:v1:section:04",
+            "PRO-ANT:v1:section:01",
+            "PRO-ANT:v1:section:05"
+          ]
+        },
+        {
+          "id": "C01",
+          "expected": 2,
+          "found": 1,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "POL-DEC:v1:section:02",
+            "POL-DEC:v2:section:02",
+            "POL-DEC:v2:section:05",
+            "POL-DEC:v1:section:04"
+          ]
+        },
+        {
+          "id": "C02",
+          "expected": 2,
+          "found": 2,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "MAN-REV:v1:section:01",
+            "POL-DEC:v1:section:04",
+            "FAQ-OPE:v2:section:02",
+            "POL-DEC:v2:section:03"
+          ]
+        },
+        {
+          "id": "V01",
+          "expected": 2,
+          "found": 2,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:section:06",
+            "POL-DEC:v2:section:04",
+            "POL-DEC:v1:section:04",
+            "CAT-SEN:v3:section:01"
+          ]
+        },
+        {
+          "id": "V02",
+          "expected": 2,
+          "found": 1,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "POL-DEC:v2:section:05",
+            "MAN-REV:v1:section:04",
+            "POL-DEC:v2:section:01",
+            "POL-DEC:v2:section:03"
+          ]
+        }
+      ]
+    },
+    {
+      "strategy": "windows",
+      "top_k": 4,
+      "backend": "semantic-chroma",
+      "recall_at_k_questions": 0.8125,
+      "recall_at_k_fragments": 0.85,
+      "results": [
+        {
+          "id": "R01",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "FAQ-OPE:v2:window:01",
+            "POL-DEC:v2:window:03",
+            "FAQ-OPE:v2:window:03",
+            "PRO-ANT:v1:window:04"
+          ]
+        },
+        {
+          "id": "R02",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "MAN-REV:v1:window:02",
+            "MAN-REV:v1:window:03",
+            "FAQ-OPE:v2:window:01",
+            "MAN-REV:v1:window:01"
+          ]
+        },
+        {
+          "id": "R03",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:03",
+            "POL-DEC:v2:window:04",
+            "POL-DEC:v1:window:02",
+            "POL-DEC:v2:window:05"
+          ]
+        },
+        {
+          "id": "R04",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:06",
+            "POL-DEC:v2:window:04",
+            "POL-DEC:v1:window:02",
+            "POL-DEC:v2:window:05"
+          ]
+        },
+        {
+          "id": "R05",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:04",
+            "POL-DEC:v1:window:02",
+            "CAT-SEN:v3:window:03",
+            "POL-DEC:v2:window:04"
+          ]
+        },
+        {
+          "id": "R06",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:01",
+            "POL-DEC:v2:window:06",
+            "POL-DEC:v2:window:05",
+            "CAT-SEN:v3:window:08"
+          ]
+        },
+        {
+          "id": "R07",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:01",
+            "POL-DEC:v2:window:08",
+            "POL-DEC:v2:window:06",
+            "POL-DEC:v2:window:04"
+          ]
+        },
+        {
+          "id": "R08",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:window:01",
+            "PRO-ANT:v1:window:05",
+            "PRO-ANT:v1:window:02",
+            "PRO-ANT:v1:window:04"
+          ]
+        },
+        {
+          "id": "R09",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:window:04",
+            "PRO-ANT:v1:window:03",
+            "PRO-ANT:v1:window:05",
+            "PRO-ANT:v1:window:01"
+          ]
+        },
+        {
+          "id": "R10",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:window:04",
+            "PRO-ANT:v1:window:03",
+            "PRO-ANT:v1:window:01",
+            "FAQ-OPE:v2:window:02"
+          ]
+        },
+        {
+          "id": "R11",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:window:03",
+            "PRO-ANT:v1:window:01",
+            "PRO-ANT:v1:window:04",
+            "MAN-REV:v1:window:01"
+          ]
+        },
+        {
+          "id": "R12",
+          "expected": 1,
+          "found": 1,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "PRO-ANT:v1:window:03",
+            "PRO-ANT:v1:window:04",
+            "PRO-ANT:v1:window:01",
+            "PRO-ANT:v1:window:05"
+          ]
+        },
+        {
+          "id": "C01",
+          "expected": 2,
+          "found": 1,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "POL-DEC:v1:window:02",
+            "POL-DEC:v2:window:02",
+            "POL-DEC:v2:window:03",
+            "POL-DEC:v2:window:07"
+          ]
+        },
+        {
+          "id": "C02",
+          "expected": 2,
+          "found": 1,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "MAN-REV:v1:window:01",
+            "POL-DEC:v1:window:04",
+            "FAQ-OPE:v2:window:02",
+            "POL-DEC:v2:window:03"
+          ]
+        },
+        {
+          "id": "V01",
+          "expected": 2,
+          "found": 2,
+          "all_expected_retrieved": true,
+          "retrieved_chunks": [
+            "CAT-SEN:v3:window:08",
+            "POL-DEC:v2:window:06",
+            "POL-DEC:v1:window:04",
+            "CAT-SEN:v3:window:01"
+          ]
+        },
+        {
+          "id": "V02",
+          "expected": 2,
+          "found": 1,
+          "all_expected_retrieved": false,
+          "retrieved_chunks": [
+            "POL-DEC:v2:window:07",
+            "POL-DEC:v2:window:04",
+            "MAN-REV:v1:window:05",
+            "POL-DEC:v1:window:01"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Este reporte mide recuperación; precisión de citas, fidelidad y abstención requieren evaluar la generación.",
+    "El modo lexical es diagnóstico y no reemplaza la evaluación semántica final con ChromaDB."
+  ]
+}
