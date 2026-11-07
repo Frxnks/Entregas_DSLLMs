@@ -53,6 +53,67 @@ services:
     depends_on:
       backend:
         condition: service_started
+      assistant-api:
+        condition: service_started
+    networks:
+      - mira-network
+
+  assistant-prepare:
+    build:
+      context: ./entrega3
+      dockerfile: service/Dockerfile
+    environment:
+      RAG_EMBEDDING_MODEL: "paraphrase-multilingual-MiniLM-L12-v2"
+    command: ["python", "-m", "mira_cu1.prepare"]
+    volumes:
+      - assistant_data:/app/entrega3/var
+      - assistant_models:/root/.cache/huggingface
+    networks:
+      - mira-network
+
+  assistant-mcp:
+    build:
+      context: ./entrega3
+      dockerfile: service/Dockerfile
+    environment:
+      MCP_HOST: "0.0.0.0"
+      MCP_PORT: 8001
+    command: ["python", "-m", "mira_cu1.mcp_server"]
+    ports:
+      - "8001:8001"
+    volumes:
+      - assistant_data:/app/entrega3/var
+      - assistant_models:/root/.cache/huggingface
+    depends_on:
+      assistant-prepare:
+        condition: service_completed_successfully
+    networks:
+      - mira-network
+
+  assistant-api:
+    build:
+      context: ./entrega3
+      dockerfile: service/Dockerfile
+    environment:
+      API_HOST: "0.0.0.0"
+      API_PORT: 8002
+      MCP_URL: "http://assistant-mcp:8001/mcp"
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+      GEMINI_MODEL: "${GEMINI_MODEL:-gemini-2.5-flash}"
+      GEMINI_FALLBACK_MODEL: "${GEMINI_FALLBACK_MODEL:-}"
+      LLM_PROVIDER: "${LLM_PROVIDER:-gemini}"
+      MIRA_CORS_ORIGIN: "http://localhost:3000"
+    command: ["python", "-m", "mira_cu1.main"]
+    ports:
+      - "8002:8002"
+    volumes:
+      - assistant_data:/app/entrega3/var
+      - assistant_models:/root/.cache/huggingface
+    depends_on:
+      assistant-prepare:
+        condition: service_completed_successfully
+      assistant-mcp:
+        condition: service_started
     networks:
       - mira-network
 
@@ -64,4 +125,10 @@ networks:
 volumes:
   postgres_data:
     name: postgres_data
+    driver: local
+  assistant_data:
+    name: mira_assistant_data
+    driver: local
+  assistant_models:
+    name: mira_assistant_models
     driver: local

@@ -1,0 +1,10 @@
+{
+  "name": "mira-entrega3-presentacion",
+  "private": true,
+  "scripts": {
+    "build": "node generar_presentacion.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

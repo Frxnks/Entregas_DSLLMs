@@ -20,6 +20,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+ENV NEXT_PUBLIC_ASSISTANT_API_URL=http://localhost:8002/api
 
 RUN npm run build
 

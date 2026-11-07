@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "purpose": "Evaluación documental del RAG; no consulta SQLite",
+  "client_validation": {
+    "status": "pending",
+    "representative": null,
+    "date": null,
+    "note": "Debe validarlo el representante del cliente antes de la primera ejecución completa del pipeline."
+  },
+  "questions": [
+    {"id":"R01","type":"answerable","question":"¿Puede el asistente aprobar o rechazar un caso?","should_answer":true,"expected_evidence":[{"code":"FAQ-OPE","version":"2","section":"¿Puedo pedirle al asistente"}],"expected_answer":"No; explica, muestra reglas y prepara solicitudes, pero la decisión corresponde al operador."},
+    {"id":"R02","type":"answerable","question":"¿En qué orden recomienda el manual revisar un caso?","should_answer":true,"expected_evidence":[{"code":"MAN-REV","version":"1","section":"Orden recomendado"}],"expected_answer":"Razón de derivación, señales y fraude, evidencias, y finalmente puntaje."},
+    {"id":"R03","type":"answerable","question":"¿Cuál es el mínimo propio de DOC_AUT?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"2","section":"Mínimos por señal"}],"expected_answer":"70."},
+    {"id":"R04","type":"answerable","question":"¿Cuál es el mínimo propio de BIO_ROSTRO?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"2","section":"Mínimos por señal"}],"expected_answer":"75."},
+    {"id":"R05","type":"answerable","question":"¿Qué se recomienda si DOC_LEG es menor que 50?","should_answer":true,"expected_evidence":[{"code":"CAT-SEN","version":"3","section":"Señales documentales"}],"expected_answer":"Solicitar el reenvío del documento."},
+    {"id":"R06","type":"answerable","question":"¿Qué significa la señal FRA_MEMORIA?","should_answer":true,"expected_evidence":[{"code":"CAT-SEN","version":"3","section":"Señales de fraude"}],"expected_answer":"Una pieza igual o casi idéntica ya fue presentada en otro caso."},
+    {"id":"R07","type":"answerable","question":"¿Qué indica la política vigente cuando falta una señal?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"2","section":"Señales faltantes"}],"expected_answer":"Se deriva a revisión y la ausencia nunca se interpreta como favorable."},
+    {"id":"R08","type":"answerable","question":"¿Qué contenido debe tener una solicitud de antecedentes?","should_answer":true,"expected_evidence":[{"code":"PRO-ANT","version":"1","section":"Contenido de la solicitud"}],"expected_answer":"Caso, documentos o capturas requeridos y motivo comprensible."},
+    {"id":"R09","type":"answerable","question":"¿Qué roles pueden registrar una solicitud de antecedentes?","should_answer":true,"expected_evidence":[{"code":"PRO-ANT","version":"1","section":"Límites"}],"expected_answer":"Operador o supervisor."},
+    {"id":"R10","type":"answerable","question":"¿Quién debe registrar una tercera solicitud de antecedentes?","should_answer":true,"expected_evidence":[{"code":"PRO-ANT","version":"1","section":"Límites"}],"expected_answer":"Un supervisor."},
+    {"id":"R11","type":"answerable","question":"¿Se pueden solicitar antecedentes sobre un caso aprobado automáticamente?","should_answer":true,"expected_evidence":[{"code":"PRO-ANT","version":"1","section":"Límites"}],"expected_answer":"No."},
+    {"id":"R12","type":"answerable","question":"¿Qué efecto produce registrar una solicitud de antecedentes?","should_answer":true,"expected_evidence":[{"code":"PRO-ANT","version":"1","section":"Registro y efecto"}],"expected_answer":"Se registra autor y fecha, el caso pasa a solicitud de antecedentes y se avisa al sistema de origen."},
+    {"id":"N01","type":"unanswerable","question":"¿Cuáles son los pesos porcentuales exactos de cada componente del puntaje?","should_answer":false,"expected_evidence":[],"expected_answer":"Abstenerse: el corpus no define esos pesos."},
+    {"id":"N02","type":"unanswerable","question":"¿Cuál es la tasa de error medida del módulo de autenticidad documental?","should_answer":false,"expected_evidence":[],"expected_answer":"Abstenerse: el corpus no contiene una medición de error."},
+    {"id":"N03","type":"unanswerable","question":"¿Cuánto cuesta en pesos chilenos solicitar antecedentes?","should_answer":false,"expected_evidence":[],"expected_answer":"Abstenerse: el corpus no informa costos."},
+    {"id":"N04","type":"unanswerable","question":"¿Qué proveedor comercial ejecuta el módulo BIO_ROSTRO?","should_answer":false,"expected_evidence":[],"expected_answer":"Abstenerse: el corpus no identifica un proveedor."},
+    {"id":"C01","type":"current_conflict","question":"¿El umbral de referencia para aprobación automática es 80 o 85 puntos?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"2","section":"Umbrales de referencia"},{"code":"MAN-REV","version":"1","section":"Qué casos llegan"}],"expected_answer":"Exponer 85 en POL-DEC v2 y 80 en MAN-REV v1 como fuentes vigentes contradictorias, sin elegir."},
+    {"id":"C02","type":"current_conflict","question":"¿Un caso con 82 puntos, sin fraude pero con DOC_AUT bajo 70 se aprueba automáticamente?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"2","section":"Mínimos por señal"},{"code":"MAN-REV","version":"1","section":"Qué casos llegan"}],"expected_answer":"Exponer que el manual afirma aprobación desde 80 sin fraude y la política exige cumplir mínimos propios; no resolver el conflicto."},
+    {"id":"V01","type":"version_change","question":"¿Cómo cambió el tratamiento de una señal de fraude entre POL-DEC v1 y v2?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"1","section":"Señales de fraude"},{"code":"POL-DEC","version":"2","section":"Precedencia de las señales de fraude"}],"expected_answer":"La v1 descontaba 20 puntos; la v2 no descuenta y deriva siempre. Aplicar la v2 vigente."},
+    {"id":"V02","type":"version_change","question":"¿Cómo cambió la autorización para modificar umbrales entre POL-DEC v1 y v2?","should_answer":true,"expected_evidence":[{"code":"POL-DEC","version":"1","section":"Configuración por organización"},{"code":"POL-DEC","version":"2","section":"Configuración por organización"}],"expected_answer":"La v1 permitía al diseñador aplicar cambios inmediatos; la v2 exige dos supervisores. Aplicar la v2 vigente."}
+  ]
+}
