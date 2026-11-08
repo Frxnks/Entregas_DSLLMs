@@ -5,12 +5,12 @@ CU-1 � explicar con evidencia � consultar con permisos � actuar con confir
 
 6
 20
-17
-0,85
+25
+0,90
 documentos versionados
 preguntas Golden Set
 pruebas aprobadas
-Recall@4 evidencia
+Recall@5 evidencia
 
 La decisi�n sigue siendo humana
 Lagos � Moraga � Chaves � Caru  |  9 de noviembre de 2026
@@ -69,31 +69,31 @@ fragmentos + vectores
 Defender el reparto: ChromaDB contiene conocimiento est�tico; SQLite contiene estado operacional. MCP es el l�mite de confianza.
 
 <!-- Slide number: 4 -->
-RAG: mismo Recall agregado, fallos diferentes
+RAG: mejora con k=5; persisten dos preguntas incompletas
 
 ### Chart
 
 | Category | Recall por evidencia | Preguntas completas |
 |---|---|---|
-| Secciones | 85.0 | 81.25 |
-| Ventanas | 85.0 | 81.25 |
+| Secciones | 90.0 | 87.5 |
+| Ventanas | 90.0 | 87.5 |
 
 35 fragmentos
 Secciones
-pero recupera las dos fuentes de C02
-Pierde R05
+C01 y V02
+cada una recupera 1 de 2 evidencias
 
 40 fragmentos
 Ventanas
-pero pierde una fuente de C02
-Recupera R05
+C01 y V02
+cada una recupera 1 de 2 evidencias
 
-Elecci�n: secciones completas
-Conserva condiciones normativas completas sin aumentar k.
+Predeterminada: secciones completas
+Ambas estrategias empatan; secciones conserva reglas completas.
 4
 
 ### Notes:
-No ocultar el empate. La decisi�n se basa en el perfil de fallos: las secciones preservan mejor reglas completas y el conflicto C02.
+Con k=5, ambas estrategias obtienen Recall 0,90 por evidencia y 0,875 por pregunta. Ambas recuperan R05 y las dos fuentes de C02; C01 y V02 siguen incompletas. Secciones se mantiene por conservar las condiciones completas de cada regla.
 
 <!-- Slide number: 5 -->
 MCP: siete puertas antes de una escritura
@@ -172,7 +172,7 @@ Conectar con DEC-06/RQNF-003. Aclarar l�mites: el filtro cubre formatos comune
 <!-- Slide number: 7 -->
 Evaluaci�n: recuperaci�n y sistema se miden por separado
 
-17 / 17
+25 / 25
 20
 pruebas automatizadas aprobadas
 preguntas Golden Set RAG
@@ -205,14 +205,14 @@ Seguridad
 2
 versiones
 
-TypeScript ?
-Next.js build ?
-CLI FastMCP ?
-Pendiente externo: validaci�n del cliente + corrida de generaci�n con Gemini
+TypeScript ✓
+Next.js build ✓
+CLI FastMCP ✓
+Golden Set validado · evaluaci�n de generaci�n con Gemini pendiente
 7
 
 ### Notes:
-Separar claramente Golden Set RAG de matriz de integraci�n. No presentar la validaci�n del cliente ni Gemini como completados.
+Separar claramente Golden Set RAG de matriz de integraci�n. El Golden Set fue confirmado por Nikolas el 8 de noviembre; la evaluaci�n de generación con Gemini sigue pendiente.
 
 <!-- Slide number: 8 -->
 Demostraci�n: ocho evidencias en un recorrido
@@ -265,13 +265,13 @@ No inventa reglas
 No conf�a en el modelo
 No delega responsabilidad
 
-1  Validar Golden Set con el representante
+1  Configurar Gemini con control de cuota
 Pendientes honestos
-3  Ejecutar y registrar la evaluaci�n de generaci�n
-2  Configurar Gemini sin activar facturaci�n involuntaria
+2  Ejecutar y anotar generación
+3  Ensayar demo D1–D8
 
 Sistema reproducible � controles verificados � resultados no inventados
 9
 
 ### Notes:
-Cerrar con la defensa t�cnica y declarar pendientes sin disfrazarlos. Invitar a preguntas y estar listos para D8.
+Cerrar con la defensa técnica. Golden Set y controles están verificados; queda pendiente la evaluación de generación con Gemini y el ensayo de demostración D1–D8.

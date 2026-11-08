@@ -15,11 +15,11 @@ La tercera entrega extiende MIRA con un asistente para el operador de revisión.
 
 La solución separa tres responsabilidades. El motor RAG indexa y recupera conocimiento documental desde ChromaDB. El servidor MCP controla el acceso a casos, señales, evidencias, solicitudes y cambios de umbral almacenados en SQLite. La API coordina la conversación y el frontend muestra respuestas, citas, trazas y confirmaciones. Durante la aplicación, la API no abre SQLite; toda lectura o escritura transaccional pasa por MCP.
 
-Se importaron y verificaron 6 documentos, 14 casos, 68 señales, 15 evidencias, 2 solicitudes originales y 2 cambios de umbral. El Golden Set documental contiene 20 preguntas con la distribución exigida: 12 con respuesta, 4 sin respaldo, 2 conflictos vigentes y 2 comparaciones de versiones. A Recall@4, la estrategia por secciones y la de ventanas obtuvieron 0,85 a nivel de evidencia y 0,8125 a nivel de pregunta completa. La suite de integración contiene 17 pruebas automatizadas, todas aprobadas.
+Se importaron y verificaron 6 documentos, 14 casos, 68 señales, 15 evidencias, 2 solicitudes originales y 2 cambios de umbral. El Golden Set documental contiene 20 preguntas con la distribución exigida: 12 con respuesta, 4 sin respaldo, 2 conflictos vigentes y 2 comparaciones de versiones; Nikolas confirmó sus 20 entradas sin cambios el 8 de noviembre. En la evaluación de recuperación con `k = 5`, ambas estrategias obtuvieron Recall 0,90 por evidencia y 0,875 por pregunta completa. Quedan dos preguntas con evidencia incompleta (C01 y V02). La suite de pruebas de Entrega 3 contiene 25 pruebas automatizadas aprobadas.
 
 Los controles principales bloquean a U-03 por su rol `consulta_indicadores`, impiden solicitudes sobre casos `aprobado_automatico`, reservan la tercera solicitud al supervisor, verifican organización, exigen confirmación humana e impiden duplicados. También se sanitizan RUT, correos, teléfonos, nombres conocidos, credenciales, rutas y claves antes de enviar información a un modelo externo.
 
-Quedan dos actividades externas pendientes: validación del Golden Set por el representante del cliente y evaluación de generación con una clave Gemini habilitada. Estos pendientes no se confunden con fallas de recuperación ni con abstenciones correctas.
+La evaluación de generación con Gemini sigue pendiente porque requiere configurar una clave local y ejecutar la revisión humana. Este pendiente no se confunde con fallas de recuperación ni con abstenciones correctas.
 
 # 2. Especificación del caso de uso
 
@@ -72,16 +72,16 @@ Se usa `paraphrase-multilingual-MiniLM-L12-v2` en formato ONNX cuantizado y ejec
 
 ## 3.3 Estrategias de fragmentación
 
-| Estrategia | Diseño | Fragmentos | Recall@4 pregunta | Recall@4 evidencia |
+| Estrategia | Diseño | Fragmentos | Recall@5 pregunta | Recall@5 evidencia |
 |---|---|---:|---:|---:|
-| Secciones | Cada encabezado `##` conserva la regla completa. | 35 | 0,8125 | 0,85 |
-| Ventanas | 450 caracteres, 90 de solapamiento, sin mezclar secciones. | 40 | 0,8125 | 0,85 |
+| Secciones | Cada encabezado `##` conserva la regla completa. | 35 | 0,875 (14/16) | 0,90 (18/20) |
+| Ventanas | 450 caracteres, 90 de solapamiento, sin mezclar secciones. | 40 | 0,875 (14/16) | 0,90 (18/20) |
 
-Las métricas agregadas empatan, pero los errores no. Secciones no recuperó R05 sobre legibilidad; ventanas sí. Ventanas recuperó una sola fuente en C02, mientras que secciones recuperó ambas. C01 y V02 recuperaron una de dos evidencias esperadas en ambas estrategias. Se mantiene `sections` como predeterminada porque preserva condiciones completas y cubre mejor el conflicto C02 sin aumentar `k`.
+La corrida vigente usa el Golden Set confirmado el 8 de noviembre. Subir de `k = 4` a `k = 5` resuelve la recuperación de R05 y conserva las dos evidencias de C02 para ambas estrategias. Persisten dos preguntas incompletas: C01 y V02 recuperan una de sus dos evidencias esperadas. Se mantiene `sections` como predeterminada porque conserva juntas las condiciones completas de cada regla; las dos estrategias empatan en estas métricas.
 
 ## 3.4 Golden Set y criterio de evidencia
 
-Las 20 preguntas se guardan en `evaluacion/golden_set.json`. Cada registro contiene ID, tipo, texto, evidencia esperada, respuesta esperada y obligación de responder. Las evidencias se definen sobre pasajes del documento original y se mapean a cada estrategia. El commit `4bc95ee` fijó este conjunto antes de la primera evaluación semántica completa.
+Las 20 preguntas se guardan en `evaluacion/golden_set.json`. Cada registro contiene ID, tipo, texto, evidencia esperada, respuesta esperada y obligación de responder. Las evidencias se definen sobre pasajes del documento original y se mapean a cada estrategia. El conjunto se fijó el 6 de noviembre; la primera evaluación semántica guardada fue el día 7, antes de la validación del 8. La corrida vigente a `k = 5` sí usa el conjunto ya confirmado por Nikolas.
 
 Las 4 preguntas sin respuesta no participan en Recall porque no tienen fragmentos esperados. Se utilizan para medir abstención durante la evaluación de generación. Los errores del proveedor se clasifican como errores operacionales, nunca como abstenciones correctas.
 
@@ -141,7 +141,7 @@ Cada llamada a Gemini pasa por un limitador secuencial configurable. Los errores
 
 ## 6.1 Resultados automatizados
 
-Se aprobaron 17 pruebas con Pytest. También aprobaron el chequeo TypeScript y la compilación de producción de Next.js. Se verificó un flujo real API → MCP → RAG y un cliente CLI independiente conectado por Streamable HTTP.
+Se aprobaron 25 pruebas con Pytest en `entrega3/service/tests`. También aprobaron el chequeo TypeScript y la compilación de producción de Next.js en la validación de línea base. Se verificó un flujo API → MCP → RAG y un cliente CLI independiente conectado por Streamable HTTP.
 
 | Grupo | Evidencias principales |
 |---|---|
@@ -155,9 +155,9 @@ En C-011, la prueba lee E-001 y confirma que 45.000 + 38.000 = 83.000; el total 
 
 ## 6.2 Pruebas manuales y pendientes
 
-La generación con Gemini debe ejecutarse cuando exista una clave disponible y una cuenta sin facturación involuntaria. Esa corrida medirá fidelidad, precisión de citas, abstención correcta e injustificada y manejo de conflictos. El Golden Set debe ser validado por el representante antes de usar sus respuestas como aceptación del cliente.
+Nikolas confirmó el Golden Set sin cambios el 8 de noviembre. La generación con Gemini debe ejecutarse cuando exista una clave local disponible y se haya revisado el riesgo de facturación. Esa corrida medirá fidelidad, precisión de citas, abstención correcta e injustificada y manejo de conflictos.
 
-La caída del proveedor o MCP se presenta como error comprensible y trazable. El cierre manual del servidor puede producir mensajes de cancelación SSE propios de la biblioteca, pero no invalida las llamadas completadas.
+Las pruebas de API inyectan fallos de MCP y del proveedor, y verifican una respuesta HTTP 503 explícita sin fabricar una respuesta exitosa. La interrupción real de red y la comprobación visual del mensaje en la interfaz siguen pendientes para el ensayo de la demostración.
 
 ## 6.3 Guion D1–D8 propuesto
 
@@ -181,7 +181,7 @@ La entrega demuestra que RAG y MCP resuelven problemas diferentes. RAG aporta ev
 
 El principal aprendizaje técnico fue que no basta con pedir al modelo que sea seguro: las restricciones de organización, rol, estado, cantidad e idempotencia deben existir en el servidor y dentro de la transacción. También fue necesario tratar los conflictos del corpus como información que se muestra, no como un problema que el modelo deba resolver por sí solo.
 
-La versión actual es reproducible y ejecutable en modo offline. Para cerrar la evidencia final se debe: validar el Golden Set con el representante, configurar Gemini, ejecutar la evaluación de generación con control de cuota y reemplazar en el informe esta nota de pendientes por los resultados observados. No se deben inventar métricas ni aprobaciones.
+La versión actual es reproducible y ejecutable en modo offline. Para cerrar la evaluación de generación se debe configurar Gemini localmente, ejecutar las 20 preguntas con control de cuota y revisar las respuestas y citas. Los resultados de generación y el ensayo visual de la demostración deben documentarse cuando se realicen; no se deben inventar métricas ni aprobaciones.
 
 \newpage
 
@@ -192,7 +192,7 @@ La versión actual es reproducible y ejecutable en modo offline. Para cerrar la 
 3. Ejecutar `python -m mira_cu1.prepare`.
 4. Iniciar `python -m mira_cu1.mcp_server` y `python -m mira_cu1.main`.
 5. Iniciar el frontend y abrir `/asistente`.
-6. Ejecutar `python -m pytest` y `python -m mira_cu1.evaluate --top-k 4`.
+6. Ejecutar `python -m pytest` y `python -m mira_cu1.evaluate --top-k 5`.
 7. Probar D7 con `python -m mira_cu1.cli_client consultar_caso --session ... --case C-013`.
 
 Los secretos nunca se incluyen en Git. Los artefactos de ejecución se regeneran en `entrega3/var`.

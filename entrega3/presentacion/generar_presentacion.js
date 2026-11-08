@@ -2,7 +2,6 @@ const pptxgen = require('pptxgenjs');
 const path = require('path');
 process.env.NODE_PATH = path.join(__dirname, 'node_modules');
 require('module').Module._initPaths();
-const { applyTheme } = require('C:/Users/Pipelonx/.agents/skills/synced/479eed89-9873-4e95-b34b-e592a930695d_3047b24b-5dd6-4377-b39a-3ccf5ce6fb77/pptx/scripts/apply_theme.js');
 
 const pptx = new pptxgen();
 pptx.layout = 'LAYOUT_WIDE';
@@ -15,16 +14,7 @@ pptx.theme = { headFontFace: 'Cambria', bodyFontFace: 'Arial', lang: 'es-CL' };
 pptx.defineLayout({ name: 'WIDE', width: 13.333, height: 7.5 });
 pptx.layout = 'WIDE';
 
-const THEME = {
-  name: 'MIRA Evidence', headFontFace: 'Cambria', bodyFontFace: 'Arial',
-  colors: {
-    dk1: '102A38', lt1: 'FFFFFF', dk2: '314A57', lt2: 'F4F7F9',
-    accent1: '0D7C78', accent2: '70C8B5', accent3: 'E8B44F',
-    accent4: 'F16C5B', accent5: '6E88A0', accent6: 'B8CDD6',
-    hlink: '0B6E99', folHlink: '6A4C93'
-  }
-};
-const C = pptx.SchemeColor;
+const C = { background1: 'F4F7F9', text1: '102A38', text2: '60757F', accent2: '70C8B5' };
 const HEX = { navy: '102A38', teal: '0D7C78', mint: 'DDF3EF', sea: '70C8B5', gold: 'E8B44F', coral: 'F16C5B', ink: '24343D', muted: '60757F', light: 'F4F7F9', white: 'FFFFFF', line: 'CEDBE0' };
 const OUT = path.join(__dirname, 'Presentacion_Entrega_3_MIRA.pptx');
 
@@ -79,7 +69,7 @@ pptx.addSection({ title: 'Apertura' });
   tx(s, 'Asistente RAG + MCP para el operador de revisión', { x: 0.75, y: 1.42, w: 8.8, h: 0.55, fontFace: 'Arial', fontSize: 25, color: HEX.sea });
   tx(s, 'CU-1 · explicar con evidencia · consultar con permisos · actuar con confirmación', { x: 0.75, y: 2.12, w: 10.6, h: 0.34, fontSize: 16, color: HEX.white });
   const stats = [
-    ['6', 'documentos versionados'], ['20', 'preguntas Golden Set'], ['17', 'pruebas aprobadas'], ['0,85', 'Recall@4 evidencia'],
+    ['6', 'documentos versionados'], ['20', 'preguntas Golden Set'], ['25', 'pruebas aprobadas'], ['0,90', 'Recall@5 evidencia'],
   ];
   stats.forEach((v, i) => {
     rect(s, 0.76 + i * 3.05, 3.06, 2.65, 1.34, i === 3 ? HEX.teal : '183D4F');
@@ -137,10 +127,10 @@ pptx.addSection({ title: 'Diseño' });
 }
 
 {
-  const s = lightSlide('RAG: mismo Recall agregado, fallos diferentes', 'Diseño');
+  const s = lightSlide('RAG: mejora con k=5; persisten dos preguntas incompletas', 'Diseño');
   s.addChart(pptx.ChartType.bar, [
-    { name: 'Recall por evidencia', labels: ['Secciones', 'Ventanas'], values: [85, 85] },
-    { name: 'Preguntas completas', labels: ['Secciones', 'Ventanas'], values: [81.25, 81.25] },
+    { name: 'Recall por evidencia', labels: ['Secciones', 'Ventanas'], values: [90, 90] },
+    { name: 'Preguntas completas', labels: ['Secciones', 'Ventanas'], values: [87.5, 87.5] },
   ], {
     x: 0.72, y: 1.45, w: 7.25, h: 4.65, catAxisLabelFontFace: '+mn-lt', catAxisLabelFontSize: 13,
     valAxisLabelFontFace: '+mn-lt', valAxisLabelFontSize: 11, valAxisMinVal: 0, valAxisMaxVal: 100,
@@ -152,8 +142,8 @@ pptx.addSection({ title: 'Diseño' });
     border: { color: HEX.white, transparency: 100 },
   });
   const failureCards = [
-    ['Secciones', '35 fragmentos', 'Pierde R05', 'pero recupera las dos fuentes de C02', HEX.navy],
-    ['Ventanas', '40 fragmentos', 'Recupera R05', 'pero pierde una fuente de C02', HEX.teal],
+    ['Secciones', '35 fragmentos', 'C01 y V02', 'cada una recupera 1 de 2 evidencias', HEX.navy],
+    ['Ventanas', '40 fragmentos', 'C01 y V02', 'cada una recupera 1 de 2 evidencias', HEX.teal],
   ];
   failureCards.forEach((c, i) => {
     rect(s, 8.45, 1.52 + i * 2.15, 4.12, 1.72, i === 0 ? HEX.light : HEX.mint, 0.14, { color: i === 0 ? HEX.line : HEX.sea, width: 1 });
@@ -162,9 +152,9 @@ pptx.addSection({ title: 'Diseño' });
     tx(s, c[2], { x: 8.72, y: 2.38 + i * 2.15, w: 1.6, h: 0.25, fontSize: 16, bold: true, color: c[4] });
     tx(s, c[3], { x: 10.15, y: 2.28 + i * 2.15, w: 2.05, h: 0.55, fontSize: 12.5, color: HEX.ink, valign: 'mid' });
   });
-  pill(s, 'Elección: secciones completas', 8.88, 6.02, 3.25, HEX.coral);
-  tx(s, 'Conserva condiciones normativas completas sin aumentar k.', { x: 8.62, y: 6.55, w: 3.78, h: 0.3, fontSize: 12.5, color: HEX.muted, align: 'center' });
-  s.addNotes('No ocultar el empate. La decisión se basa en el perfil de fallos: las secciones preservan mejor reglas completas y el conflicto C02.');
+  pill(s, 'Predeterminada: secciones completas', 8.58, 6.02, 3.86, HEX.coral);
+  tx(s, 'Ambas estrategias empatan; secciones conserva reglas completas.', { x: 8.62, y: 6.55, w: 3.78, h: 0.3, fontSize: 12.5, color: HEX.muted, align: 'center' });
+  s.addNotes('Con k=5, ambas estrategias obtienen Recall 0,90 por evidencia y 0,875 por pregunta. Ambas recuperan R05 y las dos fuentes de C02; C01 y V02 siguen incompletas. Secciones se mantiene por conservar las condiciones completas de cada regla.');
 }
 
 {
@@ -232,13 +222,13 @@ pptx.addSection({ title: 'Evidencia' });
     tx(s, v[1], { x: 1.92, y: 3.59 + i * 0.56, w: 1.65, h: 0.18, fontSize: 12.5, color: HEX.white });
   });
   rect(s, 4.48, 1.45, 8.1, 4.9, HEX.light, 0.14, { color: HEX.line, width: 1 });
-  tx(s, '17 / 17', { x: 4.85, y: 1.78, w: 2.25, h: 0.55, fontSize: 38, bold: true, color: HEX.teal });
+  tx(s, '25 / 25', { x: 4.85, y: 1.78, w: 2.25, h: 0.55, fontSize: 38, bold: true, color: HEX.teal });
   tx(s, 'pruebas automatizadas aprobadas', { x: 7.02, y: 1.93, w: 4.7, h: 0.3, fontSize: 18, bold: true, color: HEX.navy });
   const groups = [
     ['Autorización', 'U-03 · otra organización · C-010', HEX.coral],
     ['Transacción', 'C-016 · confirmación · idempotencia', HEX.teal],
     ['Casos', 'C-011 · C-012 · C-013 · C-018 · C-020', HEX.gold],
-    ['Seguridad', 'PII · C-014 · kit inmutable', HEX.navy],
+    ['Seguridad y fallos', 'PII · C-014 · API 503', HEX.navy],
   ];
   groups.forEach((g, i) => {
     circle(s, String(i + 1), 4.88, 2.82 + i * 0.73, g[2], 0.4);
@@ -248,8 +238,8 @@ pptx.addSection({ title: 'Evidencia' });
   pill(s, 'TypeScript ✓', 4.98, 5.83, 1.85, HEX.teal);
   pill(s, 'Next.js build ✓', 7.06, 5.83, 2.18, HEX.teal);
   pill(s, 'CLI FastMCP ✓', 9.47, 5.83, 2.18, HEX.teal);
-  tx(s, 'Pendiente externo: validación del cliente + corrida de generación con Gemini', { x: 2.15, y: 6.62, w: 9.1, h: 0.28, fontSize: 13.5, bold: true, color: HEX.coral, align: 'center' });
-  s.addNotes('Separar claramente Golden Set RAG de matriz de integración. No presentar la validación del cliente ni Gemini como completados.');
+  tx(s, 'Golden Set validado · evaluación de generación con Gemini pendiente', { x: 2.15, y: 6.62, w: 9.1, h: 0.28, fontSize: 13.5, bold: true, color: HEX.coral, align: 'center' });
+  s.addNotes('Separar claramente Golden Set RAG de matriz de integración. El Golden Set fue confirmado por Nikolas el 8 de noviembre; la evaluación de generación con Gemini sigue pendiente.');
 }
 
 {
@@ -289,15 +279,14 @@ pptx.addSection({ title: 'Cierre' });
   });
   rect(s, 1.12, 4.35, 11.08, 1.25, HEX.white, 0.16, noLine);
   tx(s, 'Pendientes honestos', { x: 1.48, y: 4.67, w: 2.4, h: 0.28, fontSize: 19, bold: true, color: HEX.coral });
-  tx(s, '1  Validar Golden Set con el representante', { x: 4.00, y: 4.58, w: 3.5, h: 0.24, fontSize: 13.5, color: HEX.ink });
-  tx(s, '2  Configurar Gemini sin activar facturación involuntaria', { x: 4.00, y: 5.02, w: 4.0, h: 0.24, fontSize: 13.5, color: HEX.ink });
-  tx(s, '3  Ejecutar y registrar la evaluación de generación', { x: 8.08, y: 4.79, w: 3.55, h: 0.3, fontSize: 13.5, color: HEX.ink, valign: 'mid' });
+  tx(s, '1  Configurar Gemini con control de cuota', { x: 4.00, y: 4.58, w: 3.5, h: 0.24, fontSize: 12.5, color: HEX.ink });
+  tx(s, '2  Ejecutar y anotar generación', { x: 4.00, y: 5.02, w: 4.0, h: 0.24, fontSize: 12.5, color: HEX.ink });
+  tx(s, '3  Ensayar demo D1–D8', { x: 8.08, y: 4.79, w: 3.55, h: 0.3, fontSize: 12.5, color: HEX.ink, valign: 'mid' });
   pill(s, 'Sistema reproducible · controles verificados · resultados no inventados', 2.55, 6.34, 8.25, HEX.teal);
-  s.addNotes('Cerrar con la defensa técnica y declarar pendientes sin disfrazarlos. Invitar a preguntas y estar listos para D8.');
+  s.addNotes('Cerrar con la defensa técnica. Golden Set y controles están verificados; queda pendiente la evaluación de generación con Gemini y el ensayo de demostración D1–D8.');
 }
 
 (async () => {
   await pptx.writeFile({ fileName: OUT });
-  await applyTheme(OUT, THEME);
   console.log(OUT);
 })().catch(err => { console.error(err); process.exit(1); });

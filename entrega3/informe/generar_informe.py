@@ -113,7 +113,7 @@ def main():
         Table([[Paragraph("MIRA", ParagraphStyle("brand", fontName="Helvetica-Bold", fontSize=42, textColor=colors.white, alignment=TA_CENTER))]], colWidths=[174 * mm], rowHeights=[35 * mm], style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), NAVY), ("VALIGN", (0, 0), (-1, -1), "MIDDLE")])),
         Spacer(1, 13 * mm), Paragraph("Entrega 3", st["cover_title"]),
         Paragraph("Asistente RAG + MCP para el operador de revisión (CU-1)", st["cover_sub"]), Spacer(1, 20 * mm),
-        Table([["v3.0", "17 pruebas", "Recall@4 0,85"]], colWidths=[58 * mm] * 3, style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), TEAL), ("TEXTCOLOR", (0, 0), (-1, -1), colors.white), ("FONTNAME", (0, 0), (-1, -1), "Helvetica-Bold"), ("FONTSIZE", (0, 0), (-1, -1), 12), ("ALIGN", (0, 0), (-1, -1), "CENTER"), ("TOPPADDING", (0, 0), (-1, -1), 8), ("BOTTOMPADDING", (0, 0), (-1, -1), 8)])),
+        Table([["v3.0", "25 pruebas", "Recall@5 0,90"]], colWidths=[58 * mm] * 3, style=TableStyle([("BACKGROUND", (0, 0), (-1, -1), TEAL), ("TEXTCOLOR", (0, 0), (-1, -1), colors.white), ("FONTNAME", (0, 0), (-1, -1), "Helvetica-Bold"), ("FONTSIZE", (0, 0), (-1, -1), 12), ("ALIGN", (0, 0), (-1, -1), "CENTER"), ("TOPPADDING", (0, 0), (-1, -1), 8), ("BOTTOMPADDING", (0, 0), (-1, -1), 8)])),
         Spacer(1, 18 * mm), Paragraph("Lagos · Moraga · Chaves · Caru<br/>9 de noviembre de 2026", ParagraphStyle("cover_meta", parent=st["cover_sub"], fontSize=11, leading=16)), PageBreak(),
     ]
     body = "\n".join(text.splitlines()[9:]).replace("\\newpage", "", 1)
