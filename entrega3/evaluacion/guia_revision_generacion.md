@@ -27,6 +27,8 @@ Desde la raíz del repositorio:
 
 El evaluador llama Gemini y las herramientas MCP de lectura con las 20 preguntas aprobadas. El reporte se escribe con fecha en `entrega3/evaluacion/generacion_gemini_<fecha>.json`. Cada respuesta se persiste al terminar, para conservar el avance si una llamada posterior falla. El proceso nunca sobrescribe un reporte existente. `--limit 2` permite una prueba parcial; no cuenta como evaluación final.
 
+Para reanudar desde una pregunta sin repetir las anteriores, indica su ID, por ejemplo `--start-from R02`; puedes combinarlo con `--limit`. Ese reporte contiene solo las preguntas desde el ID indicado y sigue siendo parcial si no cubre las 20. Si ejecutas la evaluación en varios segmentos, conserva cada reporte y consolídalos solo después de comprobar que los IDs cubren el Golden Set completo una vez y que el modelo y la configuración RAG coinciden.
+
 El usuario de prueba es U-01. Las preguntas del Golden Set son documentales: no confirman solicitudes ni ejecutan acciones de negocio. El evaluador requiere el proveedor Gemini y rechaza el modo demo.
 
 ## Completar revisión humana

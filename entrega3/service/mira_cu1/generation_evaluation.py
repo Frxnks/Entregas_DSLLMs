@@ -189,7 +189,28 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
     temporary.replace(path)
 
 
-async def run_generation_evaluation(output: Path, limit: int | None = None) -> dict[str, Any]:
+def _select_questions(
+    questions: list[dict[str, Any]],
+    limit: int | None = None,
+    start_from: str | None = None,
+) -> list[dict[str, Any]]:
+    start_index = 0
+    if start_from is not None:
+        start_index = next(
+            (index for index, question in enumerate(questions) if question["id"] == start_from),
+            -1,
+        )
+        if start_index < 0:
+            raise ValueError(f"No existe la pregunta {start_from!r} en el Golden Set")
+    selected = questions[start_index:]
+    return selected[:limit] if limit is not None else selected
+
+
+async def run_generation_evaluation(
+    output: Path,
+    limit: int | None = None,
+    start_from: str | None = None,
+) -> dict[str, Any]:
     settings = get_settings()
     if settings.llm_provider != "gemini":
         raise RuntimeError("La evaluación oficial de generación requiere LLM_PROVIDER=gemini; demo no mide el LLM.")
@@ -203,7 +224,7 @@ async def run_generation_evaluation(output: Path, limit: int | None = None) -> d
     if validation["client_validation"]["status"] != "validated":
         raise RuntimeError("El representante del cliente aún no validó el Golden Set.")
 
-    questions = golden["questions"][:limit] if limit is not None else golden["questions"]
+    questions = _select_questions(golden["questions"], limit, start_from)
     report: dict[str, Any] = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": "running",
@@ -211,6 +232,8 @@ async def run_generation_evaluation(output: Path, limit: int | None = None) -> d
         "configured_model": settings.gemini_model,
         "rag_strategy": settings.rag_strategy,
         "rag_top_k": settings.rag_top_k,
+        "first_question": questions[0]["id"],
+        "requested_samples": len(questions),
         "golden_set": {
             "version": golden["version"],
             "client_validation": validation["client_validation"],
@@ -288,6 +311,7 @@ async def run_generation_evaluation(output: Path, limit: int | None = None) -> d
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evalúa la generación Gemini con el Golden Set CU-1")
     parser.add_argument("--limit", type=int, help="Ejecuta una muestra parcial; no produce evaluación final")
+    parser.add_argument("--start-from", help="Empieza en el ID indicado, por ejemplo R02")
     parser.add_argument("--output", type=Path, help="Ruta nueva para el JSON; nunca sobrescribe archivos")
     parser.add_argument("--score-existing", type=Path, help="Calcula métricas de un reporte revisado manualmente")
     args = parser.parse_args()
@@ -304,11 +328,16 @@ def main() -> None:
 
     if args.limit is not None and not 1 <= args.limit <= 20:
         parser.error("--limit debe estar entre 1 y 20")
+    golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
+    try:
+        _select_questions(golden["questions"], args.limit, args.start_from)
+    except ValueError as exc:
+        parser.error(str(exc))
     output = args.output or (
         ENTREGA_ROOT / "evaluacion"
         / f"generacion_gemini_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     )
-    report = asyncio.run(run_generation_evaluation(output, args.limit))
+    report = asyncio.run(run_generation_evaluation(output, args.limit, args.start_from))
     print(json.dumps(report["scores"], ensure_ascii=False, indent=2))
     print(f"Reporte guardado en {output}")
 

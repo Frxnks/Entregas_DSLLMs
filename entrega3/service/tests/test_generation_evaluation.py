@@ -1,6 +1,6 @@
 import pytest
 
-from mira_cu1.generation_evaluation import score_generation_report
+from mira_cu1.generation_evaluation import _select_questions, score_generation_report
 
 
 def _sample(
@@ -101,3 +101,16 @@ def test_score_generation_report_rejects_failure_class_for_non_failure_value():
 
     with pytest.raises(ValueError, match="failure_class no reconocido"):
         score_generation_report({"samples": [sample]})
+
+
+def test_select_questions_can_resume_without_repeating_completed_samples():
+    questions = [{"id": f"R{index:02}"} for index in range(1, 21)]
+
+    selected = _select_questions(questions, limit=19, start_from="R02")
+
+    assert [question["id"] for question in selected] == [f"R{index:02}" for index in range(2, 21)]
+
+
+def test_select_questions_rejects_unknown_start_id():
+    with pytest.raises(ValueError, match="No existe la pregunta"):
+        _select_questions([{"id": "R01"}], start_from="R99")

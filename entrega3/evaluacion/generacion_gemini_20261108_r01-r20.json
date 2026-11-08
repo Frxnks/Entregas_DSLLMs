@@ -1,0 +1,2425 @@
+{
+  "generated_at": "2026-11-08T23:51:16.737346+00:00",
+  "status": "complete",
+  "provider": "gemini",
+  "configured_model": "gemini-flash-lite-latest",
+  "rag_strategy": "sections",
+  "rag_top_k": 5,
+  "golden_set": {
+    "version": "1.0.0",
+    "client_validation": {
+      "status": "validated",
+      "representative": "Nikolas",
+      "date": "2026-11-08",
+      "note": "El representante validó las 20 preguntas, respuestas esperadas y evidencias sin cambios el 2026-11-08. La primera evaluación semántica guardada es del 2026-11-07 y precede esta validación."
+    }
+  },
+  "samples": [
+    {
+      "id": "R01",
+      "type": "answerable",
+      "question": "¿Puede el asistente aprobar o rechazar un caso?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "FAQ-OPE",
+          "version": "2",
+          "section": "¿Puedo pedirle al asistente"
+        }
+      ],
+      "expected_answer": "No; explica, muestra reglas y prepara solicitudes, pero la decisión corresponde al operador.",
+      "status": "completed",
+      "response": {
+        "answer": "No, el asistente no puede aprobar ni rechazar un caso. Aprobar y rechazar son decisiones que corresponden exclusivamente al operador. El asistente puede explicar por qué un caso fue derivado, mostrar reglas aplicables y preparar solicitudes de antecedentes para que el operador las confirme.\n\nFuentes:\n- FAQ-OPE, sección \"¿Puedo pedirle al asistente que apruebe o rechace un caso?\", versión 2 (vigente desde 2026-10-01).\n- MAN-REV, sección \"3. Decisiones disponibles\", versión 1 (vigente desde 2026-07-15).\n\nDatos consultados: Ninguno.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Puedo pedirle al asistente que apruebe o rechace un caso?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Puedo pedirle al asistente que apruebe o rechace un caso?\n\nNo. El asistente explica por qué un caso fue derivado, muestra las reglas que aplican y puede preparar una solicitud de antecedentes que usted confirma. Aprobar y rechazar son decisiones del operador."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:03",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Puedo ver casos de otra organización?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Puedo ver casos de otra organización?\n\nNo. Solo ve los casos de su organización. Esa separación aplica también al asistente."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:03",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "3. Decisiones disponibles",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 3. Decisiones disponibles\n\n| Decisión | Cuándo usarla | Requisito |\n|---|---|---|\n| Aprobar | La evidencia respalda el caso y las alertas quedaron explicadas | Motivo breve |\n| Rechazar | La evidencia no respalda el caso o hay indicios fundados de fraude | Motivo obligatorio y comprensible para una persona que no participó del análisis |\n| Solicitar antecedentes | Falta evidencia o la recibida no es utilizable | Ver procedimiento PRO-ANT |\n\nEl asistente de la bandeja puede preparar una solicitud de antecedentes, pero nunca aprueba ni rechaza un caso. Esas decisiones las toma el operador."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "3. Registro y efecto",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 3. Registro y efecto\n\nLa solicitud queda registrada con su autor y su fecha, y el caso pasa al estado «solicitud de antecedentes». El sistema de origen del caso recibe el aviso mediante la llamada de vuelta configurada por la organización.\n\nCuando llega la evidencia solicitada, el mismo caso se vuelve a evaluar conservando lo que ya se había concluido. Si el caso ya estaba cerrado, se abre un caso nuevo vinculado al anterior."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Puede el asistente aprobar o rechazar un caso?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:39:06.135042"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R02",
+      "type": "answerable",
+      "question": "¿En qué orden recomienda el manual revisar un caso?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "MAN-REV",
+          "version": "1",
+          "section": "Orden recomendado"
+        }
+      ],
+      "expected_answer": "Razón de derivación, señales y fraude, evidencias, y finalmente puntaje.",
+      "status": "completed",
+      "response": {
+        "answer": "El manual recomienda revisar un caso en el siguiente orden:\n1. Leer la razón de derivación.\n2. Revisar las señales bajo su mínimo y las señales de fraude activas.\n3. Abrir cada pieza de evidencia y verificar en qué parte del documento o de la imagen se encontró el hallazgo.\n4. Consultar el puntaje total recién al final.\n\nFuentes:\n- Código: MAN-REV, Sección: 2. Orden recomendado para revisar un caso, Versión: 1, Vigencia: desde 2026-07-15.\n\nDatos consultados:\n- Se consultó la evidencia documental recuperada por MCP correspondiente al manual de revisión asistida (`MAN-REV:v1:section:02`).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "MAN-REV:v1:section:02",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "2. Orden recomendado para revisar un caso",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 2. Orden recomendado para revisar un caso\n\n1. Lea la razón de derivación.\n2. Revise las señales bajo su mínimo y las señales de fraude activas.\n3. Abra cada pieza de evidencia y verifique en qué parte del documento o de la imagen se encontró el hallazgo.\n4. Recién entonces consulte el puntaje total. Ver el puntaje al comienzo tiende a inclinar la decisión antes de revisar la evidencia."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:03",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "3. Decisiones disponibles",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 3. Decisiones disponibles\n\n| Decisión | Cuándo usarla | Requisito |\n|---|---|---|\n| Aprobar | La evidencia respalda el caso y las alertas quedaron explicadas | Motivo breve |\n| Rechazar | La evidencia no respalda el caso o hay indicios fundados de fraude | Motivo obligatorio y comprensible para una persona que no participó del análisis |\n| Solicitar antecedentes | Falta evidencia o la recibida no es utilizable | Ver procedimiento PRO-ANT |\n\nEl asistente de la bandeja puede preparar una solicitud de antecedentes, pero nunca aprueba ni rechaza un caso. Esas decisiones las toma el operador."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Puedo pedirle al asistente que apruebe o rechace un caso?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Puedo pedirle al asistente que apruebe o rechace un caso?\n\nNo. El asistente explica por qué un caso fue derivado, muestra las reglas que aplican y puede preparar una solicitud de antecedentes que usted confirma. Aprobar y rechazar son decisiones del operador."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "1. Qué casos llegan a su bandeja",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 1. Qué casos llegan a su bandeja\n\nA su bandeja llegan los casos que MIRA no resolvió de forma automática. Los casos con puntaje de 80 o más y sin señales de fraude se aprueban automáticamente, por lo que no llegarán a su bandeja. Todo caso que vea tiene una razón de derivación, que aparece en la parte superior de la ficha."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿En qué orden recomienda el manual revisar un caso?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:46:49.804189"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "MAN-REV:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R03",
+      "type": "answerable",
+      "question": "¿Cuál es el mínimo propio de DOC_AUT?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Mínimos por señal"
+        }
+      ],
+      "expected_answer": "70.",
+      "status": "completed",
+      "response": {
+        "answer": "El mínimo propio de la señal DOC_AUT es 70.\n\nFuentes:\n- Código: POL-DEC, Sección: 3. Mínimos por señal, Versión: 2, Vigencia: desde 2026-09-01.\n\nDatos consultados:\n- Señal DOC_AUT (autenticidad documental).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "2. Señales documentales",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 2. Señales documentales\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| DOC_AUT | Autenticidad del documento: coherencia de su estructura, timbres, firmas y origen declarado | Revisar el documento original y compararlo con documentos del mismo emisor |\n| DOC_ARIT | Coherencia aritmética: que el total corresponda a la suma de sus líneas y los impuestos a su base | Verificar el cálculo; un total que no cuadra es un hallazgo, no un error de lectura |\n| DOC_LEG | Legibilidad del archivo: nitidez, encuadre, páginas completas | Bajo 50, solicitar el reenvío del documento |\n| DOC_IDIOMA | Indica que el documento está en un idioma distinto del español | Verificar manualmente los campos leídos; la confianza de lectura es menor |"
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:06",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "6. Plazos",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 6. Plazos\n\nCada organización define el plazo de resolución de sus casos en días hábiles. La bandeja muestra el tiempo restante y marca en rojo los casos a los que les queda menos del 20 % del plazo. Un caso vencido no se cierra solo: la organización define si se cierra, se escala o se mantiene abierto."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 2. Umbrales de referencia\n\nLos valores de esta tabla son de referencia. Cada organización fija los suyos según la sección 5.\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, solo si no hay señales de fraude activas y todas las señales con mínimo propio lo cumplen |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento a revisión por un analista con rol de supervisor |\n\nNingún caso se rechaza automáticamente. El rechazo de un caso siempre lo decide y lo firma una persona."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cuál es el mínimo propio de DOC_AUT?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:29.534068"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R04",
+      "type": "answerable",
+      "question": "¿Cuál es el mínimo propio de BIO_ROSTRO?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Mínimos por señal"
+        }
+      ],
+      "expected_answer": "75.",
+      "status": "completed",
+      "response": {
+        "answer": "El mínimo propio de la señal BIO_ROSTRO es **75**.\n\n### Fuentes\n* POL-DEC:v2 (Política de decisión y umbrales, versión 2, vigencia desde 2026-09-01), sección 3. Mínimos por señal.\n\n### Datos consultados\n* Señal consultada: `BIO_ROSTRO`",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "4. Señales biométricas",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 4. Señales biométricas\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| BIO_ROSTRO | Coincidencia entre el rostro de la captura y el del documento de identidad | Comparar manualmente; no decidir solo con el valor |\n| BIO_VIDA | Prueba de vida: que la captura corresponda a una persona presente y no a una foto o pantalla | Solicitar una nueva captura |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Señales de fraude",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 4. Señales de fraude\n\nCada señal de fraude activa resta 20 puntos al puntaje total del caso. Después de aplicar el descuento, el caso se decide según la tabla de la sección 2."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "7. Componentes del puntaje",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 7. Componentes del puntaje\n\nEl puntaje se presenta acompañado de cuatro componentes: autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude. La interfaz de revisión debe mostrar qué componente empujó el puntaje hacia arriba o hacia abajo."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cuál es el mínimo propio de BIO_ROSTRO?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:33.321690"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R05",
+      "type": "answerable",
+      "question": "¿Qué se recomienda si DOC_LEG es menor que 50?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "CAT-SEN",
+          "version": "3",
+          "section": "Señales documentales"
+        }
+      ],
+      "expected_answer": "Solicitar el reenvío del documento.",
+      "status": "completed",
+      "response": {
+        "answer": "Si la señal `DOC_LEG` (legibilidad del archivo) es menor que 50, se recomienda solicitar el reenvío del documento.\n\nFuentes:\n- CAT-SEN, sección 2 (\"Señales documentales\"), versión 3, vigente desde 2026-09-01.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "4. Señales biométricas",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 4. Señales biométricas\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| BIO_ROSTRO | Coincidencia entre el rostro de la captura y el del documento de identidad | Comparar manualmente; no decidir solo con el valor |\n| BIO_VIDA | Prueba de vida: que la captura corresponda a una persona presente y no a una foto o pantalla | Solicitar una nueva captura |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 2. Umbrales de referencia\n\nLos valores de esta tabla son de referencia. Cada organización fija los suyos según la sección 5.\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, solo si no hay señales de fraude activas y todas las señales con mínimo propio lo cumplen |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento a revisión por un analista con rol de supervisor |\n\nNingún caso se rechaza automáticamente. El rechazo de un caso siempre lo decide y lo firma una persona."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "2. Señales documentales",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 2. Señales documentales\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| DOC_AUT | Autenticidad del documento: coherencia de su estructura, timbres, firmas y origen declarado | Revisar el documento original y compararlo con documentos del mismo emisor |\n| DOC_ARIT | Coherencia aritmética: que el total corresponda a la suma de sus líneas y los impuestos a su base | Verificar el cálculo; un total que no cuadra es un hallazgo, no un error de lectura |\n| DOC_LEG | Legibilidad del archivo: nitidez, encuadre, páginas completas | Bajo 50, solicitar el reenvío del documento |\n| DOC_IDIOMA | Indica que el documento está en un idioma distinto del español | Verificar manualmente los campos leídos; la confianza de lectura es menor |"
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué se recomienda si DOC_LEG es menor que 50?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:37.009861"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R06",
+      "type": "answerable",
+      "question": "¿Qué significa la señal FRA_MEMORIA?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "CAT-SEN",
+          "version": "3",
+          "section": "Señales de fraude"
+        }
+      ],
+      "expected_answer": "Una pieza igual o casi idéntica ya fue presentada en otro caso.",
+      "status": "completed",
+      "response": {
+        "answer": "La señal **FRA_MEMORIA** indica que la misma pieza de evidencia, o una casi idéntica, ya fue presentada en otro caso.\n\nFuentes:\n- Código: CAT-SEN, Sección: 6 (\"Señales de fraude\"), Versión: 3, Vigencia: 2026-09-01 en adelante.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "1. Qué es una señal",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 1. Qué es una señal\n\nUna señal es el resultado individual que produce un módulo de análisis sobre una pieza de evidencia o sobre el conjunto del caso. Las señales de valor numérico van de 0 a 100, donde un valor mayor indica más confianza. Las señales de fraude son indicadores: están activas o inactivas.\n\nLos mínimos por señal no se definen en este catálogo sino en la política de decisión y umbrales (POL-DEC)."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Precedencia de las señales de fraude",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 4. Precedencia de las señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión, cualquiera sea su puntaje. Las señales de fraude no restan puntos: prevalecen sobre el puntaje. El catálogo de señales (CAT-SEN) identifica cuáles son señales de fraude."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "6. Señales de fraude",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 6. Señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión según POL-DEC.\n\n| Código | Qué indica |\n|---|---|\n| FRA_EDICION | El archivo muestra rastros de edición posterior a su emisión |\n| FRA_MEMORIA | La misma pieza de evidencia, o una casi idéntica, ya fue presentada en otro caso |\n| FRA_SINTETICO | La imagen o el documento presenta rasgos de contenido generado artificialmente |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:05",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "5. Señales faltantes",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 5. Señales faltantes\n\nSi un módulo de análisis no entrega su señal, el puntaje se calcula con las señales disponibles."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué significa la señal FRA_MEMORIA?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:41.002641"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R07",
+      "type": "answerable",
+      "question": "¿Qué indica la política vigente cuando falta una señal?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Señales faltantes"
+        }
+      ],
+      "expected_answer": "Se deriva a revisión y la ausencia nunca se interpreta como favorable.",
+      "status": "completed",
+      "response": {
+        "answer": "Cuando un módulo falla o no entrega su señal, la política vigente indica que el caso no se aprueba con información parcial; se deriva a revisión indicando qué señal faltó. La ausencia de una señal nunca se interpreta como favorable (Política de decisión y umbrales, POL-DEC, sección 6, versión 2, vigente desde 2026-09-01).\n\nFuentes:\n- Política de decisión y umbrales (POL-DEC), sección 6. Señales faltantes, versión 2 (vigente desde 2026-09-01).\n\nDatos consultados:\n- Ninguno (se respondió utilizando exclusivamente la evidencia documental recuperada).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "1. Qué es una señal",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 1. Qué es una señal\n\nUna señal es el resultado individual que produce un módulo de análisis sobre una pieza de evidencia o sobre el conjunto del caso. Las señales de valor numérico van de 0 a 100, donde un valor mayor indica más confianza. Las señales de fraude son indicadores: están activas o inactivas.\n\nLos mínimos por señal no se definen en este catálogo sino en la política de decisión y umbrales (POL-DEC)."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:06",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "6. Señales faltantes",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 6. Señales faltantes\n\nSi un módulo falla o no entrega su señal, el caso no se aprueba con información parcial: se deriva a revisión indicando qué señal faltó. La ausencia de una señal nunca se interpreta como favorable."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Precedencia de las señales de fraude",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 4. Precedencia de las señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión, cualquiera sea su puntaje. Las señales de fraude no restan puntos: prevalecen sobre el puntaje. El catálogo de señales (CAT-SEN) identifica cuáles son señales de fraude."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:05",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "5. Señales faltantes",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 5. Señales faltantes\n\nSi un módulo de análisis no entrega su señal, el puntaje se calcula con las señales disponibles."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué indica la política vigente cuando falta una señal?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:45.121237"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R08",
+      "type": "answerable",
+      "question": "¿Qué contenido debe tener una solicitud de antecedentes?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "PRO-ANT",
+          "version": "1",
+          "section": "Contenido de la solicitud"
+        }
+      ],
+      "expected_answer": "Caso, documentos o capturas requeridos y motivo comprensible.",
+      "status": "completed",
+      "response": {
+        "answer": "Toda solicitud de antecedentes debe indicar lo siguiente:\n- El caso al que corresponde.\n- La lista de documentos o capturas requeridos.\n- El motivo, redactado de forma comprensible para una persona que no sea técnica (por ejemplo: «La fotografía de la boleta está cortada y no se lee el total»).\n\n### Fuentes\n- PRO-ANT:v1, Sección 2. Contenido de la solicitud (vigente desde 2026-07-15).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "5. Plazo de respuesta",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 5. Plazo de respuesta\n\nEl plazo para que lleguen los antecedentes lo define cada organización. Si vence sin respuesta, el caso se cierra por falta de antecedentes según la regla que la organización haya configurado."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:02",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "2. Contenido de la solicitud",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 2. Contenido de la solicitud\n\nToda solicitud indica:\n\n- el caso al que corresponde;\n- la lista de documentos o capturas requeridos;\n- el motivo, redactado de forma comprensible para una persona que no es técnica, por ejemplo: «La fotografía de la boleta está cortada y no se lee el total»."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "7. Componentes del puntaje",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 7. Componentes del puntaje\n\nEl puntaje se presenta acompañado de cuatro componentes: autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude. La interfaz de revisión debe mostrar qué componente empujó el puntaje hacia arriba o hacia abajo."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué contenido debe tener una solicitud de antecedentes?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:49.297842"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R09",
+      "type": "answerable",
+      "question": "¿Qué roles pueden registrar una solicitud de antecedentes?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "PRO-ANT",
+          "version": "1",
+          "section": "Límites"
+        }
+      ],
+      "expected_answer": "Operador o supervisor.",
+      "status": "completed",
+      "response": {
+        "answer": "Solo los usuarios con rol de operador o supervisor pueden registrar una solicitud de antecedentes (Código PRO-ANT, sección 4. Límites, versión 1, vigente desde 2026-07-15).\n\nFuentes:\n- PRO-ANT_solicitud_antecedentes.md, sección 4. Límites, versión 1, vigente desde 2026-07-15.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "3. Registro y efecto",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 3. Registro y efecto\n\nLa solicitud queda registrada con su autor y su fecha, y el caso pasa al estado «solicitud de antecedentes». El sistema de origen del caso recibe el aviso mediante la llamada de vuelta configurada por la organización.\n\nCuando llega la evidencia solicitada, el mismo caso se vuelve a evaluar conservando lo que ya se había concluido. Si el caso ya estaba cerrado, se abre un caso nuevo vinculado al anterior."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "5. Plazo de respuesta",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 5. Plazo de respuesta\n\nEl plazo para que lleguen los antecedentes lo define cada organización. Si vence sin respuesta, el caso se cierra por falta de antecedentes según la regla que la organización haya configurado."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Puedo pedirle al asistente que apruebe o rechace un caso?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Puedo pedirle al asistente que apruebe o rechace un caso?\n\nNo. El asistente explica por qué un caso fue derivado, muestra las reglas que aplican y puede preparar una solicitud de antecedentes que usted confirma. Aprobar y rechazar son decisiones del operador."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué roles pueden registrar una solicitud de antecedentes?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:53.392052"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R10",
+      "type": "answerable",
+      "question": "¿Quién debe registrar una tercera solicitud de antecedentes?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "PRO-ANT",
+          "version": "1",
+          "section": "Límites"
+        }
+      ],
+      "expected_answer": "Un supervisor.",
+      "status": "completed",
+      "response": {
+        "answer": "Una tercera solicitud de antecedentes sobre un mismo caso requiere que la registre un supervisor.\n\n**Fuentes:**\n- Código: `PRO-ANT`, Sección: `4. Límites` (`PRO-ANT:v1:section:04`), Versión: `1`, Vigencia: `2026-07-15` en adelante.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "3. Registro y efecto",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 3. Registro y efecto\n\nLa solicitud queda registrada con su autor y su fecha, y el caso pasa al estado «solicitud de antecedentes». El sistema de origen del caso recibe el aviso mediante la llamada de vuelta configurada por la organización.\n\nCuando llega la evidencia solicitada, el mismo caso se vuelve a evaluar conservando lo que ya se había concluido. Si el caso ya estaba cerrado, se abre un caso nuevo vinculado al anterior."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "5. Plazo de respuesta",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 5. Plazo de respuesta\n\nEl plazo para que lleguen los antecedentes lo define cada organización. Si vence sin respuesta, el caso se cierra por falta de antecedentes según la regla que la organización haya configurado."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Por qué un caso con puntaje alto llegó a mi bandeja?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Por qué un caso con puntaje alto llegó a mi bandeja?\n\nHay tres razones posibles: el puntaje está bajo el umbral de aprobación que fijó su organización, alguna señal con mínimo propio quedó bajo su mínimo, o hay una señal de fraude activa. La razón aparece en la ficha del caso."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Quién debe registrar una tercera solicitud de antecedentes?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:47:57.285661"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R11",
+      "type": "answerable",
+      "question": "¿Se pueden solicitar antecedentes sobre un caso aprobado automáticamente?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "PRO-ANT",
+          "version": "1",
+          "section": "Límites"
+        }
+      ],
+      "expected_answer": "No.",
+      "status": "completed",
+      "response": {
+        "answer": "No, no se pueden solicitar antecedentes sobre un caso aprobado automáticamente, ya que ese tipo de casos no vuelve a revisarse.\n\nFuentes:\n- PRO-ANT:v1, sección \"4. Límites\", vigente desde el 2026-07-15.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "3. Registro y efecto",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 3. Registro y efecto\n\nLa solicitud queda registrada con su autor y su fecha, y el caso pasa al estado «solicitud de antecedentes». El sistema de origen del caso recibe el aviso mediante la llamada de vuelta configurada por la organización.\n\nCuando llega la evidencia solicitada, el mismo caso se vuelve a evaluar conservando lo que ya se había concluido. Si el caso ya estaba cerrado, se abre un caso nuevo vinculado al anterior."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "1. Qué casos llegan a su bandeja",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 1. Qué casos llegan a su bandeja\n\nA su bandeja llegan los casos que MIRA no resolvió de forma automática. Los casos con puntaje de 80 o más y sin señales de fraude se aprueban automáticamente, por lo que no llegarán a su bandeja. Todo caso que vea tiene una razón de derivación, que aparece en la parte superior de la ficha."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Puedo pedirle al asistente que apruebe o rechace un caso?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Puedo pedirle al asistente que apruebe o rechace un caso?\n\nNo. El asistente explica por qué un caso fue derivado, muestra las reglas que aplican y puede preparar una solicitud de antecedentes que usted confirma. Aprobar y rechazar son decisiones del operador."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Se pueden solicitar antecedentes sobre un caso aprobado automáticamente?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:01.073277"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "R12",
+      "type": "answerable",
+      "question": "¿Qué efecto produce registrar una solicitud de antecedentes?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "PRO-ANT",
+          "version": "1",
+          "section": "Registro y efecto"
+        }
+      ],
+      "expected_answer": "Se registra autor y fecha, el caso pasa a solicitud de antecedentes y se avisa al sistema de origen.",
+      "status": "completed",
+      "response": {
+        "answer": "Registrar una solicitud de antecedentes produce los siguientes efectos:\n- La solicitud queda registrada indicando su autor y su fecha.\n- El caso pasa al estado «solicitud de antecedentes».\n- El sistema de origen del caso recibe un aviso mediante la llamada de vuelta configurada por la organización.\n- Cuando llega la evidencia solicitada, el caso se vuelve a evaluar conservando lo concluido previamente (si el caso ya estaba cerrado, se abre uno nuevo vinculado al anterior).\n\nFuentes:\n- PRO-ANT, sección \"3. Registro y efecto\", versión 1 (vigente desde 2026-07-15).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "3. Registro y efecto",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 3. Registro y efecto\n\nLa solicitud queda registrada con su autor y su fecha, y el caso pasa al estado «solicitud de antecedentes». El sistema de origen del caso recibe el aviso mediante la llamada de vuelta configurada por la organización.\n\nCuando llega la evidencia solicitada, el mismo caso se vuelve a evaluar conservando lo que ya se había concluido. Si el caso ya estaba cerrado, se abre un caso nuevo vinculado al anterior."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "1. Cuándo solicitar antecedentes",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 1. Cuándo solicitar antecedentes\n\nSe solicitan antecedentes cuando la evidencia del caso es insuficiente o no es utilizable para decidir: un documento ilegible, una página faltante, una boleta que no corresponde al caso o una captura biométrica fallida. La solicitud no es un rechazo encubierto: si la evidencia ya permite decidir, se decide."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "5. Plazo de respuesta",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 5. Plazo de respuesta\n\nEl plazo para que lleguen los antecedentes lo define cada organización. Si vence sin respuesta, el caso se cierra por falta de antecedentes según la regla que la organización haya configurado."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Por qué un caso con puntaje alto llegó a mi bandeja?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Por qué un caso con puntaje alto llegó a mi bandeja?\n\nHay tres razones posibles: el puntaje está bajo el umbral de aprobación que fijó su organización, alguna señal con mínimo propio quedó bajo su mínimo, o hay una señal de fraude activa. La razón aparece en la ficha del caso."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué efecto produce registrar una solicitud de antecedentes?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:05.067143"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "PRO-ANT:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "N01",
+      "type": "unanswerable",
+      "question": "¿Cuáles son los pesos porcentuales exactos de cada componente del puntaje?",
+      "should_answer": false,
+      "expected_evidence": [],
+      "expected_answer": "Abstenerse: el corpus no define esos pesos.",
+      "status": "completed",
+      "response": {
+        "answer": "El corpus normativo recuperado no contiene información sobre los pesos porcentuales exactos de cada componente del puntaje. La sección 7 de la política vigente (código POL-DEC, versión 2, vigencia desde 2026-09-01) menciona los cuatro componentes (autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude), pero no especifica sus pesos porcentuales.\n\nFuentes:\n- Política de decisión y umbrales (POL-DEC, versión 2, sección 7, vigente desde 2026-09-01).\n\nDatos consultados:\n- Ninguno de los fragmentos recuperados detalla porcentajes de ponderación.",
+        "state": "abstencion",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "7. Componentes del puntaje",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 7. Componentes del puntaje\n\nEl puntaje se presenta acompañado de cuatro componentes: autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude. La interfaz de revisión debe mostrar qué componente empujó el puntaje hacia arriba o hacia abajo."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Señales de fraude",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 4. Señales de fraude\n\nCada señal de fraude activa resta 20 puntos al puntaje total del caso. Después de aplicar el descuento, el caso se decide según la tabla de la sección 2."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "2. Señales documentales",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 2. Señales documentales\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| DOC_AUT | Autenticidad del documento: coherencia de su estructura, timbres, firmas y origen declarado | Revisar el documento original y compararlo con documentos del mismo emisor |\n| DOC_ARIT | Coherencia aritmética: que el total corresponda a la suma de sus líneas y los impuestos a su base | Verificar el cálculo; un total que no cuadra es un hallazgo, no un error de lectura |\n| DOC_LEG | Legibilidad del archivo: nitidez, encuadre, páginas completas | Bajo 50, solicitar el reenvío del documento |\n| DOC_IDIOMA | Indica que el documento está en un idioma distinto del español | Verificar manualmente los campos leídos; la confianza de lectura es menor |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 2. Umbrales de referencia\n\nLos valores de esta tabla son de referencia. Cada organización fija los suyos según la sección 5.\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, solo si no hay señales de fraude activas y todas las señales con mínimo propio lo cumplen |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento a revisión por un analista con rol de supervisor |\n\nNingún caso se rechaza automáticamente. El rechazo de un caso siempre lo decide y lo firma una persona."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cuáles son los pesos porcentuales exactos de cada componente del puntaje?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:09.471072"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "N02",
+      "type": "unanswerable",
+      "question": "¿Cuál es la tasa de error medida del módulo de autenticidad documental?",
+      "should_answer": false,
+      "expected_evidence": [],
+      "expected_answer": "Abstenerse: el corpus no contiene una medición de error.",
+      "status": "completed",
+      "response": {
+        "answer": "El corpus recuperado no contiene información sobre la tasa de falta o error medida del módulo de autenticidad documental (`DOC_AUT`). La evidencia menciona que `DOC_AUT` mide la autenticidad del documento (coherencia de estructura, timbres, firmas y origen) y establece un mínimo de 70 puntos, pero no detalla métricas de error.\n\nFuentes:\n- Catálogo de señales de MIRA (`CAT-SEN:v3`), sección 2, vigente desde 2026-09-01.\n- Política de decisión y umbrales (`POL-DEC:v2`), sección 3, vigente desde 2026-09-01.\n\nDatos consultados: Ninguno adicional.",
+        "state": "abstencion",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "2. Señales documentales",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 2. Señales documentales\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| DOC_AUT | Autenticidad del documento: coherencia de su estructura, timbres, firmas y origen declarado | Revisar el documento original y compararlo con documentos del mismo emisor |\n| DOC_ARIT | Coherencia aritmética: que el total corresponda a la suma de sus líneas y los impuestos a su base | Verificar el cálculo; un total que no cuadra es un hallazgo, no un error de lectura |\n| DOC_LEG | Legibilidad del archivo: nitidez, encuadre, páginas completas | Bajo 50, solicitar el reenvío del documento |\n| DOC_IDIOMA | Indica que el documento está en un idioma distinto del español | Verificar manualmente los campos leídos; la confianza de lectura es menor |"
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "6. Señales de fraude",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 6. Señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión según POL-DEC.\n\n| Código | Qué indica |\n|---|---|\n| FRA_EDICION | El archivo muestra rastros de edición posterior a su emisión |\n| FRA_MEMORIA | La misma pieza de evidencia, o una casi idéntica, ya fue presentada en otro caso |\n| FRA_SINTETICO | La imagen o el documento presenta rasgos de contenido generado artificialmente |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:06",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "6. Señales faltantes",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 6. Señales faltantes\n\nSi un módulo falla o no entrega su señal, el caso no se aprueba con información parcial: se deriva a revisión indicando qué señal faltó. La ausencia de una señal nunca se interpreta como favorable."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "7. Componentes del puntaje",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 7. Componentes del puntaje\n\nEl puntaje se presenta acompañado de cuatro componentes: autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude. La interfaz de revisión debe mostrar qué componente empujó el puntaje hacia arriba o hacia abajo."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cuál es la tasa de error medida del módulo de autenticidad documental?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:13.566152"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "N03",
+      "type": "unanswerable",
+      "question": "¿Cuánto cuesta en pesos chilenos solicitar antecedentes?",
+      "should_answer": false,
+      "expected_evidence": [],
+      "expected_answer": "Abstenerse: el corpus no informa costos.",
+      "status": "completed",
+      "response": {
+        "answer": "El corpus recuperado no contiene información sobre el costo en pesos chilenos de solicitar antecedentes. Falta documentación que detalle tarifas o costos asociados a dicho procedimiento.\n\n### Fuentes\n- Ninguna fuente vigente del corpus respalda esta información.\n\n### Datos consultados\n- Búsqueda en evidencias recuperadas (códigos POL-DEC, FAQ-OPE, MAN-REV, PRO-ANT).",
+        "state": "abstencion",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Por qué un caso con puntaje alto llegó a mi bandeja?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Por qué un caso con puntaje alto llegó a mi bandeja?\n\nHay tres razones posibles: el puntaje está bajo el umbral de aprobación que fijó su organización, alguna señal con mínimo propio quedó bajo su mínimo, o hay una señal de fraude activa. La razón aparece en la ficha del caso."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "1. Qué casos llegan a su bandeja",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 1. Qué casos llegan a su bandeja\n\nA su bandeja llegan los casos que MIRA no resolvió de forma automática. Los casos con puntaje de 80 o más y sin señales de fraude se aprueban automáticamente, por lo que no llegarán a su bandeja. Todo caso que vea tiene una razón de derivación, que aparece en la parte superior de la ficha."
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "code": "PRO-ANT",
+            "title": "Procedimiento de solicitud de antecedentes",
+            "section": "4. Límites",
+            "version": "1",
+            "status": "vigente",
+            "source": "PRO-ANT_solicitud_antecedentes.md",
+            "text": "## 4. Límites\n\n- Solo usuarios con rol de operador o supervisor pueden registrar una solicitud.\n- No se pueden registrar más de dos solicitudes de antecedentes sobre un mismo caso. Una tercera solicitud requiere que la registre un supervisor.\n- No se puede solicitar antecedentes sobre un caso aprobado automáticamente: ese caso no vuelve a revisarse."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "1. Propósito",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 1. Propósito\n\nEsta política define cómo MIRA traduce el puntaje de confianza de un caso en una decisión, qué condiciones prevalecen sobre el puntaje y quién puede modificar los valores que gobiernan esa traducción. Aplica a todas las organizaciones que operan en la plataforma."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cuánto cuesta en pesos chilenos solicitar antecedentes?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:18.072281"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "PRO-ANT:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "N04",
+      "type": "unanswerable",
+      "question": "¿Qué proveedor comercial ejecuta el módulo BIO_ROSTRO?",
+      "should_answer": false,
+      "expected_evidence": [],
+      "expected_answer": "Abstenerse: el corpus no identifica un proveedor.",
+      "status": "completed",
+      "response": {
+        "answer": "La evidencia documental recuperada no menciona qué proveedor comercial ejecuta el módulo BIO_ROSTRO; solo indica que mide la coincidencia entre el rostro de la captura y el del documento de identidad y establece un mínimo de 75 (CAT-SEN:v3, sección 4, vigente desde 2026-09-01; POL-DEC:v2, sección 3, vigente desde 2026-09-01). Falta información en el corpus documental sobre el proveedor.\n\nFuentes:\n- CAT-SEN:v3, sección 4. Señales biométricas (vigente desde 2026-09-01).\n- POL-DEC:v2, sección 3. Mínimos por señal (vigente desde 2026-09-01).\n\nDatos consultados:\n- Proveedor comercial del módulo BIO_ROSTRO (no disponible en el corpus).",
+        "state": "abstencion",
+        "citations": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "4. Señales biométricas",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 4. Señales biométricas\n\n| Código | Qué mide | Qué hacer si el valor es bajo |\n|---|---|---|\n| BIO_ROSTRO | Coincidencia entre el rostro de la captura y el del documento de identidad | Comparar manualmente; no decidir solo con el valor |\n| BIO_VIDA | Prueba de vida: que la captura corresponda a una persona presente y no a una foto o pantalla | Solicitar una nueva captura |"
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Configuración por organización",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 3. Configuración por organización\n\nLos umbrales pueden configurarse por organización y por tipo de proceso desde el diseñador de flujos. Cualquier usuario con rol de diseñador de flujos de la organización puede modificarlos. El cambio queda disponible en producción de inmediato."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "1. Propósito",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 1. Propósito\n\nEsta política define cómo MIRA traduce el puntaje de confianza de un caso en una decisión, qué condiciones prevalecen sobre el puntaje y quién puede modificar los valores que gobiernan esa traducción. Aplica a todas las organizaciones que operan en la plataforma."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "7. Componentes del puntaje",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 7. Componentes del puntaje\n\nEl puntaje se presenta acompañado de cuatro componentes: autenticidad de los documentos, coherencia biométrica, cruce entre fuentes y presencia de señales de fraude. La interfaz de revisión debe mostrar qué componente empujó el puntaje hacia arriba o hacia abajo."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Qué proveedor comercial ejecuta el módulo BIO_ROSTRO?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:22.577443"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:07",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "C01",
+      "type": "current_conflict",
+      "question": "¿El umbral de referencia para aprobación automática es 80 o 85 puntos?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Umbrales de referencia"
+        },
+        {
+          "code": "MAN-REV",
+          "version": "1",
+          "section": "Qué casos llegan"
+        }
+      ],
+      "expected_answer": "Exponer 85 en POL-DEC v2 y 80 en MAN-REV v1 como fuentes vigentes contradictorias, sin elegir.",
+      "status": "completed",
+      "response": {
+        "answer": "El umbral de referencia general para la aprobación automática es de **85 o más** puntos, según se establece en los documentos de política de decisión. No obstante, la norma vigente aclara que este valor es de referencia y que cada organización puede fijar sus propios umbrales. Además, se requiere que no existan señales de fraude activas y que se cumplan los mínimos particulares por señal.\n\nFuentes:\n- Código POL-DEC, Sección 2 (\"Umbrales de referencia\"), Versión 2 (vigente desde 2026-09-01) y Versión 1 (derogada, vigente 2026-03-02 a 2026-08-31).\n- Código POL-DEC, Sección 5 (\"Configuración por organización\"), Versión 2 (vigente desde 2026-09-01).\n\nDatos consultados:\n- Se consultó la evidencia documental recuperada sobre la política de decisión y umbrales (POL-DEC).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 2. Umbrales de referencia\n\nLos valores de esta tabla son de referencia. Cada organización fija los suyos según la sección 5.\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, solo si no hay señales de fraude activas y todas las señales con mínimo propio lo cumplen |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento a revisión por un analista con rol de supervisor |\n\nNingún caso se rechaza automáticamente. El rechazo de un caso siempre lo decide y lo firma una persona."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:05",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "5. Configuración por organización",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 5. Configuración por organización\n\nCada organización fija sus propios umbrales de aprobación y de revisión. Un cambio de umbral es un cambio de política de riesgo de la organización y no una configuración técnica: requiere la aprobación de dos personas con rol de supervisor de esa organización y queda registrado con su autor, sus aprobadores, la fecha y el valor anterior. Un cambio con una sola aprobación no entra en vigor."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Señales de fraude",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 4. Señales de fraude\n\nCada señal de fraude activa resta 20 puntos al puntaje total del caso. Después de aplicar el descuento, el caso se decide según la tabla de la sección 2."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿El umbral de referencia para aprobación automática es 80 o 85 puntos?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:27.389608"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "C02",
+      "type": "current_conflict",
+      "question": "¿Un caso con 82 puntos, sin fraude pero con DOC_AUT bajo 70 se aprueba automáticamente?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Mínimos por señal"
+        },
+        {
+          "code": "MAN-REV",
+          "version": "1",
+          "section": "Qué casos llegan"
+        }
+      ],
+      "expected_answer": "Exponer que el manual afirma aprobación desde 80 sin fraude y la política exige cumplir mínimos propios; no resolver el conflicto.",
+      "status": "completed",
+      "response": {
+        "answer": "No, un caso con 82 puntos y DOC_AUT bajo 70 **no** se aprueba automáticamente y llega a la bandeja de revisión. \n\nSegún el manual de revisión, los casos con 80 puntos o más y sin fraude normalmente se aprueban automáticamente y no llegan a la bandeja (*MAN-REV*, sección 1, versión 1, vigente desde 2026-07-15). Sin embargo, las preguntas frecuentes de operadores indican que un caso con puntaje alto puede llegar a la bandeja si alguna señal con mínimo propio queda bajo su mínimo (*FAQ-OPE*, sección \"¿Por qué un caso con puntaje alto llegó a mi bandeja?\", versión 2, vigente desde 2026-10-01). La política de decisión y umbrales establece que la señal DOC_AUT tiene un mínimo propio de 70 (*POL-DEC*, sección 3, versión 2, vigente desde 2026-09-01).\n\nFuentes:\n- *MAN-REV* (Manual de revisión asistida para operadores), sección 1, versión 1, vigente desde 2026-07-15.\n- *FAQ-OPE* (Preguntas frecuentes de operadores), sección \"¿Por qué un caso con puntaje alto llegó a mi bandeja?\", versión 2, vigente desde 2026-10-01.\n- *POL-DEC* (Política de decisión y umbrales), sección 3, versión 2, vigente desde 2026-09-01.\n\nDatos consultados: No se requirió consultar herramientas MCP adicionales para este caso hipotético.",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "1. Qué casos llegan a su bandeja",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 1. Qué casos llegan a su bandeja\n\nA su bandeja llegan los casos que MIRA no resolvió de forma automática. Los casos con puntaje de 80 o más y sin señales de fraude se aprueban automáticamente, por lo que no llegarán a su bandeja. Todo caso que vea tiene una razón de derivación, que aparece en la parte superior de la ficha."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Señales de fraude",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 4. Señales de fraude\n\nCada señal de fraude activa resta 20 puntos al puntaje total del caso. Después de aplicar el descuento, el caso se decide según la tabla de la sección 2."
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "code": "FAQ-OPE",
+            "title": "Preguntas frecuentes de operadores",
+            "section": "¿Por qué un caso con puntaje alto llegó a mi bandeja?",
+            "version": "2",
+            "status": "vigente",
+            "source": "FAQ-OPE_preguntas_frecuentes_operadores.md",
+            "text": "## ¿Por qué un caso con puntaje alto llegó a mi bandeja?\n\nHay tres razones posibles: el puntaje está bajo el umbral de aprobación que fijó su organización, alguna señal con mínimo propio quedó bajo su mínimo, o hay una señal de fraude activa. La razón aparece en la ficha del caso."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "2. Umbrales de referencia",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 2. Umbrales de referencia\n\n| Puntaje de confianza | Decisión |\n|---|---|\n| 85 o más | Aprobación automática, sin intervención humana |\n| Entre 60 y 84 | Derivación a revisión asistida por un operador |\n| Menos de 60 | Escalamiento o rechazo por riesgo alto |"
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Un caso con 82 puntos, sin fraude pero con DOC_AUT bajo 70 se aprueba automáticamente?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:31.793116"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "MAN-REV:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "FAQ-OPE:v2:section:02",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:02",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "V01",
+      "type": "version_change",
+      "question": "¿Cómo cambió el tratamiento de una señal de fraude entre POL-DEC v1 y v2?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "1",
+          "section": "Señales de fraude"
+        },
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Precedencia de las señales de fraude"
+        }
+      ],
+      "expected_answer": "La v1 descontaba 20 puntos; la v2 no descuenta y deriva siempre. Aplicar la v2 vigente.",
+      "status": "completed",
+      "response": {
+        "answer": "Entre POL-DEC v1 y v2, el tratamiento de las señales de fraude cambió de la siguiente manera:\n\n- **POL-DEC v1 (Sección 4, versión 1, vigente del 2026-03-02 al 2026-08-31):** Cada señal de fraude activa restaba 20 puntos al puntaje total del caso, y posteriormente la decisión se tomaba según la tabla de la sección 2.\n- **POL-DEC v2 (Sección 4, versión 2, vigente desde el 2026-09-01):** Las señales de fraude ya no restan puntos; ahora prevalecen sobre el puntaje y cualquier señal de fraude activa deriva el caso directamente a revisión, independientemente de cuál sea su puntaje total.\n\nFuentes:\n- Política de decisión y umbrales (POL-DEC:v1), sección 4, versión 1 (vigencia: 2026-03-02 a 2026-08-31).\n- Política de decisión y umbrales (POL-DEC:v2), sección 4, versión 2 (vigencia desde 2026-09-01).",
+        "state": "evidencia",
+        "citations": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "6. Señales de fraude",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 6. Señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión según POL-DEC.\n\n| Código | Qué indica |\n|---|---|\n| FRA_EDICION | El archivo muestra rastros de edición posterior a su emisión |\n| FRA_MEMORIA | La misma pieza de evidencia, o una casi idéntica, ya fue presentada en otro caso |\n| FRA_SINTETICO | La imagen o el documento presenta rasgos de contenido generado artificialmente |"
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Precedencia de las señales de fraude",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 4. Precedencia de las señales de fraude\n\nUna señal de fraude activa deriva el caso a revisión, cualquiera sea su puntaje. Las señales de fraude no restan puntos: prevalecen sobre el puntaje. El catálogo de señales (CAT-SEN) identifica cuáles son señales de fraude."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "4. Señales de fraude",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 4. Señales de fraude\n\nCada señal de fraude activa resta 20 puntos al puntaje total del caso. Después de aplicar el descuento, el caso se decide según la tabla de la sección 2."
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "code": "CAT-SEN",
+            "title": "Catálogo de señales de MIRA",
+            "section": "1. Qué es una señal",
+            "version": "3",
+            "status": "vigente",
+            "source": "CAT-SEN_catalogo_senales.md",
+            "text": "## 1. Qué es una señal\n\nUna señal es el resultado individual que produce un módulo de análisis sobre una pieza de evidencia o sobre el conjunto del caso. Las señales de valor numérico van de 0 a 100, donde un valor mayor indica más confianza. Las señales de fraude son indicadores: están activas o inactivas.\n\nLos mínimos por señal no se definen en este catálogo sino en la política de decisión y umbrales (POL-DEC)."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cómo cambió el tratamiento de una señal de fraude entre POL-DEC v1 y v2?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:36.093103"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "CAT-SEN:v3:section:06",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "CAT-SEN:v3:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "V02",
+      "type": "version_change",
+      "question": "¿Cómo cambió la autorización para modificar umbrales entre POL-DEC v1 y v2?",
+      "should_answer": true,
+      "expected_evidence": [
+        {
+          "code": "POL-DEC",
+          "version": "1",
+          "section": "Configuración por organización"
+        },
+        {
+          "code": "POL-DEC",
+          "version": "2",
+          "section": "Configuración por organización"
+        }
+      ],
+      "expected_answer": "La v1 permitía al diseñador aplicar cambios inmediatos; la v2 exige dos supervisores. Aplicar la v2 vigente.",
+      "status": "completed",
+      "response": {
+        "answer": "La evidencia proporcionada incluye la versión 2 de la política (`POL-DEC:v2`, sección 5, vigente desde 2026-09-01) y la versión 1 (`POL-DEC:v1`, sección 1, derogada el 2026-08-31), pero **no contiene el texto completo ni la sección correspondiente a la modificación de umbrales de la versión 1 (`POL-DEC v1`)**. \n\nPor lo tanto, no es posible comparar cómo cambió la autorización entre ambas versiones basándose estrictamente en los fragmentos recuperados.\n\n### Fuentes\n- `POL-DEC:v2` (Sección 5. Configuración por organización, Versión 2, Vigencia: desde 2026-09-01).\n\n### Datos consultados\n- Fragmentos recuperados de `POL-DEC:v2` y `POL-DEC:v1`.",
+        "state": "abstencion",
+        "citations": [
+          {
+            "chunk_id": "POL-DEC:v2:section:05",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "5. Configuración por organización",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 5. Configuración por organización\n\nCada organización fija sus propios umbrales de aprobación y de revisión. Un cambio de umbral es un cambio de política de riesgo de la organización y no una configuración técnica: requiere la aprobación de dos personas con rol de supervisor de esa organización y queda registrado con su autor, sus aprobadores, la fecha y el valor anterior. Un cambio con una sola aprobación no entra en vigor."
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:04",
+            "code": "MAN-REV",
+            "title": "Manual de revisión asistida para operadores",
+            "section": "4. Discrepancias con la plataforma",
+            "version": "1",
+            "status": "vigente",
+            "source": "MAN-REV_manual_revision_asistida.md",
+            "text": "## 4. Discrepancias con la plataforma\n\nCuando su decisión difiere de la sugerida por la plataforma, el caso queda marcado como discrepancia para revisión del equipo de modelos de DPRIME. La marca no altera su decisión."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "1. Propósito",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 1. Propósito\n\nEsta política define cómo MIRA traduce el puntaje de confianza de un caso en una decisión, qué condiciones prevalecen sobre el puntaje y quién puede modificar los valores que gobiernan esa traducción. Aplica a todas las organizaciones que operan en la plataforma."
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "3. Mínimos por señal",
+            "version": "2",
+            "status": "vigente",
+            "source": "POL-DEC_v2_vigente.md",
+            "text": "## 3. Mínimos por señal\n\nAlgunas señales tienen un mínimo propio. Si una de ellas queda bajo su mínimo, el caso se deriva a revisión aunque el puntaje total alcance el umbral de aprobación.\n\n| Señal | Mínimo |\n|---|---|\n| DOC_AUT, autenticidad documental | 70 |\n| BIO_ROSTRO, coincidencia de rostro | 75 |\n| CRUCE_MONTO, cruce de montos entre fuentes | 60 |\n| CRUCE_FECHA, cruce de fechas entre fuentes | 60 |\n\nEl resto de las señales no tiene mínimo propio y solo aporta al puntaje total."
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:01",
+            "code": "POL-DEC",
+            "title": "Política de decisión y umbrales",
+            "section": "1. Propósito",
+            "version": "1",
+            "status": "derogada",
+            "source": "POL-DEC_v1_derogada.md",
+            "text": "## 1. Propósito\n\nEsta política define cómo MIRA traduce el puntaje de confianza de un caso en una decisión, y quién puede modificar los valores que gobiernan esa traducción."
+          }
+        ],
+        "traces": [
+          {
+            "tool": "buscar_reglas",
+            "arguments": {
+              "pregunta": "¿Cómo cambió la autorización para modificar umbrales entre POL-DEC v1 y v2?"
+            },
+            "ok": true,
+            "summary": "Operación completada",
+            "timestamp": "2026-11-08T23:48:40.190980"
+          }
+        ],
+        "action": null,
+        "model": "gemini-flash-lite-latest",
+        "notice": null
+      },
+      "review": {
+        "citation_assessments": [
+          {
+            "chunk_id": "POL-DEC:v2:section:05",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "MAN-REV:v1:section:04",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:01",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v2:section:03",
+            "supports_answer": null,
+            "note": ""
+          },
+          {
+            "chunk_id": "POL-DEC:v1:section:01",
+            "supports_answer": null,
+            "note": ""
+          }
+        ],
+        "faithful": null,
+        "handling_correct": null,
+        "failure_class": null,
+        "notes": ""
+      }
+    }
+  ],
+  "scores": {
+    "samples": 20,
+    "complete_golden_set": true,
+    "completed": 20,
+    "operational_errors": 0,
+    "citation_precision": {
+      "correct": 0,
+      "reviewed": 0,
+      "unreviewed": 100,
+      "value": null
+    },
+    "faithfulness": {
+      "faithful": 0,
+      "reviewed": 0,
+      "unreviewed_completed": 20,
+      "value": null
+    },
+    "abstention": {
+      "correct": 4,
+      "without_corpus_answer": 4,
+      "correct_rate": 1.0,
+      "unjustified": 1,
+      "with_corpus_answer": 16,
+      "unjustified_rate": 0.0625,
+      "completed_questions": 20
+    },
+    "conflict_and_version_handling": {
+      "correct": 0,
+      "reviewed": 0,
+      "total": 4,
+      "unreviewed": 4,
+      "value": null
+    },
+    "failure_classification": {
+      "recovery": 0,
+      "generation": 0,
+      "operational": 0
+    },
+    "unclassified_failures": [
+      "V02"
+    ],
+    "manual_review_complete": false
+  },
+  "first_question": "R01",
+  "requested_samples": 20,
+  "assembled_from": [
+    "generation_r01.json",
+    "generation_r02_preflight.json",
+    "generation_r03_r20.json"
+  ]
+}
