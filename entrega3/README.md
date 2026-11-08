@@ -42,7 +42,7 @@ Abra `http://localhost:3000/asistente`.
 
 ```powershell
 entrega3/.venv/Scripts/python.exe -m pytest entrega3/service/tests
-entrega3/.venv/Scripts/python.exe -m mira_cu1.evaluate --top-k 4
+entrega3/.venv/Scripts/python.exe -m mira_cu1.evaluate --top-k 5
 npm --prefix frontend run typecheck
 ```
 
@@ -68,4 +68,3 @@ El cliente demuestra que FastMCP responde por `http://127.0.0.1:8001/mcp`. La id
 - Los documentos pueden contradecirse; el asistente conserva versiones, muestra conflictos vigentes y se abstiene cuando falta respaldo.
 
 Los datos, organizaciones y personas son ficticios y se usan únicamente con fines docentes.
-

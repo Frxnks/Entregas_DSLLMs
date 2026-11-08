@@ -123,7 +123,7 @@ class RagEngine:
         )
         return manifest
 
-    def search(self, query: str, strategy: str = "sections", top_k: int = 4) -> list[dict]:
+    def search(self, query: str, strategy: str = "sections", top_k: int = 5) -> list[dict]:
         cache_root = self._configure_model_cache()
         import chromadb
 
@@ -139,7 +139,7 @@ class RagEngine:
             output.append({**metadata, "text": document, "distance": distance})
         return output
 
-    def search_lexical(self, query: str, strategy: str = "sections", top_k: int = 4) -> list[dict]:
+    def search_lexical(self, query: str, strategy: str = "sections", top_k: int = 5) -> list[dict]:
         """Buscador determinista para pruebas y diagnóstico sin descargar modelos."""
         _, chunks = load_corpus(self.corpus_path, strategy)
         query_terms = _terms(query)

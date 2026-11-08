@@ -72,7 +72,7 @@ class ToolService:
             }
         return self._run(session_id, "contexto_sesion", {}, operation)
 
-    def buscar_reglas(self, session_id: str, pregunta: str, top_k: int = 4) -> dict:
+    def buscar_reglas(self, session_id: str, pregunta: str, top_k: int = 5) -> dict:
         def operation() -> list[dict]:
             self.identities.resolve(session_id)
             if not pregunta.strip():
@@ -221,4 +221,3 @@ class ToolService:
 
     def consultar_trazas(self, session_id: str, limit: int = 30) -> dict:
         return self._run(session_id, "consultar_trazas", {"limit": limit}, lambda: self.traces(session_id, limit))
-

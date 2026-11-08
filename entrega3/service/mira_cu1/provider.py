@@ -29,7 +29,7 @@ Responde en español, de forma breve y clara. Incluye una sección Fuentes y otr
 
 
 TOOL_DECLARATIONS = [
-    {"name": "buscar_reglas", "description": "Busca reglas documentales con citas.", "parameters": {"type": "OBJECT", "properties": {"pregunta": {"type": "STRING"}, "top_k": {"type": "INTEGER"}}, "required": ["pregunta"]}},
+    {"name": "buscar_reglas", "description": "Busca reglas documentales con citas.", "parameters": {"type": "OBJECT", "properties": {"pregunta": {"type": "STRING"}}, "required": ["pregunta"]}},
     {"name": "consultar_caso", "description": "Consulta un caso autorizado y los umbrales de su organización.", "parameters": {"type": "OBJECT", "properties": {"caso_id": {"type": "STRING"}}, "required": ["caso_id"]}},
     {"name": "listar_senales", "description": "Lista señales de un caso autorizado.", "parameters": {"type": "OBJECT", "properties": {"caso_id": {"type": "STRING"}}, "required": ["caso_id"]}},
     {"name": "consultar_evidencias", "description": "Consulta extractos sanitizados de las evidencias.", "parameters": {"type": "OBJECT", "properties": {"caso_id": {"type": "STRING"}}, "required": ["caso_id"]}},
@@ -137,7 +137,7 @@ class DemoProvider:
             return result
 
         if "proveedor comercial" in lower or "costo monetario" in lower or "tasa de error" in lower:
-            await call("buscar_reglas", {"pregunta": message, "top_k": 4})
+            await call("buscar_reglas", {"pregunta": message})
             return ProviderResult("ESTADO: abstencion\nEl corpus no contiene esa información; se requiere una fuente adicional validada.", "demo-determinista", calls, results)
         if case_id:
             case = await call("consultar_caso", {"caso_id": case_id})
@@ -167,7 +167,7 @@ class DemoProvider:
                     "demo-determinista", calls, results,
                 )
             await call("listar_senales", {"caso_id": case_id})
-            rules = await call("buscar_reglas", {"pregunta": message, "top_k": 4})
+            rules = await call("buscar_reglas", {"pregunta": message})
             citations = rules.get("data") or []
             source_lines = [f"- {c['code']} §{c['section']}, v{c['version']} ({c['status']})" for c in citations[:3]]
             data = case["data"]
@@ -178,14 +178,13 @@ class DemoProvider:
             )
             return ProviderResult(answer, "demo-determinista", calls, results)
         asks_threshold = "80" in lower or "85" in lower or "umbral" in lower
-        rules = await call("buscar_reglas", {"pregunta": message, "top_k": 8 if asks_threshold else 5})
+        rules = await call("buscar_reglas", {"pregunta": message})
         citations = rules.get("data") or []
         policy = next((c for c in citations if c.get("code") == "POL-DEC" and c.get("version") == "2" and c.get("status") == "vigente" and c.get("section", "").startswith("2.")), None)
         manual = next((c for c in citations if c.get("code") == "MAN-REV" and c.get("status") == "vigente" and c.get("section", "").startswith("1.")), None)
         if asks_threshold and not manual:
             manual_rules = await call("buscar_reglas", {
-                "pregunta": "¿Qué dice el manual de revisión sobre casos con 80 puntos o más y sin señales de fraude?",
-                "top_k": 4,
+                "pregunta": "¿Qué dice el manual de revisión sobre casos con 80 puntos o más y sin señales de fraude?"
             })
             extra = manual_rules.get("data") or []
             citations = citations + [c for c in extra if c.get("chunk_id") not in {item.get("chunk_id") for item in citations}]
@@ -200,4 +199,3 @@ class DemoProvider:
             if conflict else "La evidencia recuperada se presenta para revisión humana."
         )
         return ProviderResult(f"ESTADO: {state}\n{explanation}\n\nFuentes\n" + "\n".join(lines), "demo-determinista", calls, results)
-

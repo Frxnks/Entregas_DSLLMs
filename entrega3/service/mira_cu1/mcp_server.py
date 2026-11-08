@@ -29,9 +29,9 @@ def consultar_trazas(session_id: str, limit: int = 30) -> dict:
 
 
 @mcp.tool
-def buscar_reglas(session_id: str, pregunta: str, top_k: int = 4) -> dict:
+def buscar_reglas(session_id: str, pregunta: str) -> dict:
     """Busca reglas documentales y devuelve fragmentos con fuente, sección, versión y vigencia."""
-    return get_tools().buscar_reglas(session_id, pregunta, top_k)
+    return get_tools().buscar_reglas(session_id, pregunta, get_settings().rag_top_k)
 
 
 @mcp.tool

@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     api_port: int = 8002
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8001
-    rag_top_k: int = 4
+    rag_top_k: int = 5
     rag_strategy: str = "sections"
     rag_embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2"
     mira_cors_origin: str = "http://localhost:3000"
@@ -53,4 +53,3 @@ def get_settings() -> Settings:
     settings = Settings()
     settings.runtime_dir.mkdir(parents=True, exist_ok=True)
     return settings
-
