@@ -48,6 +48,8 @@ npm --prefix frontend run typecheck
 
 El evaluador guarda los resultados reproducibles en `entrega3/var/retrieval_evaluation.json`. `--lexical` sirve para diagnosticar la estructura sin embeddings; no reemplaza la métrica semántica final.
 
+La evaluación de generación requiere Gemini y MCP activos. Consulte la [guía de revisión manual de generación](evaluacion/guia_revision_generacion.md); el modo demo no produce métricas del LLM.
+
 ## Cliente MCP externo
 
 Con el servidor MCP activo y una sesión creada por la API:
