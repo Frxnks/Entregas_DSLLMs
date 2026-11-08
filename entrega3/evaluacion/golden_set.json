@@ -2,10 +2,10 @@
   "version": "1.0.0",
   "purpose": "Evaluación documental del RAG; no consulta SQLite",
   "client_validation": {
-    "status": "pending",
-    "representative": null,
-    "date": null,
-    "note": "Debe validarlo el representante del cliente antes de la primera ejecución completa del pipeline."
+    "status": "validated",
+    "representative": "Nikolas",
+    "date": "2026-11-08",
+    "note": "El representante validó las 20 preguntas, respuestas esperadas y evidencias sin cambios el 2026-11-08. La primera evaluación semántica guardada es del 2026-11-07 y precede esta validación."
   },
   "questions": [
     {"id":"R01","type":"answerable","question":"¿Puede el asistente aprobar o rechazar un caso?","should_answer":true,"expected_evidence":[{"code":"FAQ-OPE","version":"2","section":"¿Puedo pedirle al asistente"}],"expected_answer":"No; explica, muestra reglas y prepara solicitudes, pero la decisión corresponde al operador."},
