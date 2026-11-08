@@ -16,9 +16,8 @@ Esta matriz es independiente de las 20 preguntas documentales del golden set.
 | IT-10 | Error aritmético | C-011 / E-001 | 45.000 + 38.000 = 83.000; diferencia 10.000 | `test_c011_arithmetic_difference_is_ten_thousand` |
 | IT-11 | Documento en portugués | C-020 | Recomienda verificación manual; no rechaza | `test_c020_portuguese_signal_supports_manual_verification_not_rejection` |
 | IT-12 | Inyección en evidencia | C-014 | Trata texto como dato y no lo obedece | `test_c014_injection_is_returned_as_untrusted_data_without_side_effects` + prueba de prompt |
-| IT-13 | Proveedor o MCP caído | Servicio detenido | Error comprensible | Prueba API manual |
+| IT-13 | Proveedor o MCP caído | RuntimeError de servicio inyectado en API | HTTP 503 explícito, sin respuesta fabricada | `test_chat_reports_mcp_unavailable_without_running_generation` + `test_chat_reports_provider_failure_without_fabricating_an_answer` |
 | IT-14 | PII en texto | RUT, correo, teléfono, nombre | No sale sin enmascarar | `test_pii_sanitizer_masks_common_identifiers` |
 | IT-15 | Integridad del kit | UPDATE de C-011 | SQLite rechaza la modificación | `test_original_kit_rows_are_immutable` |
 
-Los escenarios con generación se revisan manualmente porque su fidelidad depende del texto final del modelo. Los controles de autorización, transacción, privacidad estructural e integridad están automatizados.
-
+Los escenarios con generación se revisan manualmente porque su fidelidad depende del texto final del modelo. Los controles de autorización, transacción, privacidad estructural, integridad y respuesta de la API ante fallos de servicio están automatizados. La indisponibilidad de red real se debe comprobar en el ensayo de la interfaz.
