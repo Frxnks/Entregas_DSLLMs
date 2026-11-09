@@ -2,8 +2,9 @@
 % a la pauta Entrega_3_MIRA_RAG_MCP.pdf.
 % Extensiones máximas indicadas por la pauta: 11.1=0,5; 11.2=1,5;
 % 11.3=2; 11.4=1,5; 11.5=1,5; 11.6=3; 11.7=1; 11.8=1 planas.
-% Las figuras se pueden agregar junto a este archivo como imagen1.png, imagen2.png,
-% imagen3.png (también se aceptan .jpg, .jpeg o .pdf).
+% Agregar imagen1.png e imagen2.png (diagramas) y las capturas
+% evidencia_01_interfaz_principal.png a evidencia_06_referencias_y_traza.png
+% en la misma carpeta que este archivo.
 \documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -47,7 +48,17 @@
           \textbf{Agregar #1.png}\\[-1pt]\small #2}}}}}}
   \caption{#2}
   \end{figure}}
+\newcommand{\evidencia}[2]{%
+  \begin{figure}[H]
+  \centering
+  \IfFileExists{#1}{\includegraphics[width=0.92\linewidth,height=6.6cm,keepaspectratio]{#1}}{%
+    \fbox{\parbox[c][2.7cm][c]{0.88\linewidth}{\centering
+    \textbf{Agregar #1}\\[-1pt]\small #2}}}
+  \caption{#2}
+  \end{figure}}
 \newcommand{\pendiente}[1]{\textbf{Pendiente de revisión humana: #1}}
+\renewcommand{\contentsname}{Índice}
+\setcounter{tocdepth}{2}
 
 \hypersetup{
   pdftitle={MIRA — Entrega 3: asistente con RAG y MCP},
@@ -83,6 +94,9 @@ Recall@5 de recuperación: 0,875 por pregunta y 0,90 por fragmento esperado.\\
 20 respuestas Gemini generadas; la revisión humana de fidelidad y citas sigue pendiente.}}
 \vfill
 \end{titlepage}
+
+\tableofcontents
+\clearpage
 
 \section{Resumen ejecutivo}
 \textbf{Qué se construyó.} Una aplicación web para que el operador de una organización cliente entienda por qué un caso fue derivado. El sistema recupera reglas con RAG, consulta datos ficticios mediante un servidor MCP propio y permite preparar solicitudes de antecedentes que solo se registran tras confirmación humana. No aprueba ni rechaza casos.
@@ -179,7 +193,9 @@ El frontend Next.js en español se comunica con FastAPI. La API valida la sesió
 \subsection{Interfaz, errores y datos enviados}
 La ruta \codigo{/asistente} permite escoger un usuario ficticio, conversar y distinguir estados de evidencia, abstención, conflicto y error. Las citas y trazas MCP pueden desplegarse; una acción preparada muestra su contenido y exige una confirmación humana explícita. Ante una falla se informa el problema al usuario.
 
-\figura{imagen3}{Captura de la interfaz con una respuesta, una cita abierta que muestre código/sección/versión y la traza MCP desplegada. Usar datos ficticios y ocultar cualquier clave.}{0.72}
+\evidencia{evidencia_02_respuesta_con_evidencia.png}{Respuesta sobre DOC\_AUT con cita documental y traza MCP desplegada. La captura usa datos ficticios y no contiene claves.}
+
+Las capturas adicionales del ensayo visual se presentan en el Anexo~\ref{anexo:evidencias}.
 
 Antes de enviar datos a Gemini se enmascaran RUT, correo, teléfono y nombres conocidos, y se excluyen claves, tokens de sesión/confirmación y rutas. Se envían la pregunta sanitizada y los fragmentos documentales necesarios; los datos operacionales se obtienen mediante MCP y se limitan a la consulta autorizada. La sanitización reduce exposición accidental, pero no equivale a anonimización universal.
 
@@ -242,9 +258,27 @@ Se utilizó asistencia de IA como apoyo para análisis, programación y document
 
 \begin{thebibliography}{9}
 \small
+\addcontentsline{toc}{section}{Referencias}
 \bibitem{pauta} Universidad de Valparaíso, \emph{Entregable 3: Asistente con RAG y MCP: evidencia documental y acceso gobernado al sistema}, pauta del caso MIRA, 2026.
 \bibitem{kit} Kit CU-1, \emph{Operador de revisión}: corpus documental y datos ficticios entregados para la actividad.
 \bibitem{repo} Equipo MIRA, \emph{Repositorio Entregas\_DSLLMs, carpeta entrega3}: código, Golden Set, resultados de recuperación, evaluación de generación y matriz de integración.
 \end{thebibliography}
+
+\clearpage
+\appendix
+\section{Evidencias visuales de la demostración}
+\label{anexo:evidencias}
+
+Las imágenes de este anexo deben guardarse en la misma carpeta que
+\codigo{Informe\_Entrega\_3\_MIRA.tex}. La captura 4 documenta un primer intento
+con Gemini que no mostró el conflicto; no se considera una prueba exitosa.
+Las capturas 5 y 6 corresponden al recorrido repetido en modo demo, que sí
+presentó ambas fuentes y registró dos búsquedas MCP.
+
+\evidencia{evidencia_01_interfaz_principal.png}{Interfaz inicial del asistente con el usuario ficticio U-01.}
+\evidencia{evidencia_03_abstencion_costo_antecedentes.png}{Abstención ante una consulta cuyo costo no está informado en el corpus.}
+\evidencia{evidencia_04_consulta_umbral_versiones.png}{Primer intento de consulta del umbral con Gemini; solo aparece POL-DEC v2, por lo que el conflicto no queda demostrado.}
+\evidencia{evidencia_05_conflicto_umbral_demo.png}{Consulta del umbral en modo demo: estado CONFLICTO y explicación neutral de las fuentes incompatibles.}
+\evidencia{evidencia_06_referencias_y_traza.png}{Referencias desplegadas y dos llamadas buscar\_reglas en la traza del modo demo.}
 
 \end{document}
