@@ -20,62 +20,96 @@ Usa Gemini en vivo solo si necesitas mostrar explícitamente ese proveedor, la c
 
 ## Preparación inicial
 
-Desde PowerShell, abre la carpeta raíz del repositorio. Requiere Python 3.12 y Node.js 20.
+Para esta demo **no necesitas abrir Docker Desktop**: MIRA CU-1 se ejecuta con procesos locales de Python y Node.js. Requiere Python 3.12 y Node.js 20.
 
-Si aún no existen el entorno virtual o las dependencias, ejecuta una vez:
+### Paso 1: abre PowerShell en la carpeta correcta
+
+Abre la carpeta raíz del repositorio en VS Code y selecciona **Terminal → Nueva terminal**. Confirma que la ruta actual termina en `Entregas_DSLLMs`. Todos los comandos de esta guía se ejecutan desde esa carpeta.
+
+### Paso 2: instala las dependencias
+
+Haz esto una sola vez por equipo. Si ya completaste correctamente alguno de estos comandos, no hace falta repetirlo:
 
 ```powershell
 python -m venv entrega3\.venv
 entrega3\.venv\Scripts\python.exe -m pip install -e "entrega3\service[test]"
-npm --prefix frontend ci
+npm.cmd --prefix frontend ci
 ```
 
-La interfaz del asistente llama por defecto a `http://127.0.0.1:8002/api`; el origen web predeterminado es `http://localhost:3000`. En `entrega3/service/.env`, selecciona el modo demo para ensayar:
+Se usa `npm.cmd` para evitar el bloqueo de scripts `npm.ps1` de PowerShell.
+
+### Paso 3: comprueba el archivo `.env`
+
+La configuración local está en **`entrega3\service\.env`** (no en la raíz del repositorio). Si el archivo todavía no existe, créalo copiando el ejemplo:
+
+```powershell
+if (-not (Test-Path "entrega3\service\.env")) { Copy-Item "entrega3\service\.env.example" "entrega3\service\.env" }
+```
+
+Abre ese archivo para editarlo:
+
+```powershell
+notepad entrega3\service\.env
+```
+
+Para ensayar sin llamadas a Gemini, deja configurado `LLM_PROVIDER=demo`. **No necesitas una clave API para este modo.** Conserva también esta configuración del navegador:
 
 ```dotenv
 LLM_PROVIDER=demo
 MIRA_CORS_ORIGIN=http://localhost:3000
 ```
 
-No compartas ni reemplaces la línea `GEMINI_API_KEY` por una clave en la documentación. La configuración se lee al iniciar la API: si cambias de proveedor, detén y vuelve a iniciar esa terminal.
+Si necesitan mostrar Gemini en vivo, obtengan una clave en [Google AI Studio](https://aistudio.google.com/app/apikey) y péguenla únicamente después de `GEMINI_API_KEY=` en el archivo local `.env`. En ese caso, cambien también a `LLM_PROVIDER=gemini`. No escriban la clave en esta guía, no la compartan ni la incluyan en capturas o commits. Usen Gemini solo si antes verificaron que hay cuota disponible; no habiliten facturación para la demo.
 
-Prepara la base e índices si todavía no están creados o si acabas de configurar el equipo por primera vez:
+La API lee esta configuración cuando se inicia. Si cambias el proveedor, guarda `.env` y reinicia la API.
+
+### Paso 4: prepara la base e índices
+
+Ejecuta este comando desde la raíz si es la primera vez en este equipo o si aún no se preparó la base:
 
 ```powershell
 entrega3\.venv\Scripts\python.exe -m mira_cu1.prepare
 ```
 
-La preparación importa el kit e indexa sus documentos. La primera vez puede tardar y descargar el modelo de embeddings.
+La preparación importa el kit e indexa sus documentos. La primera vez puede tardar y descargar el modelo de embeddings. Cuando termine sin errores, continúa con el inicio de los servicios.
 
 ## Iniciar la aplicación
 
-Deja abiertas tres terminales PowerShell, todas desde la raíz del repositorio:
+### Paso 5: inicia el servidor MCP
 
-**Terminal 1 — servidor MCP**
+Abre una **segunda terminal PowerShell** en la raíz del repositorio. Ejecuta este comando y deja la terminal abierta:
 
 ```powershell
 entrega3\.venv\Scripts\python.exe -m mira_cu1.mcp_server
 ```
 
-**Terminal 2 — API**
+### Paso 6: inicia la API
+
+Abre una **tercera terminal PowerShell**, también en la raíz. Ejecuta este comando y deja la terminal abierta:
 
 ```powershell
 entrega3\.venv\Scripts\python.exe -m mira_cu1.main
 ```
 
-**Terminal 3 — interfaz web**
+### Paso 7: inicia la interfaz web
+
+Abre una **cuarta terminal PowerShell** en la raíz. Ejecuta este comando y deja la terminal abierta:
 
 ```powershell
-npm --prefix frontend run dev
+npm.cmd --prefix frontend run dev
 ```
 
-Abre [http://localhost:3000/asistente](http://localhost:3000/asistente). Debe aparecer el asistente del operador y una sesión iniciada como U-01. Antes de ensayar, puedes comprobar que la API responde:
+En total quedan abiertas cuatro terminales: la primera que usaste para preparar, más las tres de MCP, API y frontend. No cierres las terminales de los servicios mientras haces la demo.
+
+### Paso 8: verifica y abre la aplicación
+
+Vuelve a la primera terminal —la que usaste para preparar— y comprueba que la API responde:
 
 ```powershell
 Invoke-RestMethod http://127.0.0.1:8002/api/health
 ```
 
-La respuesta debe indicar `status: ok`. En el modo demo, el proveedor debe aparecer como `demo` y el modelo como `demo-determinista`.
+La respuesta debe indicar `status: ok`. Luego abre [http://localhost:3000/asistente](http://localhost:3000/asistente). Debe aparecer el asistente del operador y una sesión iniciada como U-01. En el modo demo, el proveedor debe aparecer como `demo` y el modelo como `demo-determinista`.
 
 ## Recorrido visual sugerido
 

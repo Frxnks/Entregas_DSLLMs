@@ -33,7 +33,7 @@ Abra tres terminales:
 ```powershell
 entrega3/.venv/Scripts/python.exe -m mira_cu1.mcp_server
 entrega3/.venv/Scripts/python.exe -m mira_cu1.main
-npm --prefix frontend run dev
+npm.cmd --prefix frontend run dev
 ```
 
 Abra `http://localhost:3000/asistente`.
@@ -43,7 +43,7 @@ Abra `http://localhost:3000/asistente`.
 ```powershell
 entrega3/.venv/Scripts/python.exe -m pytest entrega3/service/tests
 entrega3/.venv/Scripts/python.exe -m mira_cu1.evaluate --top-k 5
-npm --prefix frontend run typecheck
+npm.cmd --prefix frontend run typecheck
 ```
 
 El evaluador guarda los resultados reproducibles en `entrega3/var/retrieval_evaluation.json`. `--lexical` sirve para diagnosticar la estructura sin embeddings; no reemplaza la métrica semántica final.

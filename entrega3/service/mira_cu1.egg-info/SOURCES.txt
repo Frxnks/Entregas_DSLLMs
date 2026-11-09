@@ -6,6 +6,7 @@ mira_cu1/corpus.py
 mira_cu1/database.py
 mira_cu1/evaluate.py
 mira_cu1/gateway.py
+mira_cu1/generation_evaluation.py
 mira_cu1/main.py
 mira_cu1/mcp_server.py
 mira_cu1/orchestrator.py
@@ -22,4 +23,8 @@ mira_cu1.egg-info/dependency_links.txt
 mira_cu1.egg-info/requires.txt
 mira_cu1.egg-info/top_level.txt
 tests/test_actions.py
+tests/test_api_failures.py
+tests/test_case_scenarios.py
 tests/test_corpus_and_privacy.py
+tests/test_gemini_provider.py
+tests/test_generation_evaluation.py
