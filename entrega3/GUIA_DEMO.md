@@ -4,7 +4,7 @@ Esta guía permite ensayar la interfaz antes de la exposición y hacer una demos
 
 ## Qué conviene mostrar
 
-Sí, es recomendable mostrar la aplicación funcionando: hace visible el flujo de conversación, la evidencia documental y las herramientas MCP. No es necesario demostrar todas las funciones. Para una exposición breve, prepara tres preguntas:
+Sí, es recomendable mostrar la aplicación funcionando: hace visible el flujo de conversación, la evidencia documental y las herramientas MCP. La rúbrica pide recorrer **D1–D8 en vivo**, por lo que las tres preguntas siguientes son un ensayo rápido, no sustituyen el guion completo de la [demostración D1–D8](docs/guion-demo.md):
 
 1. **Respuesta con evidencia:** «¿Cuál es el mínimo de DOC_AUT?» Luego abre una cita POL-DEC v2, sección 3, y la traza MCP.
 2. **Abstención:** «¿Cuál es el costo monetario de una solicitud de antecedentes?» Muestra que el asistente no inventa un dato que no está en el corpus.

@@ -26,9 +26,9 @@ El usuario es un operador o supervisor de una organización cliente que revisa c
 
 1. La API crea una sesión para un usuario ficticio conocido.
 2. El operador formula una pregunta.
-3. Gemini elige las herramientas de lectura; la API añade la sesión sin aceptar identidad propuesta por el modelo.
-4. FastMCP autoriza y consulta RAG o SQLite mediante consultas parametrizadas.
-5. Los resultados se sanitizan antes de volver al modelo.
+3. La API busca reglas documentales mediante MCP antes de cada respuesta de Gemini, y añade la sesión sin aceptar una identidad propuesta por el modelo.
+4. Gemini recibe la pregunta y la evidencia RAG recuperada; para datos operacionales adicionales puede elegir herramientas MCP de lectura.
+5. FastMCP autoriza cada llamada y consulta RAG o SQLite mediante operaciones parametrizadas; los resultados se sanitizan antes de volver al modelo.
 6. La respuesta muestra citas y trazas.
 7. Si se necesita una solicitud, el servidor devuelve una propuesta temporal.
 8. La persona confirma; FastMCP revalida todo dentro de una transacción y registra la solicitud y el evento.
@@ -44,4 +44,3 @@ El usuario es un operador o supervisor de una organización cliente que revisa c
 ## Contradicciones conocidas
 
 POL-DEC v2 §2 establece 85 como umbral de referencia sujeto a mínimos y configuración; MAN-REV v1 §1 afirma aprobación desde 80 sin fraude. Ambas fuentes están vigentes y se presentan como conflicto. Las diferencias entre POL-DEC v1 derogada y v2 vigente se tratan como evolución de versión, no como conflicto vigente.
-
