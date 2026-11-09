@@ -1,0 +1,137 @@
+RESUMEN DEL TRABAJO REALIZADO — ENTREGA 3 MIRA
+Fecha: 8 de noviembre de 2026
+Periodo resumido: desde el primer commit registrado hoy (18:45) hasta el ultimo (23:17)
+Repositorio: Frxnks/Entregas_DSLLMs
+
+Este documento resume los cambios realizados durante la jornada en Entrega 3.
+No reemplaza el informe academico ni afirma que los pendientes indicados al final
+ya esten completados.
+
+1. REVISION Y VALIDACION DEL GOLDEN SET
+
+- Se registro una linea base del estado del proyecto y sus pruebas.
+- Se reviso el Golden Set de CU-1 y se corrigieron entradas para que reflejaran
+  las preguntas, respuestas esperadas y evidencias del corpus.
+- El conjunto quedo con 20 preguntas: 12 respondibles, 4 sin respuesta, 2 de
+  conflicto entre fuentes vigentes y 2 de comparacion de versiones.
+- Se documento la validacion del Golden Set por el representante del equipo.
+
+2. MEJORA Y EVALUACION DE LA RECUPERACION RAG
+
+- Se hizo configurable el valor top-k y se establecio k=5 para la configuracion
+  documentada.
+- Se compararon fragmentos por seccion completa con ventanas de 450 caracteres
+  y solapamiento de 90 caracteres.
+- Resultados de recuperacion a k=5:
+  * Secciones completas: Recall por pregunta 14/16 = 0,875; por evidencia
+    18/20 = 0,90.
+  * Ventanas: Recall por pregunta 14/16 = 0,875; por evidencia 18/20 = 0,90.
+- Se mantuvo la estrategia de secciones como predeterminada porque conserva
+  juntas las condiciones de cada regla y no se observo una ventaja agregada
+  de las ventanas.
+- A k=5 se recupera R05 y se mantienen las dos evidencias esperadas de C02.
+  C01 y V02 siguen incompletas: cada una recupera una de sus dos evidencias
+  esperadas.
+- Se actualizaron resultados de evaluacion y pruebas relacionadas.
+
+3. EVALUACION DE GENERACION Y RECUPERACION OBLIGATORIA
+
+- Se implemento el evaluador del Golden Set y su guia de revision manual.
+- Se ajusto el proveedor Gemini para recuperar las reglas por MCP antes de
+  generar la respuesta, incluir la evidencia recuperada en el contexto y
+  conservar la busqueda en las citas y trazas.
+- Se agrego la opcion --start-from para continuar una evaluacion desde una
+  pregunta sin repetir las anteriores.
+- Se ejecuto el Golden Set completo con Gemini: 20 de 20 preguntas terminaron
+  sin errores operacionales.
+- El reporte quedo en
+  entrega3/evaluacion/generacion_gemini_20261108_r01-r20.json.
+- La ejecucion automatica no sustituye la revision humana: las citas, la
+  fidelidad y el manejo de conflictos/versiones deben juzgarse manualmente.
+- V02 se clasifico como un fallo de recuperacion porque no llego la evidencia
+  necesaria para comparar las reglas de autorizacion.
+- Se documento el ajuste posterior a R01 y los limites de los resultados.
+
+4. CONTROLES MCP Y PRUEBAS DE FALLOS
+
+- Se ampliaron las pruebas y la matriz de integracion para documentar controles
+  de acceso, errores de API y comportamiento ante fallos de servicios.
+- Se agregaron pruebas de fallos de API y se verificaron errores explicitos,
+  sin presentar una respuesta inventada como si hubiera tenido exito.
+- La suite relacionada se documento con 28 pruebas aprobadas en el informe.
+
+5. PRUEBA VISUAL Y GUIA DE DEMOSTRACION
+
+- Se documento una prueba visual de la interfaz en modo demo determinista.
+- Se creo y despues se reorganizo entrega3/GUIA_DEMO.md con instrucciones
+  paso a paso para preparar el entorno, configurar el archivo local
+  entrega3/service/.env, iniciar MCP, la API y el frontend, y verificar la
+  aplicacion.
+- Se aclaro que Docker no es necesario para la demo local de Entrega 3.
+- Se cambio el comando de npm a npm.cmd para evitar el bloqueo de npm.ps1 en
+  PowerShell.
+- La guia recomienda el proveedor demo para ensayar sin llamadas externas y
+  advierte que sus resultados no son metricas de Gemini.
+- Se indica obtener la clave Gemini en Google AI Studio y guardarla unicamente
+  en el .env local, sin mostrarla en capturas o documentacion.
+- Se aviso que una clave Gemini aparecio en un texto compartido y se recomendo
+  revocarla y generar otra. No se debe asumir que ya fue rotada.
+- Se detecto que el entorno virtual se habia creado con Python 3.13 mientras
+  pydantic_core estaba instalado para Python 3.12. La guia ahora indica crear
+  el entorno con py -3.12 y reinstalar las dependencias.
+- La instalacion del frontend con npm.cmd --prefix frontend ci termino
+  correctamente, pero npm reporto 3 vulnerabilidades (1 moderada, 1 alta y
+  1 critica). No se ejecuto npm audit fix --force ni se investigaron aun esos
+  avisos.
+- Se documentaron tres consultas de ensayo: respuesta con evidencia,
+  abstencion cuando falta informacion y conflicto entre documentos.
+- La guia deja claro que el ensayo local no reemplaza la demostracion formal
+  D1-D8 durante la presentacion.
+
+6. INFORME LATEX Y EVIDENCIAS VISUALES
+
+- Se creo el borrador LaTeX
+  entrega3/informe/Informe_Entrega_3_MIRA.tex con las ocho secciones de la pauta,
+  portada, resultados disponibles, riesgos, limites y referencias.
+- Se agrego un indice y un anexo para las evidencias visuales.
+- El informe distingue los resultados de Gemini del modo demo, identifica
+  errores observados y mantiene como pendientes las revisiones no realizadas.
+- Se guardaron seis capturas en entrega3/evidencias-visuales:
+  1. evidencia_01_interfaz_principal.png
+  2. evidencia_02_respuesta_con_evidencia.png
+  3. evidencia_03_abstencion_costo_antecedentes.png
+  4. evidencia_04_consulta_umbral_versiones.png
+  5. evidencia_05_conflicto_umbral_demo.png
+  6. evidencia_06_referencias_y_traza.png
+- La evidencia 4 es un primer intento con Gemini que no mostro el conflicto.
+  Las evidencias 5 y 6 muestran el resultado esperado en modo demo: el estado
+  CONFLICTO, ambas fuentes vigentes y dos llamadas buscar_reglas.
+- Se verifico el balance de llaves y entornos del archivo LaTeX, y la presencia
+  de las seis imagenes guardadas.
+- No se compilo el PDF actualizado porque el equipo no tiene pdflatex, xelatex,
+  latexmk ni tectonic disponibles.
+
+7. PENDIENTES PARA CERRAR LA ENTREGA
+
+- Revisar manualmente las 100 citas de las 20 respuestas Gemini.
+- Completar los 20 juicios de fidelidad de respuesta.
+- Completar los 4 juicios de manejo de conflictos y versiones.
+- Clasificar los fallos restantes como recuperacion, generacion u operacionales.
+- Investigar/mejorar los fallos de recuperacion C01 y V02 y repetir la evaluacion
+  pertinente sin alterar retrospectivamente el Golden Set aprobado.
+- Crear los diagramas de arquitectura y secuencia solicitados en el informe:
+  imagen1.png e imagen2.png.
+- Copiar las seis capturas desde entrega3/evidencias-visuales a la misma carpeta
+  que Informe_Entrega_3_MIRA.tex, conservando sus nombres, para que LaTeX las
+  inserte al compilar.
+- Compilar y revisar el PDF final del informe; el borrador actual no se ha
+  compilado desde sus ultimos cambios.
+- Confirmar la rotacion de la clave Gemini que aparecio en un texto compartido;
+  mantener la nueva clave solo en el archivo .env local.
+- Revisar los 3 avisos de vulnerabilidades de npm con una investigacion
+  controlada antes de decidir si corresponde actualizar dependencias.
+- Preparar y realizar la demostracion formal en vivo D1-D8 dentro del tiempo de
+  presentacion, y completar la presentacion oral.
+
+Los commits los administra el usuario. Este resumen se guarda como archivo de
+texto y no crea ningun commit.

@@ -40,10 +40,10 @@
 \newcommand{\figura}[3]{%
   \begin{figure}[H]
   \centering
-  \IfFileExists{#1.png}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.png}}{%
-    \IfFileExists{#1.jpg}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.jpg}}{%
-      \IfFileExists{#1.jpeg}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.jpeg}}{%
-        \IfFileExists{#1.pdf}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.pdf}}{%
+  \IfFileExists{#1.png}{\includegraphics[width=#3\linewidth,height=0.68\textheight,keepaspectratio]{#1.png}}{%
+    \IfFileExists{#1.jpg}{\includegraphics[width=#3\linewidth,height=0.68\textheight,keepaspectratio]{#1.jpg}}{%
+      \IfFileExists{#1.jpeg}{\includegraphics[width=#3\linewidth,height=0.68\textheight,keepaspectratio]{#1.jpeg}}{%
+        \IfFileExists{#1.pdf}{\includegraphics[width=#3\linewidth,height=0.68\textheight,keepaspectratio]{#1.pdf}}{%
           \fbox{\parbox[c][2.7cm][c]{#3\linewidth}{\centering
           \textbf{Agregar #1.png}\\[-1pt]\small #2}}}}}}
   \caption{#2}
@@ -187,8 +187,8 @@ La matriz de integración cubre roles, límites, aislamiento entre organizacione
 \subsection{Arquitectura}
 El frontend Next.js en español se comunica con FastAPI. La API valida la sesión mediante MCP, sanitiza el texto y coordina Gemini. La API no abre SQLite. FastMCP autoriza solicitudes y consulta ChromaDB o SQLite según la herramienta. La evidencia RAG se envía al proveedor como contenido no confiable; los resultados vuelven como respuesta, citas y trazas.
 
-\figura{imagen1}{Diagrama de arquitectura: navegador, API, proveedor Gemini, cliente/servidor MCP, RAG/ChromaDB y SQLite; indicar que la API no accede directamente a SQLite.}{0.86}
-\figura{imagen2}{Diagrama de secuencia: pregunta, sesión, recuperación RAG obligatoria por MCP, generación, respuesta con citas/trazas y flujo separado de propuesta y confirmación humana.}{0.86}
+\figura{../evidencias-visuales/imagen1}{Diagrama de arquitectura: navegador, API, proveedor Gemini, cliente/servidor MCP, RAG/ChromaDB y SQLite; la API no accede directamente a SQLite.}{0.90}
+\figura{../evidencias-visuales/imagen2}{Diagrama de secuencia: pregunta, sesión, recuperación RAG obligatoria por MCP, generación, respuesta con citas/trazas y flujo separado de propuesta y confirmación humana.}{0.90}
 
 \subsection{Interfaz, errores y datos enviados}
 La ruta \codigo{/asistente} permite escoger un usuario ficticio, conversar y distinguir estados de evidencia, abstención, conflicto y error. Las citas y trazas MCP pueden desplegarse; una acción preparada muestra su contenido y exige una confirmación humana explícita. Ante una falla se informa el problema al usuario.
