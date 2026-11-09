@@ -1,0 +1,250 @@
+% Informe de Entrega 3. Se adapta la estructura y el estilo del informe anterior
+% a la pauta Entrega_3_MIRA_RAG_MCP.pdf.
+% Extensiones máximas indicadas por la pauta: 11.1=0,5; 11.2=1,5;
+% 11.3=2; 11.4=1,5; 11.5=1,5; 11.6=3; 11.7=1; 11.8=1 planas.
+% Las figuras se pueden agregar junto a este archivo como imagen1.png, imagen2.png,
+% imagen3.png (también se aceptan .jpg, .jpeg o .pdf).
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,left=1.8cm,right=1.8cm,top=1.7cm,bottom=1.8cm]{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage{caption}
+
+\definecolor{azulmira}{RGB}{31,56,100}
+\definecolor{turquesamira}{RGB}{13,124,120}
+\definecolor{grisclaro}{RGB}{242,246,248}
+\definecolor{gristexto}{RGB}{48,61,69}
+\setlist{itemsep=1pt,topsep=2pt,parsep=0pt,leftmargin=1.25em}
+\titlespacing*{\section}{0pt}{4pt}{4pt}
+\titlespacing*{\subsection}{0pt}{5pt}{2pt}
+\titleformat{\section}{\large\bfseries\color{azulmira}}{\thesection}{0.55em}{}[\color{azulmira}\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{turquesamira}}{\thesubsection}{0.5em}{}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.13}
+\linespread{1.01}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\codigo}[1]{\texttt{\small #1}}
+\newcommand{\figura}[3]{%
+  \begin{figure}[H]
+  \centering
+  \IfFileExists{#1.png}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.png}}{%
+    \IfFileExists{#1.jpg}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.jpg}}{%
+      \IfFileExists{#1.jpeg}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.jpeg}}{%
+        \IfFileExists{#1.pdf}{\includegraphics[width=#3\linewidth,height=5.0cm,keepaspectratio]{#1.pdf}}{%
+          \fbox{\parbox[c][2.7cm][c]{#3\linewidth}{\centering
+          \textbf{Agregar #1.png}\\[-1pt]\small #2}}}}}}
+  \caption{#2}
+  \end{figure}}
+\newcommand{\pendiente}[1]{\textbf{Pendiente de revisión humana: #1}}
+
+\hypersetup{
+  pdftitle={MIRA — Entrega 3: asistente con RAG y MCP},
+  pdfauthor={Equipo MIRA},
+  pdfsubject={Caso CU-1: asistente del operador de revisión}
+}
+\sloppy
+
+\begin{document}
+\pagestyle{plain}
+
+\begin{titlepage}
+\centering
+{\large Universidad de Valparaíso}\\[2pt]
+{\large Escuela de Ingeniería Informática}\\[2pt]
+{\large Taller de Desarrollo de Software Conducido por Agentes de IA}\\[24pt]
+{\Huge\bfseries\color{azulmira} MIRA}\\[7pt]
+{\LARGE Entrega 3}\\[5pt]
+{\Large Asistente con RAG y MCP: evidencia documental y acceso gobernado}\\[4pt]
+{\large Caso CU-1: operador de revisión}\\[25pt]
+\begin{tabularx}{0.88\textwidth}{@{}>{\bfseries}p{4.4cm}Y@{}}
+Integrantes & Nikolas Lagos; Franko Moraga; Dante Chaves; Felipe Caru\\
+Representante del cliente & Nikolas Lagos\\
+Versión evaluada & v3.0\\
+Fecha de entrega & 9 de noviembre de 2026\\
+Repositorio & \url{https://github.com/Frxnks/Entregas_DSLLMs}\\
+Datos & Datos ficticios del kit CU-1\\
+\end{tabularx}
+\vfill
+\fcolorbox{turquesamira}{grisclaro}{\parbox{0.83\textwidth}{\centering
+\textbf{Resultado verificable}\\
+Recall@5 de recuperación: 0,875 por pregunta y 0,90 por fragmento esperado.\\
+20 respuestas Gemini generadas; la revisión humana de fidelidad y citas sigue pendiente.}}
+\vfill
+\end{titlepage}
+
+\section{Resumen ejecutivo}
+\textbf{Qué se construyó.} Una aplicación web para que el operador de una organización cliente entienda por qué un caso fue derivado. El sistema recupera reglas con RAG, consulta datos ficticios mediante un servidor MCP propio y permite preparar solicitudes de antecedentes que solo se registran tras confirmación humana. No aprueba ni rechaza casos.
+
+\textbf{Desempeño y límites.} Con cinco resultados, la recuperación encuentra todas las evidencias esperadas en 14 de 16 preguntas respondibles (Recall@5 por pregunta 0,875) y 18 de 20 fragmentos esperados (0,90). Se ejecutaron las 20 preguntas de generación con Gemini sin errores operacionales, pero aún no se han juzgado manualmente sus 100 citas ni la fidelidad de las respuestas; por tanto, no se presentan métricas finales de generación. V02 mostró una abstención por evidencia incompleta.
+
+\textbf{Recomendación.} Completar la revisión humana, mejorar los casos de recuperación incompleta y ensayar en vivo el recorrido D1--D8 de la pauta. Para una demo repetible puede usarse el proveedor determinista, identificándolo expresamente como modo demo y no como resultado de Gemini.
+
+\section{Caso de uso y especificación}
+\subsection{Selección, usuario y alcance}
+Se implementa CU-1, asistente del operador de revisión. La necesidad combina dos clases de consulta: las políticas y procedimientos se responden desde documentos versionados; los datos actuales de un caso se obtienen mediante MCP; una solicitud de antecedentes constituye una acción y requiere permiso y confirmación. Esta separación evita resolver una consulta viva solo con RAG o presentar conocimiento general como dato del caso.
+
+El usuario es un operador o supervisor de una organización ficticia. El asistente explica y prepara, pero no toma la decisión final. El kit se importa sin alterar sus filas originales e incluye datos ficticios de tres organizaciones, ocho usuarios, catorce casos, señales, evidencias, solicitudes y cambios de umbral.
+
+\subsection{Flujo y requisitos trazables}
+\begin{enumerate}
+\item El operador inicia una sesión de prueba y formula una pregunta en español.
+\item La API valida la identidad por MCP y, para respuestas Gemini, recupera reglas documentales antes de generar.
+\item Si hacen falta datos vivos, Gemini puede solicitar herramientas MCP de lectura; el servidor valida organización y permisos.
+\item La respuesta presenta estado, explicación, citas y trazas. Sin evidencia suficiente, se abstiene; ante fuentes vigentes contradictorias, presenta ambas.
+\item Para una solicitud, el servidor valida y devuelve una propuesta. La persona la revisa y confirma; MCP revalida y registra la acción en una transacción.
+\end{enumerate}
+
+\begin{tabularx}{\textwidth}{@{}p{1.1cm}Y p{2.1cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Requisito verificable} & \textbf{Evidencia}\\
+\midrule
+RF-01--03 & Reglas con fuente/sección/versión; abstención si falta respaldo; presentación neutral de conflictos. & R01--R12, N01--N04, C01--C02\\
+RF-04--07 & Datos y trazas por MCP; propuesta separada de confirmación; control por organización y rol. & IT-01--IT-06; D5--D7\\
+RNF-01--03 & Integridad del kit, sanitización de datos y errores explícitos sin respuestas inventadas. & IT-13--IT-15; suite Python\\
+\bottomrule
+\end{tabularx}
+
+\subsection{Contradicción del corpus}
+POL-DEC v2 §2 establece 85 como umbral de referencia sujeto a mínimos y configuración; MAN-REV v1 §1 indica aprobación desde 80 sin fraude. Ambas fuentes aparecen vigentes en el kit y el sistema debe exponer el conflicto sin resolverlo por cuenta propia. POL-DEC v1 está derogada; se conserva para explicar cambios históricos, no como norma vigente.
+
+\section{Diseño e implementación del RAG}
+\subsection{Corpus e inventario}
+Se indexan los seis documentos obligatorios del kit. La columna de tokens es una estimación reproducible de caracteres UTF-8 divididos por cuatro, redondeada al entero más cercano; no es un conteo del tokenizer de Gemini.
+
+\begin{tabularx}{\textwidth}{@{}p{2.35cm}p{2.7cm}p{1.45cm}p{1.45cm}rY@{}}
+\toprule
+\textbf{Código} & \textbf{Documento} & \textbf{Versión} & \textbf{Estado} & \textbf{Tokens aprox.} & \textbf{Origen}\\
+\midrule
+CAT-SEN & Catálogo de señales & 3 & Vigente & 780 & Kit CU-1\\
+FAQ-OPE & Preguntas frecuentes & 2 & Vigente & 418 & Kit CU-1\\
+MAN-REV & Manual de revisión & 1 & Vigente & 641 & Kit CU-1\\
+POL-DEC & Política de decisión & 1 & Derogada & 381 & Kit CU-1\\
+POL-DEC & Política de decisión & 2 & Vigente & 762 & Kit CU-1\\
+PRO-ANT & Solicitud de antecedentes & 1 & Vigente & 521 & Kit CU-1\\
+\bottomrule
+\end{tabularx}
+
+Los metadatos de los fragmentos conservan código, título, versión, vigencia, estado, documento, sección y líneas de origen. El corpus permanece en Markdown para permitir inspección y trazabilidad.
+
+\subsection{Indexación, búsqueda y decisión experimental}
+La indexación y la consulta son operaciones separadas. \codigo{prepare.py} importa el Excel e indexa el corpus; \codigo{RagEngine.search} consulta ChromaDB con embeddings multilingües \codigo{paraphrase-multilingual-MiniLM-L12-v2}, formato ONNX cuantizado y distancia coseno. MCP expone \codigo{buscar\_reglas}; la API llama esa herramienta antes de cada respuesta Gemini. El parámetro de producción es \codigo{RAG\_TOP\_K=5}.
+
+\begin{tabularx}{\textwidth}{@{}p{2.1cm}r r r Y@{}}
+\toprule
+\textbf{Fragmentación} & \textbf{Fragmentos} & \textbf{Recall@5 pregunta} & \textbf{Recall@5 evidencia} & \textbf{Decisión}\\
+\midrule
+Secciones completas & 35 & 14/16 = 0,875 & 18/20 = 0,90 & Predeterminada: conserva las condiciones completas de cada regla.\\
+Ventanas de 450 caracteres, solapamiento 90 & 40 & 14/16 = 0,875 & 18/20 = 0,90 & Métricas agregadas iguales; no aporta una ventaja demostrada.\\
+\bottomrule
+\end{tabularx}
+
+Se eligió \(k=5\): frente a \(k=4\), recupera la evidencia esperada de R05 y mantiene las dos evidencias de C02. Aumentar a \(k=6\) o \(k=8\) no mejoró Recall en el experimento. Persisten C01 y V02 con una de dos evidencias esperadas; se registran como fallos de recuperación.
+
+\subsection{Citas, vigencia y límites}
+Las citas que la interfaz permite abrir muestran la fuente documental, sección, versión, vigencia y texto del fragmento. Los documentos se conservan con sus versiones, incluidas las derogadas; las reglas de vigencia no se infieren solo por similitud semántica. Las cuatro preguntas sin respuesta no participan en Recall y se usan en la evaluación de abstención. La búsqueda léxica se reserva para pruebas y diagnóstico, no reemplaza la medición semántica.
+
+\section{Diseño e implementación del servidor MCP}
+\subsection{Herramientas y contratos}
+El servidor propio FastMCP opera por Streamable HTTP. Expone herramientas para buscar reglas; consultar caso, señales, evidencias, solicitudes e historial de umbrales; preparar una solicitud de antecedentes; y confirmar la solicitud preparada. También expone herramientas técnicas para sesión y trazas, un recurso de inventario del corpus y el prompt \codigo{explicar\_caso}. La interfaz y la API son clientes; el modelo no recibe SQL.
+
+Las operaciones de lectura usan consultas parametrizadas. La identidad se resuelve en una sesión opaca y la API inyecta el \codigo{session\_id}; el modelo no elige su propia identidad ni organización. Toda llamada registra una traza sanitizada con herramienta, argumentos, resultado y estado.
+
+\subsection{Autorización y escritura}
+Antes de preparar o confirmar una solicitud, el servidor comprueba sesión, organización, rol, estado del caso, documentos, motivo, límites y vigencia de la propuesta. U-03 no puede registrar solicitudes; los casos aprobados automáticamente se bloquean; la tercera solicitud de C-016 requiere supervisor. Una propuesta no escribe. La confirmación humana entrega un token de un solo uso, que se revalida dentro de una transacción; la repetición es idempotente y no duplica el registro.
+
+La importación conserva una huella SHA-256 del Excel y por fila. Disparadores SQLite rechazan \codigo{UPDATE} y \codigo{DELETE} sobre los registros originales. Las pruebas que ejercitan escrituras usan una base de datos aislada.
+
+\subsection{Pruebas del servidor}
+La matriz de integración cubre roles, límites, aislamiento entre organizaciones, lectura sin efectos, integridad, privacidad y fallas. En caso de indisponibilidad de MCP o del proveedor, la API informa HTTP 503; no produce una respuesta con apariencia de éxito. Las pruebas automatizadas inyectan fallas; la interrupción real del servicio se debe mostrar en el ensayo de interfaz si se incluye en la defensa.
+
+\section{Arquitectura e implementación frontend/backend}
+\subsection{Arquitectura}
+El frontend Next.js en español se comunica con FastAPI. La API valida la sesión mediante MCP, sanitiza el texto y coordina Gemini. La API no abre SQLite. FastMCP autoriza solicitudes y consulta ChromaDB o SQLite según la herramienta. La evidencia RAG se envía al proveedor como contenido no confiable; los resultados vuelven como respuesta, citas y trazas.
+
+\figura{imagen1}{Diagrama de arquitectura: navegador, API, proveedor Gemini, cliente/servidor MCP, RAG/ChromaDB y SQLite; indicar que la API no accede directamente a SQLite.}{0.86}
+\figura{imagen2}{Diagrama de secuencia: pregunta, sesión, recuperación RAG obligatoria por MCP, generación, respuesta con citas/trazas y flujo separado de propuesta y confirmación humana.}{0.86}
+
+\subsection{Interfaz, errores y datos enviados}
+La ruta \codigo{/asistente} permite escoger un usuario ficticio, conversar y distinguir estados de evidencia, abstención, conflicto y error. Las citas y trazas MCP pueden desplegarse; una acción preparada muestra su contenido y exige una confirmación humana explícita. Ante una falla se informa el problema al usuario.
+
+\figura{imagen3}{Captura de la interfaz con una respuesta, una cita abierta que muestre código/sección/versión y la traza MCP desplegada. Usar datos ficticios y ocultar cualquier clave.}{0.72}
+
+Antes de enviar datos a Gemini se enmascaran RUT, correo, teléfono y nombres conocidos, y se excluyen claves, tokens de sesión/confirmación y rutas. Se envían la pregunta sanitizada y los fragmentos documentales necesarios; los datos operacionales se obtienen mediante MCP y se limitan a la consulta autorizada. La sanitización reduce exposición accidental, pero no equivale a anonimización universal.
+
+\subsection{Uso del agente}
+Gemini redacta respuestas apoyadas en evidencia y puede pedir herramientas de lectura adicionales. La recuperación de reglas, el aislamiento de datos, la autorización, los límites y la confirmación no se delegan al modelo: están implementados en la API y el servidor. El modo \codigo{demo} es determinista, está identificado en la interfaz y no se reporta como resultado de Gemini.
+
+\section{Evaluación}
+\subsection{Diseño de pruebas y Golden Set}
+La evaluación separa recuperación de generación. El Golden Set versionado contiene 20 preguntas: 12 respondibles, 4 sin respuesta, 2 conflictos vigentes y 2 cambios de versión. Cada una tiene fragmentos esperados y respuesta esperada. Nikolas validó las 20 entradas sin cambios el 8 de noviembre. La primera corrida semántica guardada precede esa validación; la comparación vigente de recuperación y la corrida posterior de generación usan la versión validada. El conjunto se fijó en el repositorio antes de la primera corrida completa.
+
+Se ejecutaron pruebas unitarias y de integración para controles de MCP, privacidad, acciones, casos, fallas HTTP y recuperación. La suite actual registra 28 pruebas aprobadas. La recuperación se evaluó con el embedding y backend descritos en la sección 3, comparando fragmentación por secciones y ventanas. La generación se ejecutó con Gemini \codigo{gemini-flash-lite-latest}; el reporte se conserva en \codigo{evaluacion/generacion\_gemini\_20261108\_r01-r20.json}. Se ejecutaron las 20 preguntas sin errores operacionales, en segmentos sin repetir R01.
+
+\subsection{Resultados}
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}p{3.1cm}Y@{}}
+\toprule
+\textbf{Etapa/métrica} & \textbf{Resultado disponible} & \textbf{Interpretación}\\
+\midrule
+Recall@5 por pregunta & 0,875 (14/16) en ambas estrategias & Cuatro preguntas respondibles no recuperaron todo el conjunto esperado.\\
+Recall@5 por evidencia & 0,90 (18/20) en ambas estrategias & C01 y V02 recuperaron una de sus dos evidencias esperadas.\\
+Ejecución Gemini & 20/20 completadas; 0 errores operacionales & Mide que las llamadas finalizaron, no que las respuestas sean correctas.\\
+R01 tras el ajuste & FAQ-OPE v2 recuperada y respuesta alineada; cinco citas emitidas & Tres citas parecen poco pertinentes; pendiente juicio humano.\\
+V02 & Abstención; solo llegó POL-DEC v1 §1, no la sección de configuración & Fallo de recuperación clasificado; evidencia insuficiente para comparar autorizaciones.\\
+\bottomrule
+\end{tabularx}
+
+El puntaje automático preliminar detectó 4/4 abstenciones en preguntas sin respuesta y una abstención en pregunta respondible (V02). Estas cifras no son tasas finales porque falta juzgar fidelidad y pertinencia de citas; tampoco demuestran por sí solas que las cuatro respuestas sin corpus estén bien justificadas.
+
+\subsection{Clasificación de fallos y revisión pendiente}
+V02 se clasifica como fallo de recuperación: el fragmento necesario de POL-DEC v1 §3 no llegó entre los cinco resultados, por lo que Gemini se abstuvo en vez de comparar con la v2 vigente. En R01, la primera ejecución no consultó MCP; la corrección obligó a recuperar evidencia antes de generar y la repetición sí obtuvo FAQ-OPE v2. La evaluación completa conserva 100 juicios de citas y 20 juicios de fidelidad sin revisar, además de cuatro juicios de manejo de conflictos/versiones. Por ello, precisión de cita, fidelidad y manejo de conflicto/vigencia quedan pendientes y no se presentan como porcentajes finales.
+
+La revisión humana debe marcar si cada cita respalda la afirmación, si toda afirmación está fundamentada y si C01, C02, V01 y V02 manejan correctamente conflicto o vigencia. Los fallos restantes se clasificarán como recuperación o generación tras ese examen. No se usó un modelo evaluador, por lo que no corresponde afirmar concordancia entre evaluadores.
+
+\subsection{Ciclo de mejora}
+La primera ejecución R01 mostró la dependencia del uso voluntario de herramientas. Se hizo obligatoria la recuperación documental, se incorporó la evidencia sanitizada al contexto y se añadieron pruebas que comprueban la búsqueda y la entrega de citas/trazas. R01 se repitió; las otras preguntas se ejecutaron después sin repetirla. El siguiente experimento recomendado es mejorar la recuperación de las dos evidencias de C01 y V02, y volver a evaluar sin modificar retrospectivamente el Golden Set aprobado.
+
+\section{Riesgos y controles}
+\begin{tabularx}{\textwidth}{@{}p{2.7cm}Y Y@{}}
+\toprule
+\textbf{Riesgo} & \textbf{Control aplicado} & \textbf{Verificación}\\
+\midrule
+Inyección en documento & Evidencia delimitada como contenido no confiable; decisiones y permisos no se delegan al prompt. & C-014 y pruebas relacionadas, sin efectos de negocio.\\
+Acceso cruzado o identidad suplantada & Sesión opaca, identidad inyectada por API y organización validada por MCP. & Pruebas U-01/C-020 y herramientas de consulta.\\
+Acción no autorizada o duplicada & Validación de rol/estado/límites en servidor, confirmación de un uso e idempotencia. & U-03, C-010, C-016 y confirmación repetida.\\
+Exposición de datos & Sanitización de PII y exclusión de claves, tokens y rutas. & Pruebas de RUT, correo, teléfono y nombre.\\
+Cita incorrecta o evidencia faltante & Citas expandibles, metadatos, abstención y revisión humana; no se ocultan C01/V02. & Golden Set y reporte de generación; anotación manual pendiente.\\
+Falla del proveedor o MCP & Error explícito sin respuesta fabricada; reintentos acotados del proveedor. & Pruebas HTTP 503 y matriz IT-13.\\
+\bottomrule
+\end{tabularx}
+
+\section{Discusión y conclusiones}
+La separación de componentes es funcional: RAG resuelve preguntas normativas sobre documentos y versiones; MCP proporciona datos vivos con permisos y trazabilidad; una acción con efecto necesita confirmación humana. Ninguno sustituye al operador ni resuelve por sí solo todos los conflictos del corpus.
+
+La evaluación de recuperación muestra que aumentar \(k\) de cuatro a cinco corrige R05, pero no mejora C01 ni V02; además, las secciones completas conservan juntas las condiciones de cada regla. El primer R01 reveló que una instrucción al modelo no garantiza una llamada de herramienta. La recuperación previa obligatoria corrigió ese fallo observado, aunque el exceso de citas y la omisión de POL-DEC v1 §3 en V02 muestran que recuperar no garantiza pertinencia ni suficiencia. Es necesario seguir midiendo recuperación y generación por separado.
+
+El equipo implementó controles verificables en el servidor en lugar de confiar solo en instrucciones: autorización, aislamiento, integridad, límites e idempotencia. La solución usa un agente para redactar y solicitar herramientas; la evidencia, los permisos y las escrituras permanecen bajo control del software y de una persona.
+
+Se utilizó asistencia de IA como apoyo para análisis, programación y documentación. El agente de la aplicación genera texto y propone consultas, pero no decide ni confirma acciones. La selección del caso, la validación del Golden Set, la interpretación de resultados y la aprobación final del trabajo corresponden al equipo.
+
+\textbf{Pendientes antes del cierre académico:} completar la revisión manual de generación; mejorar los fallos de recuperación confirmados; presentar métricas revisadas y un fallo concreto en la defensa técnica; y realizar en la presentación la demo en vivo D1--D8 dentro de los 15 minutos. El ensayo local previo de interfaz no reemplaza la demostración evaluada.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{pauta} Universidad de Valparaíso, \emph{Entregable 3: Asistente con RAG y MCP: evidencia documental y acceso gobernado al sistema}, pauta del caso MIRA, 2026.
+\bibitem{kit} Kit CU-1, \emph{Operador de revisión}: corpus documental y datos ficticios entregados para la actividad.
+\bibitem{repo} Equipo MIRA, \emph{Repositorio Entregas\_DSLLMs, carpeta entrega3}: código, Golden Set, resultados de recuperación, evaluación de generación y matriz de integración.
+\end{thebibliography}
+
+\end{document}
