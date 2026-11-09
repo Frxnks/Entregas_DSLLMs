@@ -31,12 +31,21 @@ Abre la carpeta raíz del repositorio en VS Code y selecciona **Terminal → Nue
 Haz esto una sola vez por equipo. Si ya completaste correctamente alguno de estos comandos, no hace falta repetirlo:
 
 ```powershell
-python -m venv entrega3\.venv
+py -3.12 -m venv entrega3\.venv
 entrega3\.venv\Scripts\python.exe -m pip install -e "entrega3\service[test]"
 npm.cmd --prefix frontend ci
 ```
 
-Se usa `npm.cmd` para evitar el bloqueo de scripts `npm.ps1` de PowerShell.
+El proyecto requiere Python 3.12. Se indica `py -3.12` explícitamente para no crear el entorno con otra versión instalada. Se usa `npm.cmd` para evitar el bloqueo de scripts `npm.ps1` de PowerShell.
+
+Si ya creaste `entrega3\.venv` con otra versión de Python, cierra las terminales de MIRA y recréalo antes de continuar. Este comando elimina únicamente el entorno virtual de Entrega 3:
+
+```powershell
+Remove-Item -Recurse -Force entrega3\.venv
+py -3.12 -m venv entrega3\.venv
+```
+
+Después, ejecuta de nuevo el comando de instalación de Python que aparece arriba.
 
 ### Paso 3: comprueba el archivo `.env`
 
@@ -52,14 +61,27 @@ Abre ese archivo para editarlo:
 notepad entrega3\service\.env
 ```
 
-Para ensayar sin llamadas a Gemini, deja configurado `LLM_PROVIDER=demo`. **No necesitas una clave API para este modo.** Conserva también esta configuración del navegador:
+Para ensayar sin llamadas a Gemini, configura el archivo así. **No necesitas una clave API en modo demo**; puedes dejar `GEMINI_API_KEY` vacío:
 
 ```dotenv
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-flash-lite-latest
+GEMINI_FALLBACK_MODEL=
 LLM_PROVIDER=demo
+MCP_URL=http://127.0.0.1:8001/mcp
+API_HOST=127.0.0.1
+API_PORT=8002
+MCP_HOST=127.0.0.1
+MCP_PORT=8001
+RAG_TOP_K=5
+RAG_STRATEGY=sections
+RAG_EMBEDDING_MODEL=paraphrase-multilingual-MiniLM-L12-v2
+GEMINI_MIN_INTERVAL_SECONDS=4
+GEMINI_MAX_RETRIES=3
 MIRA_CORS_ORIGIN=http://localhost:3000
 ```
 
-Si necesitan mostrar Gemini en vivo, obtengan una clave en [Google AI Studio](https://aistudio.google.com/app/apikey) y péguenla únicamente después de `GEMINI_API_KEY=` en el archivo local `.env`. En ese caso, cambien también a `LLM_PROVIDER=gemini`. No escriban la clave en esta guía, no la compartan ni la incluyan en capturas o commits. Usen Gemini solo si antes verificaron que hay cuota disponible; no habiliten facturación para la demo.
+Si necesitan mostrar Gemini en vivo, obtengan una clave en [Google AI Studio](https://aistudio.google.com/app/apikey) y péguenla únicamente después de `GEMINI_API_KEY=` en el archivo local `.env`; cambien también `LLM_PROVIDER=demo` por `LLM_PROVIDER=gemini`. No escriban la clave en esta guía, no la compartan ni la incluyan en capturas o commits. Usen Gemini solo si antes verificaron que hay cuota disponible; no habiliten facturación para la demo.
 
 La API lee esta configuración cuando se inicia. Si cambias el proveedor, guarda `.env` y reinicia la API.
 
@@ -127,6 +149,7 @@ El comportamiento demo es determinista y adecuado para ensayar. Gemini puede res
 
 - **La página no abre:** comprueba que la terminal del frontend siga activa y usa `http://localhost:3000/asistente`.
 - **La interfaz informa que el servicio no está disponible:** confirma que MCP y la API estén activos en sus terminales. MCP debe iniciarse antes de enviar preguntas.
+- **Error de `pydantic_core`, como `cannot import name 'ArgsKwargs'`:** el entorno virtual puede haberse creado con una versión de Python distinta. Cierra las terminales de MIRA, recréalo con `py -3.12 -m venv entrega3\.venv` siguiendo el paso 2, y reinstala las dependencias.
 - **Error de origen o CORS:** abre la web con `localhost` (no `127.0.0.1`) o confirma que `MIRA_CORS_ORIGIN` coincida exactamente con el origen del navegador; luego reinicia la API.
 - **No se inicia la sesión:** verifica que el servidor MCP está activo y que la preparación de la base e índices terminó correctamente.
 - **Cuota o error de Gemini:** para la demostración cambia a `LLM_PROVIDER=demo`, reinicia la API y deja claro que es el recorrido visual, no una evaluación de Gemini. No actives facturación para resolverlo.
