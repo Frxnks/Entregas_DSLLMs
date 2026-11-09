@@ -14,7 +14,7 @@ Después se ejecutó el Golden Set completo con `gemini-flash-lite-latest`, `RAG
 - Las 20 preguntas terminaron sin errores operacionales. El reporte [generacion_gemini_20261108_r01-r20.json](../evaluacion/generacion_gemini_20261108_r01-r20.json) conserva las respuestas, citas, trazas y anotaciones pendientes.
 - Cada respuesta muestra evidencia recuperada por MCP antes de generar; el reporte contiene 100 citas sin revisar.
 - R01 respondió correctamente que el asistente no aprueba ni rechaza casos y citó FAQ-OPE v2, la evidencia esperada. Aun así, tres de sus cinco citas parecen ajenas a la pregunta. La precisión de citas requiere revisión humana.
-- V02 se abstuvo porque los fragmentos recuperados no bastaban para comparar el cambio de umbral entre versiones. Queda como fallo pendiente de clasificar, probablemente de recuperación.
+- V02 se abstuvo porque los fragmentos recuperados no bastaban para comparar el cambio de umbral entre versiones. Se clasificó como fallo de recuperación: llegó POL-DEC v2 §5, pero de POL-DEC v1 solo llegó §1; faltó la sección de configuración de la versión anterior.
 - El cálculo automático preliminar detecta cuatro abstenciones correctas de cuatro preguntas sin respuesta en el corpus y una abstención injustificada (V02). Son señales para la revisión, **no métricas finales**.
 - La revisión humana de fidelidad (20 respuestas), pertinencia de citas (100) y manejo de conflictos/versiones (4 preguntas) sigue pendiente; `manual_review_complete=false`.
 

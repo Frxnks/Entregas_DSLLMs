@@ -2367,8 +2367,8 @@
         ],
         "faithful": null,
         "handling_correct": null,
-        "failure_class": null,
-        "notes": ""
+        "failure_class": "recovery",
+        "notes": "Fallo de recuperación: se recuperó POL-DEC v2 §5, pero de POL-DEC v1 solo llegó §1; faltó la sección de configuración por organización necesaria para comparar quién puede cambiar los umbrales."
       }
     }
   ],
@@ -2406,13 +2406,11 @@
       "value": null
     },
     "failure_classification": {
-      "recovery": 0,
+      "recovery": 1,
       "generation": 0,
       "operational": 0
     },
-    "unclassified_failures": [
-      "V02"
-    ],
+    "unclassified_failures": [],
     "manual_review_complete": false
   },
   "first_question": "R01",

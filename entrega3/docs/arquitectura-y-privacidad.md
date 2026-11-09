@@ -4,7 +4,7 @@
 
 El motor RAG indexa y recupera documentos estáticos desde ChromaDB. El servidor MCP gobierna el acceso a RAG y a la base operacional SQLite. La API conversa con Gemini y usa un cliente MCP; no abre tablas operacionales.
 
-`buscar_reglas` está expuesta como herramienta MCP para que el modelo decida cuándo buscar, pero delega la recuperación al módulo RAG independiente. La indexación se ejecuta fuera del servidor y puede evaluarse sin un LLM.
+Antes de cada respuesta de Gemini, la API invoca `buscar_reglas` por MCP y agrega el resultado sanitizado al contexto como evidencia no confiable. La búsqueda y sus citas se conservan en la respuesta incluso si Gemini no solicita herramientas adicionales. Las demás herramientas MCP permiten consultas o propuestas específicas; el modelo no recibe acceso directo a SQLite. La indexación se ejecuta fuera del servidor y puede evaluarse sin un LLM.
 
 ## Datos enviados
 
@@ -22,4 +22,3 @@ Se excluyen claves API, tokens de sesión o confirmación, rutas locales y nombr
 ## Integridad y auditoría
 
 La importación registra SHA-256 del Excel y de cada fila original. Triggers impiden modificar o eliminar registros entregados. Las solicitudes nuevas se agregan y el estado efectivo se representa mediante eventos. Las consultas registran trazas técnicas separadas y no generan efectos de negocio.
-
