@@ -1,8 +1,8 @@
-Agente: analista-requisitos · Skills cargadas: historia-gwt
+Agente: analista · Skills cargadas: historia-gwt
 
 # Especificación · Decisión automática de casos analizados
 
-Estado: PARA APROBACIÓN DEL CLIENTE (segunda pasada, aclaraciones incorporadas)
+Estado: APROBADA por el representante del cliente (H2). El vacío de la sección 7 queda fuera de alcance y no se prueba.
 Fuentes: 01-necesidad.md (NEC), 03-aclaraciones.md (ACL-1 a ACL-5)
 
 ## 1. Historia de usuario
