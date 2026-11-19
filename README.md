@@ -135,3 +135,323 @@ Los datos de PostgreSQL se conservan en el volumen `postgres_data`. **No uses `d
 - [Guía operativa de la bandeja de revisión](docs/review-tray-operator-guide.md)
 - [Guía de la API de scoring](docs/scoring-api-guide.md)
 - [Quickstart con escenarios de validación](specs/001-bandeja-revision-asistida/quickstart.md)
+
+## Distribución actual del repositorio
+
+La siguiente estructura contiene los archivos y carpetas versionados del proyecto. Se excluyen dependencias locales y artefactos generados como `node_modules`, `.venv`, `.next`, cachés y compilaciones.
+
+```text
+Entregas_DSLLMs/
+├── .agents/
+│   └── skills/
+│       ├── speckit-analyze/SKILL.md
+│       ├── speckit-checklist/SKILL.md
+│       ├── speckit-clarify/SKILL.md
+│       ├── speckit-constitution/SKILL.md
+│       ├── speckit-converge/SKILL.md
+│       ├── speckit-implement/SKILL.md
+│       ├── speckit-plan/SKILL.md
+│       ├── speckit-specify/SKILL.md
+│       ├── speckit-tasks/SKILL.md
+│       └── speckit-taskstoissues/SKILL.md
+├── .specify/
+│   ├── .gitignore
+│   ├── init-options.json
+│   ├── integration.json
+│   ├── integrations/
+│   │   ├── agy.manifest.json
+│   │   └── speckit.manifest.json
+│   ├── memory/
+│   │   ├── .constitution-template.json
+│   │   └── constitution.md
+│   ├── scripts/
+│   │   ├── bash/
+│   │   │   ├── check-prerequisites.sh
+│   │   │   ├── common.sh
+│   │   │   ├── create-new-feature.sh
+│   │   │   ├── resolve-template.sh
+│   │   │   ├── setup-plan.sh
+│   │   │   └── setup-tasks.sh
+│   │   └── python/
+│   │       ├── __pycache__/common.cpython-314.pyc
+│   │       ├── check_prerequisites.py
+│   │       ├── common.py
+│   │       ├── create_new_feature.py
+│   │       ├── resolve_template.py
+│   │       ├── setup_plan.py
+│   │       └── setup_tasks.py
+│   ├── templates/
+│   │   ├── checklist-template.md
+│   │   ├── constitution-template.md
+│   │   ├── plan-template.md
+│   │   ├── spec-template.md
+│   │   └── tasks-template.md
+│   └── workflows/
+│       ├── speckit/workflow.yml
+│       └── workflow-registry.json
+├── backend/
+│   ├── .eslintrc.js
+│   ├── .prettierrc
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── prisma/
+│   │   ├── migrations/0_init/migration.sql
+│   │   ├── schema.prisma
+│   │   └── seed.ts
+│   ├── src/
+│   │   ├── app.module.ts
+│   │   ├── main.ts
+│   │   ├── common/
+│   │   │   ├── common.module.ts
+│   │   │   ├── filters/http-exception.filter.ts
+│   │   │   ├── services/pii-masking.service.ts
+│   │   │   └── utils/chilean-calendar.util.ts
+│   │   ├── prisma/
+│   │   │   ├── prisma.module.ts
+│   │   │   └── prisma.service.ts
+│   │   ├── review-tray/
+│   │   │   ├── concurrency.service.ts
+│   │   │   ├── resolution.service.ts
+│   │   │   ├── review-tray.controller.ts
+│   │   │   ├── review-tray.module.ts
+│   │   │   ├── review-tray.service.ts
+│   │   │   └── dto/
+│   │   │       ├── case-detail.dto.ts
+│   │   │       ├── case-summary.dto.ts
+│   │   │       ├── decision.dto.ts
+│   │   │       └── lease.dto.ts
+│   │   ├── scoring/
+│   │   │   ├── decision-rules.service.ts
+│   │   │   ├── scoring.controller.ts
+│   │   │   ├── scoring.module.ts
+│   │   │   ├── scoring-engine.service.ts
+│   │   │   ├── threshold.service.ts
+│   │   │   └── dto/
+│   │   │       ├── case-breakdown.dto.ts
+│   │   │       ├── evaluate-case.dto.ts
+│   │   │       ├── threshold-response.dto.ts
+│   │   │       └── update-threshold.dto.ts
+│   │   └── static-files.module.ts
+│   ├── static/evidence/
+│   │   ├── boleta_limpia_001.pdf
+│   │   ├── boleta_manipulada_003.jpg
+│   │   ├── boleta_manipulada_003.svg
+│   │   └── bono_desfase_002.pdf
+│   ├── test/
+│   │   ├── audit-immutability.e2e-spec.ts
+│   │   ├── case-detail.spec.ts
+│   │   ├── case-resolution.spec.ts
+│   │   ├── chilean-calendar.spec.ts
+│   │   ├── concurrency.spec.ts
+│   │   ├── extra-functional.e2e-spec.ts
+│   │   ├── extra-functional-f1.e2e-spec.ts
+│   │   ├── fraud-precedence.spec.ts
+│   │   ├── jest-e2e.json
+│   │   ├── pii-masking.spec.ts
+│   │   ├── quickstart-validation.spec.ts
+│   │   ├── resolution.spec.ts
+│   │   ├── scoring-engine.spec.ts
+│   │   ├── scoring-quickstart.spec.ts
+│   │   ├── sla-concurrency.spec.ts
+│   │   ├── threshold-audit.spec.ts
+│   │   └── threshold-decision.spec.ts
+│   ├── tsconfig.build.json
+│   └── tsconfig.json
+├── docs/
+│   ├── entrega1/
+│   │   ├── Descripción del proyecto.docx
+│   │   ├── LLMS.docx
+│   │   ├── MIRA_analisis.pptx
+│   │   ├── PROMPTS.md
+│   │   ├── prueba.md
+│   │   └── README.md
+│   ├── entrega2/
+│   │   ├── analisis_cruzado_especificaciones.md
+│   │   ├── cambios_diagramas_persistencia.md
+│   │   ├── clarificacion_cambios.md
+│   │   ├── decisiones_entrega2.md
+│   │   ├── especificacion_cambios.md
+│   │   ├── MIRA-Entrega2.pptx
+│   │   ├── MIRA-Lagos-Moraga-Chaves-Caru.pdf
+│   │   ├── README.md
+│   │   ├── supuestos_invalidados.md
+│   │   └── evidencia/
+│   │       ├── autoria.md
+│   │       ├── insumos_informe.md
+│   │       ├── matriz_pruebas.md
+│   │       ├── prueba_usabilidad.txt
+│   │       ├── sesion_aceptacion.txt
+│   │       ├── verificacion_citas.md
+│   │       ├── verificacion_clon_limpio.md
+│   │       └── verificacion_F4.md
+│   ├── review-tray-operator-guide.md
+│   └── scoring-api-guide.md
+├── entrega3/
+│   ├── README.md
+│   ├── GUIA_DEMO.md
+│   ├── RESUMEN_TRABAJO_8_NOV_2026.txt
+│   ├── docs/
+│   │   ├── arquitectura-y-privacidad.md
+│   │   ├── especificacion.md
+│   │   ├── guion-demo.md
+│   │   ├── paso-1-linea-base.md
+│   │   ├── paso-2-revision-golden-set.md
+│   │   ├── paso-3-mejora-recuperacion-rag.md
+│   │   ├── paso-4-evaluacion-generacion.md
+│   │   ├── paso-5-controles-mcp.md
+│   │   ├── paso-6-actualizacion-entregables.md
+│   │   ├── paso-7-prueba-visual.md
+│   │   └── paso-8-evaluacion-generacion.md
+│   ├── evaluacion/
+│   │   ├── generacion_gemini_20261108_r01-r20.json
+│   │   ├── golden_set.json
+│   │   ├── guia_revision_generacion.md
+│   │   ├── matriz_integracion.md
+│   │   ├── resultados_recuperacion.json
+│   │   └── resultados_recuperacion.md
+│   ├── evidencias-visuales/
+│   │   ├── evidencia_01_interfaz_principal.png
+│   │   ├── evidencia_02_respuesta_con_evidencia.png
+│   │   ├── evidencia_03_abstencion_costo_antecedentes.png
+│   │   ├── evidencia_04_consulta_umbral_versiones.png
+│   │   ├── evidencia_05_conflicto_umbral_demo.png
+│   │   ├── evidencia_06_referencias_y_traza.png
+│   │   ├── imagen1.png
+│   │   └── imagen2.png
+│   ├── informe/
+│   │   ├── generar_informe.py
+│   │   ├── Informe_Entrega_3_MIRA.md
+│   │   ├── Informe_Entrega_3_MIRA.pdf
+│   │   ├── Informe_Entrega_3_MIRA.tex
+│   │   ├── evidencia_01_interfaz_principal.png
+│   │   ├── evidencia_02_respuesta_con_evidencia.png
+│   │   ├── evidencia_03_abstencion_costo_antecedentes.png
+│   │   ├── evidencia_04_consulta_umbral_versiones.png
+│   │   ├── evidencia_05_conflicto_umbral_demo.png
+│   │   ├── evidencia_06_referencias_y_traza.png
+│   │   ├── imagen1.png
+│   │   ├── imagen2.png
+│   │   └── qa/
+│   │       ├── contact-sheet.jpg
+│   │       ├── page-1.jpg
+│   │       ├── page-2.jpg
+│   │       ├── page-3.jpg
+│   │       ├── page-4.jpg
+│   │       ├── page-5.jpg
+│   │       ├── page-6.jpg
+│   │       ├── page-7.jpg
+│   │       └── page-8.jpg
+│   ├── insumos/CU-1_operador_revision/
+│   │   ├── corpus/
+│   │   │   ├── CAT-SEN_catalogo_senales.md
+│   │   │   ├── FAQ-OPE_preguntas_frecuentes_operadores.md
+│   │   │   ├── MAN-REV_manual_revision_asistida.md
+│   │   │   ├── POL-DEC_v1_derogada.md
+│   │   │   ├── POL-DEC_v2_vigente.md
+│   │   │   └── PRO-ANT_solicitud_antecedentes.md
+│   │   └── datos/CU-1_datos.xlsx
+│   ├── presentacion/
+│   │   ├── contenido_extraido.md
+│   │   ├── generar_presentacion.js
+│   │   ├── package.json
+│   │   ├── package-lock.json
+│   │   └── Presentacion_Entrega_3_MIRA.pptx
+│   └── service/
+│       ├── .env.example
+│       ├── Dockerfile
+│       ├── pyproject.toml
+│       ├── mira_cu1/
+│       │   ├── __init__.py
+│       │   ├── cli_client.py
+│       │   ├── config.py
+│       │   ├── corpus.py
+│       │   ├── database.py
+│       │   ├── evaluate.py
+│       │   ├── gateway.py
+│       │   ├── generation_evaluation.py
+│       │   ├── main.py
+│       │   ├── mcp_server.py
+│       │   ├── orchestrator.py
+│       │   ├── prepare.py
+│       │   ├── provider.py
+│       │   ├── rag.py
+│       │   ├── runtime.py
+│       │   ├── schemas.py
+│       │   ├── security.py
+│       │   └── tools.py
+│       ├── mira_cu1.egg-info/
+│       │   ├── dependency_links.txt
+│       │   ├── PKG-INFO
+│       │   ├── requires.txt
+│       │   ├── SOURCES.txt
+│       │   └── top_level.txt
+│       └── tests/
+│           ├── conftest.py
+│           ├── test_actions.py
+│           ├── test_api_failures.py
+│           ├── test_case_scenarios.py
+│           ├── test_corpus_and_privacy.py
+│           ├── test_gemini_provider.py
+│           └── test_generation_evaluation.py
+├── entrega4/
+│   └── .gitkeep
+├── frontend/
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── next.config.js
+│   ├── next-env.d.ts
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── playwright.config.ts
+│   ├── postcss.config.js
+│   ├── public/.gitkeep
+│   ├── tailwind.config.js
+│   ├── tsconfig.json
+│   ├── tsconfig.tsbuildinfo
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── asistente/page.tsx
+│   │   │   ├── bandeja/page.tsx
+│   │   │   ├── bandeja/[idCaso]/page.tsx
+│   │   │   ├── configuracion/page.tsx
+│   │   │   └── discrepancias/page.tsx
+│   │   ├── components/
+│   │   │   ├── BadgeSLA.tsx
+│   │   │   ├── DesgloseSenales.tsx
+│   │   │   ├── PanelResolucion.tsx
+│   │   │   └── VisorEvidencia.tsx
+│   │   ├── lib/api-client.ts
+│   │   └── types/index.ts
+│   └── tests/review-flow.e2e.spec.ts
+├── specs/
+│   ├── 001-bandeja-revision-asistida/
+│   │   ├── checklists/requirements.md
+│   │   ├── contracts/review-tray-api.json
+│   │   ├── contracts/scoring-api.json
+│   │   ├── data-model.md
+│   │   ├── plan.md
+│   │   ├── quickstart.md
+│   │   ├── research.md
+│   │   ├── spec.md
+│   │   └── tasks.md
+│   └── 002-puntaje-decision-umbrales/
+│       ├── checklists/requirements.md
+│       ├── contracts/review-tray-api.json
+│       ├── contracts/scoring-api.json
+│       ├── data-model.md
+│       ├── plan.md
+│       ├── quickstart.md
+│       ├── research.md
+│       ├── spec.md
+│       └── tasks.md
+├── .dockerignore
+├── .gitignore
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+├── prueba de funcionamiento.md
+└── README.md
+```
