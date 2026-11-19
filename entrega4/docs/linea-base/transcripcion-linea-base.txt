@@ -1,0 +1,153 @@
+
+> Eres el desarrollador del equipo de MIRA, una plataforma que evalúa
+  solicitudes de reembolso de gastos médicos. El cliente pide lo siguiente:
+
+  "Cuando un caso termina de analizarse, necesitamos que MIRA calcule un
+  puntaje y decida sola si lo aprueba, lo deriva a revisión o lo rechaza. Si
+  aparece una señal de fraude, eso manda por sobre todo lo demás. Cada cliente
+  debe poder tener sus propios umbrales."
+
+  Implementa esta funcionalidad en esta carpeta: un módulo en Python 3.12 con
+  una API mínima en FastAPI y pruebas con pytest. Crea tú el entorno virtual e
+  instala lo necesario. Si necesitas aclarar algo con el cliente, pregúntame
+  antes de implementar. Al terminar, ejecuta las pruebas y muéstrame el
+  resultado.
+
+  Searched for 1 pattern (ctrl+o to expand)
+
+● Carpeta vacía, así que no hay código previo que fije estas decisiones. Antes
+  de implementar necesito aclarar tres puntos con el cliente.
+
+● Answered Claude's questions:
+  ⎿  · ¿Qué significa el puntaje y cómo se usan los umbrales? (el requerimiento
+     no lo define) → Un puntaje alto significa más confianza. Cada cliente tiene
+     un umbral de aprobación: si el puntaje es mayor o igual al umbral, se
+     aprueba; si es menor, se deriva a revisión. MIRA nunca rechaza un caso por
+     sí sola, así que RECHAZAR no es una decisión automática válida. Además,
+     cada cliente tiene un mínimo por señal: si alguna señal tiene un puntaje
+     menor a ese mínimo, el caso se deriva aunque el promedio alcance el umbral.
+     Ambos valores van en escala 0 a 100 y son propios de cada cliente.
+     · ¿Cómo llega el puntaje y las señales de fraude al módulo? → El puntaje
+     del caso es el promedio simple de los puntajes de sus señales, en escala 0
+     a 100. Si el caso llega sin señales, MIRA no decide sola: lo deriva a
+     revisión. Una señal de fraude es una señal marcada explícitamente como
+     fraude.
+     · Si hay señal de fraude, ¿cuál es el resultado y qué pasa con la
+     configuración por cliente? → Si el caso tiene al menos una señal de fraude,
+     siempre se deriva a revisión, sin importar el puntaje. Nunca se rechaza
+     automáticamente. Si el cliente no tiene umbrales configurados, MIRA no
+     decide y responde un error que indica que falta la configuración del
+     cliente. No se usan valores por defecto.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(mira\decision.py)
+  ⎿  Wrote 82 lines to mira\decision.py
+       1 """Lógica de decisión automática de MIRA (sin dependencias de Fa
+         stAPI).
+       2
+       3 Reglas:
+       4 - MIRA solo puede APROBAR o DERIVAR a revisión. Nunca rechaza.
+       5 - Sin configuración del cliente: no decide (error).
+       6 - Sin señales: deriva.
+       7 - Cualquier señal de fraude: deriva, sin importar el puntaje.
+       8 - Promedio simple de señales < umbral de aprobación: deriva.
+       9 - Alguna señal < mínimo por señal del cliente: deriva, aunque el
+     … +74 lines (~2 KB) (ctrl+o to expand)
+
+● Write(mira\__init__.py)
+  ⎿  Wrote 1 line to mira\__init__.py
+      1 (No content)
+
+● Write(mira\api.py)
+  ⎿  Wrote 77 lines to mira\api.py
+      1 from __future__ import annotations
+      2
+      3 from fastapi import FastAPI, HTTPException
+      4 from pydantic import BaseModel, ConfigDict, Field
+      5
+      6 from .decision import ClientConfig, ClientConfigMissing, Decision
+        , Signal, decide
+      7
+      8 Score = Field(ge=0, le=100, allow_inf_nan=False)
+      9
+     … +68 lines (ctrl+o to expand)
+
+● Write(tests\test_decision.py)
+  ⎿  Wrote 125 lines to tests\test_decision.py
+       1 import pytest
+       2 from fastapi.testclient import TestClient
+       3
+       4 from mira.api import create_app
+       5 from mira.decision import ClientConfig, Decision, Signal, decide
+       6
+       7 CFG = ClientConfig(approval_threshold=80, min_signal_score=50)
+       8
+       9
+      10 def S(score, fraud=False):
+     … +115 lines (ctrl+o to expand)
+
+● Write(requirements.txt)
+  ⎿  Wrote 3 lines to requirements.txt
+      1 fastapi
+      2 httpx
+      3 pytest
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● MIRA ya decide sola entre aprobar y derivar a revisión, y las 22 pruebas pasan
+  con Python 3.12.10 en el entorno .venv. Hay una advertencia de deprecación de
+  Starlette sobre httpx, que no afecta el resultado.
+
+  Reglas implementadas, según tus respuestas:
+  - Decisiones posibles: solo APROBAR y REVISION. MIRA nunca rechaza.
+  - Puntaje: el promedio simple de las señales, de 0 a 100.
+  - Fraude: cualquier señal marcada como fraude deriva a revisión, aunque el
+    puntaje sea 100.
+  - Sin señales: deriva a revisión.
+  - Aprobación: el promedio debe ser mayor o igual al umbral de aprobación del
+    cliente.
+  - Mínimo por señal: si alguna señal queda bajo el mínimo del cliente, deriva
+    aunque el promedio alcance el umbral.
+  - Sin configuración del cliente: responde 404 con client_config_missing y no
+    decide. No hay valores por defecto.
+
+  Para tu revisión:
+  - Sin configuración y con fraude: el error de configuración faltante tiene
+    prioridad, incluso si el caso trae fraude o no trae señales. Lo interpreté
+    así porque dijiste que en ese caso MIRA no decide. Si prefieres que el
+    fraude derive igual, es un cambio pequeño.
+  - Persistencia: las configuraciones viven en memoria y se pierden al reiniciar
+    el servidor. No dijiste nada sobre guardarlas.
+  - Señales de fraude: cada señal de fraude debe traer también un puntaje, y ese
+    puntaje entra en el promedio.
+
+  API:
+  - PUT /clients/{id}/config guarda {approval_threshold, min_signal_score},
+    ambos de 0 a 100.
+  - GET /clients/{id}/config devuelve esa configuración.
+  - POST /clients/{id}/decision recibe {signals:[{name, score, is_fraud}]} y
+    devuelve {decision, score, reasons}.
+
+  Para levantarla: .\.venv\Scripts\python.exe -m uvicorn mira.api:app. Antes hay
+  que instalar uvicorn, que no incluí porque las pruebas no lo necesitan.
+
+  Los archivos están en mira/decision.py, mira/api.py, tests/test_decision.py y
+  requirements.txt.
+
+> Pasos
+
+  1. En la ventana de la línea base, escribe /export y guarda la conversación
+  como transcripcion-linea-base.txt.
+
+● No puedo ejecutar /export yo mismo. Es un comando integrado de Claude Code que
+  solo funciona cuando lo escribes tú en la ventana de la conversación, y no
+  está entre las herramientas que tengo. Tampoco voy a reconstruir la
+  transcripción a mano en un archivo, porque no sería la exportación real.
+
+  1. Escribe /export en esta ventana.
+  2. Cuando te pida el nombre o la ruta, usa transcripcion-linea-base.txt.
+     Conviene guardarla en c:\Users\a7xsl\mira-linea-base.
+
+  Si la exportación queda en otra ubicación, dime la ruta y la reviso o la muevo
+  a la carpeta del proyecto.
