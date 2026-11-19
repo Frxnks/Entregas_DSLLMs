@@ -29,7 +29,7 @@ No hace:
 6. Escribe tu entregable.
 
 # Entregables
-- La primera línea del archivo de traspaso es: "Agente: <tu nombre> · Skills cargadas: <lista o ninguna>".
+- La primera línea del archivo de traspaso es: "Agente: desarrollador · Skills cargadas: <lista o ninguna>".
 - Código en src/mira_decision/ y pruebas en tests/.
 - docs/trabajo/05-implementacion-<N>.md, donde N es el número de vuelta (1 o 2), con: tareas completadas, archivos cambiados, salida literal de pytest, salida literal del verificador de trazabilidad, hallazgos atendidos (si es vuelta 2) y bloqueos.
 

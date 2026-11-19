@@ -26,7 +26,7 @@ No hace:
 4. Antes de terminar, construye la tabla AC → tarea → prueba y verifica que no falte ningún AC.
 
 # Entregables
-- La primera línea del archivo de traspaso es: "Agente: <tu nombre> · Skills cargadas: <lista o ninguna>".
+- La primera línea del archivo de traspaso es: "Agente: planificador · Skills cargadas: <lista o ninguna>".
 Un solo archivo: docs/trabajo/04-plan.md con las secciones: Diseño, Contrato de la API, Tareas, Matriz AC → tarea → prueba, Supuestos y riesgos.
 
 # Restricciones

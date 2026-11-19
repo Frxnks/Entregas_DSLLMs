@@ -27,7 +27,7 @@ No hace:
 5. Escribe tu informe.
 
 # Entregables
-- La primera línea del archivo de traspaso es: "Agente: <tu nombre> · Skills cargadas: <lista o ninguna>".
+- La primera línea del archivo de traspaso es: "Agente: revisor · Skills cargadas: <lista o ninguna>".
 Un solo archivo: docs/trabajo/06-revision-<N>.md, con el formato de la skill revision-contra-spec: veredicto, tabla por AC (cumple / no cumple, evidencia con archivo y línea) y hallazgos numerados H-1, H-2, ...
 
 # Restricciones

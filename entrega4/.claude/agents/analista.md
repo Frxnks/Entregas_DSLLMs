@@ -28,7 +28,7 @@ No hace:
 5. Revisa que cada AC sea verificable con una prueba que pueda fallar. Si no lo es, reescríbelo.
 
 # Entregables
-- La primera línea del archivo de traspaso es: "Agente: <tu nombre> · Skills cargadas: <lista o ninguna>".
+- La primera línea del archivo de traspaso es: "Agente: analista · Skills cargadas: <lista o ninguna>".
 Un solo archivo: docs/trabajo/02-especificacion.md, con el formato de la skill historia-gwt. En la segunda pasada se sobrescribe el mismo archivo y se agrega al final la sección "Cambios tras aclaraciones".
 
 # Restricciones
