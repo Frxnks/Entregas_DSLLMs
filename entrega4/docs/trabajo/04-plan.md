@@ -55,7 +55,7 @@ Ordenadas por dependencia.
 
 | Tarea | Descripción | AC | Prueba que la verifica |
 |---|---|---|---|
-| T-1 | Crear `models.py` con modelos, enums y validación 0 a 100. `Decision` sin RECHAZAR. | AC-11 | `test_ac11_nunca_rechaza` (parte: el enum no contiene RECHAZAR) |
+| T-1 | Crear `models.py` con modelos, enums y validación 0 a 100. `Decision` sin RECHAZAR. | AC-11 | `test_ac11_nunca_rechaza` (con los datos del AC: umbral 85, mínimo 0, señales 0 y 0 → DERIVAR_A_REVISION; no basta con inspeccionar el enum) |
 | T-2 | Crear `config.py`: `RepositorioUmbrales` y `ClienteSinConfiguracion`, sin valores por defecto. | AC-14 | `test_ac14_cliente_sin_configuracion_lanza_error` |
 | T-3 | Crear `decision.py` parte 1: promedio simple y comparación con el umbral (>= aprueba, < deriva). | AC-1, AC-2, AC-3, AC-4 | `test_ac1_puntaje_es_promedio_simple`, `test_ac2_aprueba_sobre_umbral`, `test_ac3_aprueba_con_puntaje_igual_al_umbral`, `test_ac4_deriva_bajo_umbral` |
 | T-4 | `decision.py` parte 2: regla de señal bajo el mínimo (estricto) y su precedencia sobre el umbral. | AC-5, AC-6, AC-7 | `test_ac5_deriva_por_senal_bajo_minimo_aunque_promedio_alcance`, `test_ac6_senal_igual_al_minimo_no_deriva`, `test_ac7_senal_bajo_minimo_precede_a_puntaje_bajo_umbral` |
@@ -103,3 +103,4 @@ Riesgos:
 - R-3: la decisión de S-4 puede no coincidir con lo que espera el cliente; se confirma al aprobar el plan.
 
 Bloqueos: ninguno.
+- Aprobación del equipo (H3): se aceptan S-1 a S-7. Corrección: la prueba de AC-11 debe ejercitar los datos del AC, no inspeccionar el enum.
