@@ -5,6 +5,7 @@ Convenciones: una fila por invocación de agente o decisión humana. El prompt s
 ## 1. Registro de corridas
 | # | Fecha y hora | Corrida | Etapa | Agente o persona | Prompt literal | Skills cargadas | ¿Cumplió su contrato? | Nota |
 |---|---|---|---|---|---|---|---|---|
+| 1 | 2026-11-19 19:21 | 1 (ensayo) | Especificar (1ra pasada) | analista | Primera pasada. Lee docs/trabajo/01-necesidad.md y produce docs/trabajo/02-especificacion.md según tus instrucciones. | ninguna según traza | SÍ | 10 AC en G/W/T y 5 preguntas Q-1..Q-5; leyó la skill historia-gwt con Read (sin herramienta Skill) y omitió la línea "Agente: ... · Skills cargadas: ..." que exige AGENTS.md. |
 
 ## 2. Decisiones humanas
 | Punto | Fecha | Quién | Qué revisó | Decisión | Commit |
