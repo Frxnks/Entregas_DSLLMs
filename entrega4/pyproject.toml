@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mira-decision"
+version = "0.1.0"
+description = "MIRA · Entrega 4 · Módulo de decisión de casos (sistema multiagente, Alternativa A)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["mira_decision*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
