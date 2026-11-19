@@ -17,6 +17,7 @@ Un módulo pequeño e independiente en Python (src/mira_decision) que recibe un 
 - Los criterios de aceptación se identifican como AC-1, AC-2, ... y se citan en tareas, código y pruebas.
 - Nadie trabaja fuera de entrega4/.
 - No se escriben secretos ni datos reales.
+- Cada archivo de traspaso que escribas en docs/trabajo/ empieza con la línea "Agente: <nombre> · Skills cargadas: <lista o ninguna>".
 
 ## Convención de commits
 - "[IA] ..." para contenido generado por un agente sin cambios.
