@@ -37,15 +37,16 @@ flowchart LR
 ## 3. Agentes
 | Agente | Rol | Herramientas | Entrada | Salida | Criterio de término | Skills |
 |---|---|---|---|---|---|---|
-| analista | Historia G/W/T, caso de uso y ambigüedades | Read, Grep, Glob, Write | 01-necesidad.md, 03-aclaraciones.md | 02-especificacion.md | Todos los AC con ID y G/W/T; preguntas abiertas listadas o cerradas | historia-gwt |
+| analista | Historia G/W/T, caso de uso y ambigüedades | Read, Grep, Glob, Write, Skill | 01-necesidad.md, 03-aclaraciones.md | 02-especificacion.md | Todos los AC con ID y G/W/T; preguntas abiertas listadas o cerradas | historia-gwt |
 | planificador | Diseño, contrato de API y tareas | Read, Grep, Glob, Write | 02-especificacion.md aprobada | 04-plan.md | Cada AC en la matriz con al menos una prueba | — |
-| desarrollador | Código y pruebas | Read, Grep, Glob, Write, Edit, Bash | 04-plan.md, 06-revision-(N-1).md | src/, tests/, 05-implementacion-N.md | Pruebas en verde y ningún AC sin prueba, o fallas declaradas | verificador-trazabilidad |
-| revisor | Juzga el código contra la spec | Read, Grep, Glob, Write | 02, 04 y 05-implementacion-N.md | 06-revision-N.md | Veredicto por AC con evidencia y veredicto global | revision-contra-spec |
+| desarrollador | Código y pruebas | Read, Grep, Glob, Write, Edit, Bash, Skill | 04-plan.md, 06-revision-(N-1).md | src/, tests/, 05-implementacion-N.md | Pruebas en verde y ningún AC sin prueba, o fallas declaradas | verificador-trazabilidad |
+| revisor | Juzga el código contra la spec | Read, Grep, Glob, Write, Skill | 02, 04 y 05-implementacion-N.md | 06-revision-N.md | Veredicto por AC con evidencia y veredicto global | revision-contra-spec |
 
 ## 4. Justificación de herramientas de escritura y ejecución
 - **Write en analista, planificador y revisor:** cada uno debe dejar su archivo de traspaso en `docs/trabajo/` (requisito 4.3 del enunciado). Ninguno tiene **Edit** ni **Bash**: no pueden modificar archivos existentes de otros ni ejecutar comandos. El cuerpo de cada agente restringe Write a un único archivo; después de cada etapa se comprueba con `git diff --stat` que solo cambió ese archivo.
 - **Revisor sin Edit ni Bash:** la regla de la alternativa A dice que el agente que revisa no puede editar archivos. Se interpreta como que no puede modificar código, pruebas, especificación ni plan; solo crea su propio informe. Tampoco ejecuta pruebas: toma como evidencia la salida que pega el desarrollador, y si no coincide con el código lo reporta como hallazgo.
 - **Edit y Bash solo en el desarrollador:** es el único que modifica código y necesita ejecutar pytest y el script del verificador de trazabilidad para demostrar su criterio de término. Su cuerpo prohíbe git, borrados y red.
+- **Skill en analista, desarrollador y revisor:** permite cargar su skill con divulgación progresiva y deja la carga registrada en la traza; no da permisos de escritura ni ejecución.
 
 ## 5. Puntos de control humano
 | # | Punto | Quién | Qué revisa | Registro |

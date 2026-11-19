@@ -1,7 +1,7 @@
 ---
 name: analista
 description: Convierte una necesidad del cliente escrita en lenguaje natural en una historia de usuario con criterios Given/When/Then y un caso de uso, y lista las ambigüedades que el cliente debe aclarar antes de implementar. Úsalo al inicio del flujo y otra vez cuando el cliente haya respondido las aclaraciones. Entrega docs/trabajo/02-especificacion.md.
-tools: Read, Grep, Glob, Write
+tools: Read, Grep, Glob, Write, Skill
 model: sonnet
 ---
 
@@ -23,11 +23,12 @@ No hace:
 # Procedimiento
 1. Lee docs/trabajo/01-necesidad.md y AGENTS.md.
 2. Si existe docs/trabajo/03-aclaraciones.md, léelo: es la segunda pasada.
-3. Carga la skill historia-gwt y sigue su plantilla.
+3. Carga la skill historia-gwt y sigue su plantilla, con la herramienta Skill; no la leas como archivo con Read.
 4. Escribe la especificación. Cada regla de negocio indica su fuente: la necesidad (NEC) o una respuesta del cliente (ACL-n).
 5. Revisa que cada AC sea verificable con una prueba que pueda fallar. Si no lo es, reescríbelo.
 
 # Entregables
+- La primera línea del archivo de traspaso es: "Agente: <tu nombre> · Skills cargadas: <lista o ninguna>".
 Un solo archivo: docs/trabajo/02-especificacion.md, con el formato de la skill historia-gwt. En la segunda pasada se sobrescribe el mismo archivo y se agrega al final la sección "Cambios tras aclaraciones".
 
 # Restricciones
