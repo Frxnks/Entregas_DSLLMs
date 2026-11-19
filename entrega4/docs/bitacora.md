@@ -19,6 +19,7 @@ Convenciones: una fila por invocación de agente o decisión humana. El prompt s
 | H2 | 2026-11-19 | Nikolas Lagos (cliente) | 02-especificacion.md: 11 reglas, 14 AC, caso de uso, cuentas de cada AC y sección 7 | Aprueba. El vacío de la sección 7 (puntaje informado al derivar por FRAUDE o SIN_SENALES) queda fuera de alcance y no se prueba | 4a3a94c |
 | H3 | 2026-11-19 | Equipo | 04-plan.md: diseño, contrato de la API, 7 tareas, matriz AC → prueba y supuestos S-1 a S-7 | Aprueba con una corrección: la prueba de AC-11 del plan verificaba la implementación (el enum) y no el criterio; se exige usar los datos del AC. Se aceptan S-1 (puntaje null en FRAUDE y SIN_SENALES, declarado y no probado) y S-4 (HTTP 404) | c0aa076 |
 | E2 | 2026-11-19 | Equipo | Fila T-1 de 04-plan.md | Corrigió la definición de la prueba de AC-11 (salida del planificador corregida por el equipo) | c0aa076 |
+| H4 | 2026-11-19 | Nikolas Lagos (cliente) | 06-revision-1.md y ejecución propia de pytest (19 passed) y del verificador (OK) | ACEPTADA. Criterio de logro de la alternativa A cumplido: código con pruebas en verde que cumple la historia | (commit pendiente) |
 
 ## 3. Fallas y cambios
 | ID | Corrida | Qué pasó | Categoría MAST | Causa (archivo y línea del agente o skill) | Cambio (commit) | Re-ejecución |
@@ -30,3 +31,4 @@ Convenciones: una fila por invocación de agente o decisión humana. El prompt s
 ## 4. Supuestos y excepciones
 - Representante del cliente: Nikolas Lagos repite el rol de las entregas anteriores con autorización del profesor (excepción a la rotación del enunciado 4.5).
 - ACL-4 (cliente sin umbrales configurados → error) es una decisión del cliente sin fuente en las entregas anteriores.
+- La corrida 1 se inició como ensayo. Como recorrió el caso completo, con fallas reales corregidas y re-ejecutadas (F-1 a F-3) y el criterio de logro cumplido, el equipo la declara corrida entregada. La corrida 2 se ejecuta en vivo en la presentación.
