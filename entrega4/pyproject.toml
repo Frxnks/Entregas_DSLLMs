@@ -16,6 +16,7 @@ dependencies = [
 dev = [
     "pytest",
     "httpx",
+    "uvicorn",
 ]
 
 [tool.setuptools.packages.find]
