@@ -136,6 +136,12 @@ Los datos de PostgreSQL se conservan en el volumen `postgres_data`. **No uses `d
 - [Guía de la API de scoring](docs/scoring-api-guide.md)
 - [Quickstart con escenarios de validación](specs/001-bandeja-revision-asistida/quickstart.md)
 
+## Entrega 4 · Sistema multiagente
+
+Sistema de 4 agentes (analista, planificador, desarrollador y revisor) que lleva una necesidad del cliente de MIRA a código con pruebas en verde (alternativa A, SDD).
+Está en la carpeta `entrega4/`.
+Las instrucciones para instalar, verificar y lanzar el flujo están en [entrega4/README.md](entrega4/README.md).
+
 ## Distribución actual del repositorio
 
 La siguiente estructura contiene los archivos y carpetas versionados del proyecto. Se excluyen dependencias locales y artefactos generados como `node_modules`, `.venv`, `.next`, cachés y compilaciones.
@@ -394,7 +400,83 @@ Entregas_DSLLMs/
 │           ├── test_gemini_provider.py
 │           └── test_generation_evaluation.py
 ├── entrega4/
-│   └── .gitkeep
+│   ├── .gitignore
+│   ├── .gitkeep
+│   ├── AGENTS.md
+│   ├── CLAUDE.md
+│   ├── pyproject.toml
+│   ├── README.md
+│   ├── .claude/
+│   │   ├── settings.json
+│   │   ├── agents/
+│   │   │   ├── .gitkeep
+│   │   │   ├── analista.md
+│   │   │   ├── desarrollador.md
+│   │   │   ├── planificador.md
+│   │   │   └── revisor.md
+│   │   ├── hooks/
+│   │   │   └── registrar_herramienta.py
+│   │   └── skills/
+│   │       ├── .gitkeep
+│   │       ├── historia-gwt/
+│   │       │   ├── plantilla-especificacion.md
+│   │       │   └── SKILL.md
+│   │       ├── revision-contra-spec/
+│   │       │   ├── plantilla-informe.md
+│   │       │   └── SKILL.md
+│   │       └── verificador-trazabilidad/
+│   │           ├── SKILL.md
+│   │           └── scripts/
+│   │               └── verificar.py
+│   ├── docs/
+│   │   ├── bitacora.md
+│   │   ├── decision.md
+│   │   ├── guia-corrida.md
+│   │   ├── evidencia/
+│   │   │   ├── .gitkeep
+│   │   │   ├── metricas.md
+│   │   │   └── traza-herramientas.jsonl
+│   │   ├── linea-base/
+│   │   │   ├── .gitkeep
+│   │   │   ├── Captura de pantalla 2026-11-19 202554.png
+│   │   │   ├── Captura de pantalla 2026-11-19 202638.png
+│   │   │   ├── Captura de pantalla 2026-11-19 202653.png
+│   │   │   ├── Captura de pantalla 2026-11-19 203218.png
+│   │   │   ├── evaluacion.md
+│   │   │   ├── evaluar_ac.py
+│   │   │   ├── transcripcion-linea-base.txt
+│   │   │   └── codigo/
+│   │   │       ├── requirements.txt
+│   │   │       ├── mira/
+│   │   │       │   ├── __init__.py
+│   │   │       │   ├── api.py
+│   │   │       │   └── decision.py
+│   │   │       └── tests/
+│   │   │           └── test_decision.py
+│   │   └── trabajo/
+│   │       ├── .gitkeep
+│   │       ├── 01-necesidad.md
+│   │       ├── 02-especificacion.md
+│   │       ├── 03-aclaraciones.md
+│   │       ├── 04-plan.md
+│   │       ├── 05-implementacion-1.md
+│   │       ├── 06-revision-1.md
+│   │       └── 07-aceptacion.md
+│   ├── scripts/
+│   │   └── reiniciar_corrida.ps1
+│   ├── src/
+│   │   └── mira_decision/
+│   │       ├── __init__.py
+│   │       ├── api.py
+│   │       ├── config.py
+│   │       ├── decision.py
+│   │       ├── demo.py
+│   │       └── models.py
+│   └── tests/
+│       ├── .gitkeep
+│       ├── test_api.py
+│       ├── test_config.py
+│       └── test_decision.py
 ├── frontend/
 │   ├── .env.example
 │   ├── Dockerfile

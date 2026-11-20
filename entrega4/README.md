@@ -46,6 +46,7 @@ En otra terminal:
 Devuelve decision APROBAR, motivo PUNTAJE_SOBRE_UMBRAL, puntaje 80. El mismo caso con cliente-b devuelve DERIVAR_A_REVISION (PUNTAJE_BAJO_UMBRAL).
 
 ## Lanzar el flujo sobre el caso
+Abrir VS Code con la carpeta entrega4/ como raíz (no la raíz del repositorio) y aceptar "Trust folder" cuando Claude Code lo pida; si no, no se cargan los agentes, las skills ni el hook de traza. Verificar con /agents que aparezcan analista, planificador, desarrollador y revisor.
 Ver docs/guia-corrida.md: rama nueva, scripts/reiniciar_corrida.ps1 y las etapas. No se reinicia sobre main.
 
 ## Dónde está la evidencia
