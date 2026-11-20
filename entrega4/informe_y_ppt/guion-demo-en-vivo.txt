@@ -1,0 +1,45 @@
+MIRA · ENTREGA 4 · DEMO EN VIVO (versión corta)
+===============================================
+
+ANTES (una vez): crear y subir la etiqueta
+    git switch main
+    git tag entrega-4
+    git push origin main
+    git push origin entrega-4
+
+ANTES DE PRESENTAR: VS Code abierto en entrega4\, terminal con el venv activo
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+    .\.venv\Scripts\Activate.ps1
+
+
+1. PARTIR DESDE LA ENTRADA DEL CASO (sobre la etiqueta)
+    git switch -c corrida-2 entrega-4
+    powershell -ExecutionPolicy Bypass -File scripts\reiniciar_corrida.ps1
+   Mostrar que en docs\trabajo\ solo queda 01-necesidad.md.
+
+
+2. ANALISTA EN VIVO (traspaso + skill)
+   En un chat nuevo de Claude Code, pegar:
+
+    Invoca al subagente analista con este prompt exacto: "Primera pasada. Lee docs/trabajo/01-necesidad.md y produce docs/trabajo/02-especificacion.md según tus instrucciones."
+
+   Cuando termine, abrir docs\trabajo\02-especificacion.md (Ctrl+Shift+V) y mostrar
+   la primera línea "Agente: analista · Skills cargadas: historia-gwt" y las preguntas Q-n.
+
+
+3. CONTROL HUMANO H1 (el cliente responde)
+   Nikolas explica: MIRA nunca rechaza sola (DEC-04). Se usan las respuestas ya escritas:
+    git checkout main -- docs/trabajo/03-aclaraciones.md
+    git add -A
+    git commit -m "[CLIENTE] Corrida 2 (demo): respuestas a las aclaraciones (H1)"
+
+
+4. RESULTADO FINAL (desde la corrida entregada)
+    git switch main
+    .\.venv\Scripts\python.exe -m pytest -q
+   Mostrar "19 passed": criterio de logro cumplido.
+   (Opcional) abrir docs\trabajo\06-revision-1.md: "Veredicto: APROBADO".
+
+
+SI CLAUDE CODE FALLA: mostrar la salida del analista de la corrida entregada
+    git show a5649c1:./docs/trabajo/02-especificacion.md

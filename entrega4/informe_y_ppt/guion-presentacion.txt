@@ -1,0 +1,175 @@
+MIRA · ENTREGA 4 · GUIÓN DE LA PRESENTACIÓN (15 minutos)
+=========================================================
+
+Reglas: hablan los 4, no se lee la diapositiva y se cortan los 15 minutos. Después hay
+5 minutos de preguntas que puede responder cualquiera, sobre cualquier parte.
+
+Reparto:
+  1 · Portada ........................ Nikolas  (15 s)
+  2 · De qué trata esta entrega ...... Dante    (45 s)
+  3 · El caso ........................ Dante    (1 min)
+  4 · Diseño (diagrama) .............. Felipe   (3 min)
+  5 · Demostración en vivo ........... Nikolas  (6 min, opera y hace de cliente)
+  6 · Resultados ..................... Franko   (1 min 30 s)
+  7 · Una falla real ................. Franko   (1 min 30 s)
+  8 · Preguntas ...................... Dante
+
+
+PALABRAS QUE CONVIENE ENTENDER (para todos)
+-------------------------------------------
+- Agente: una IA a la que se le da un rol, instrucciones y algunas herramientas
+  (leer archivos, escribir, ejecutar comandos) para que haga una tarea sola.
+- Claude Code: el programa que usamos para crear y correr los agentes, dentro de VS Code.
+- Skill: una "guía" que el agente carga cuando la necesita. Puede traer una plantilla
+  o un programa pequeño. Tenemos 3.
+- Traspaso: el archivo que un agente deja en docs/trabajo/ para que el siguiente lo lea.
+  Así el trabajo no depende de la memoria del chat.
+- Control humano: momento en que una persona revisa y decide antes de seguir. Tenemos 4
+  (H1 a H4).
+- AC (criterio de aceptación): cada regla concreta que el cliente acepta como "esto debe
+  pasar". Tenemos 14.
+- Línea base: hicimos lo mismo con UN solo agente, sin roles, para comparar.
+- Prueba automática (pytest): pequeño programa que verifica que el código hace lo que
+  debe. "19 passed" = las 19 pruebas pasaron.
+- Commit: cada vez que se guarda un cambio en el repositorio. Los nuestros dicen [IA]
+  (lo hizo un agente), [CLIENTE] (lo decidió el cliente) o [EQUIPO] (lo corregimos
+  nosotros).
+- Hook / registro automático: anota cada herramienta que usa cada agente.
+- MAST: una clasificación de fallas de sistemas con varios agentes vista en clase.
+  Nuestras fallas son de "especificación": instrucciones mal escritas por nosotros.
+
+
+1 · PORTADA  (Nikolas, 15 s)
+-----------------------------
+"Somos el equipo de MIRA: Dante, Felipe, Franko y yo, Nikolas, que además hago de
+representante del cliente. Usamos Claude Code con el modelo Claude Sonnet 5.5."
+
+
+2 · DE QUÉ TRATA ESTA ENTREGA  (Dante, 45 s)
+--------------------------------------------
+"Nos pidieron armar un equipo de cuatro agentes de IA, cada uno con un rol, que lleve
+un caso de MIRA de principio a fin sin que nosotros hagamos su trabajo, con una persona
+aprobando en los momentos importantes, y compararlo con datos contra un solo agente.
+Lo que hicimos: diseñamos los cuatro agentes y tres guías, corrimos el caso completo
+hasta tener código con 19 pruebas en verde, lo comparamos con un solo agente y
+registramos y corregimos las fallas que aparecieron."
+
+
+3 · EL CASO  (Dante, 1 min)
+----------------------------
+"Este es el pedido del cliente: que MIRA calcule un puntaje y decida sola si aprueba,
+deriva a revisión o rechaza un caso, que el fraude mande sobre todo y que cada cliente
+tenga sus umbrales.
+Tiene una trampa: la palabra 'rechaza'. En la Entrega 1 el mismo cliente decidió que
+MIRA nunca rechaza sola. Queríamos ver si los agentes se daban cuenta y preguntaban
+antes de programar.
+Elegimos la alternativa A porque se parece a lo que hicimos en la Entrega 2, donde
+primero se escribe qué hacer y después el código; no necesita servidores externos para
+la demo; y sus reglas se pueden comprobar con pruebas automáticas."
+
+Palabras de esta parte:
+- Umbral: el puntaje mínimo para aprobar. Cada cliente define el suyo (por ejemplo 70 o 90).
+- Derivar a revisión: mandar el caso a una persona para que decida.
+- Alternativa A: de las tres opciones del enunciado, la que va del pedido del cliente a
+  código con pruebas, escribiendo primero qué hay que hacer.
+
+
+4 · DISEÑO  (Felipe, 3 min)
+----------------------------
+Apoyarse en el diagrama, de arriba hacia abajo:
+"El trabajo pasa por cuatro agentes, en orden. El analista lee el pedido y escribe las
+reglas y las preguntas para el cliente. El cliente responde (eso es H1), el analista
+corrige y el cliente aprueba (H2). Después el planificador decide cómo construirlo y
+qué tareas hay, y el equipo aprueba ese plan (H3). El desarrollador escribe las pruebas
+y el código, y el revisor lo compara con lo que pidió el cliente. Si encuentra
+problemas, se lo devuelve al desarrollador, como máximo dos veces. Al final el cliente
+acepta (H4).
+Por qué cuatro: uno por etapa, y así nadie revisa su propio trabajo.
+Cómo se pasan el trabajo: cada uno deja un archivo y el siguiente lo lee.
+Qué puede hacer cada uno: a cada agente le dimos solo lo que necesita. El único que
+puede cambiar código y ejecutar comandos es el desarrollador. El revisor solo lee y
+escribe su informe, porque la regla dice que el que revisa no puede editar.
+Qué descartamos: un agente jefe que reparta el trabajo. Gasta más, porque es otro
+agente leyendo todo, y podría saltarse la aprobación del cliente. Preferimos que esas
+decisiones las tome una persona.
+Cada agente usa una guía propia (skill): el analista una plantilla para escribir las
+reglas, el desarrollador un programa que revisa que cada regla tenga su prueba, y el
+revisor una lista de chequeo."
+
+Palabras de esta parte:
+- Cuadros azules = agentes. Hexágonos naranjos = una persona decide.
+- Patrón "secuencial": los agentes trabajan uno después del otro, no al mismo tiempo.
+- "Evaluador y optimizador": el ciclo revisor → desarrollador, que se repite hasta que
+  esté bien o hasta 2 vueltas.
+- En el repo: .claude/agents/ (los 4 agentes), .claude/skills/ (las 3 guías) y
+  docs/decision.md (por qué se diseñó así).
+
+
+5 · DEMOSTRACIÓN EN VIVO  (Nikolas, 6 min)
+-------------------------------------------
+Se sigue guion-demo-en-vivo.txt. Qué decir en cada paso:
+
+1. Partimos de cero:
+   "Creamos una rama nueva desde la versión entregada y borramos todo lo que hicieron
+   los agentes. Solo queda el pedido del cliente."
+2. El analista trabaja en vivo:
+   "Le pedimos al analista que lea el pedido. Está cargando su guía y escribiendo sus
+   preguntas." Cuando termine: "Apareció el archivo 02: es el traspaso. La primera línea
+   dice qué guía usó. Y aquí están sus preguntas para el cliente."
+3. El cliente responde:
+   "Ahora hago de cliente y respondo con lo que ya decidimos en entregas anteriores:
+   MIRA nunca rechaza sola y el fraude va a revisión. Esta decisión queda guardada con
+   su propio registro [CLIENTE]."
+4. Resultado final:
+   "Para no gastar los 6 minutos esperando, el resto de las etapas las mostramos de la
+   corrida que entregamos. Ejecutamos las pruebas: 19 de 19 pasan. Eso pide la
+   alternativa A: código con pruebas en verde que cumple lo que pidió el cliente."
+
+Si algo falla: decirlo con calma y mostrar el resultado de la corrida entregada (está en
+el guion de la demo).
+
+
+6 · RESULTADOS  (Franko, 1 min 30 s)
+-------------------------------------
+"Para saber si el equipo de agentes sirve, hicimos lo mismo con un solo agente, sin
+roles. Nuestro equipo cumplió las 14 reglas del cliente; el agente solo, 9.
+La diferencia salió de una pregunta: el agente solo no preguntó cómo explicar el motivo
+de cada decisión, y nuestro analista sí.
+Además, cuando el agente solo le dio opciones al cliente, las tres que recomendaba
+incluían rechazar casos, justo lo que el cliente prohíbe. Salió bien solo porque el
+cliente no le hizo caso.
+Lo malo, y lo decimos: tardamos 46 minutos contra 5. Pero los agentes trabajaron menos
+de 4 minutos; el resto fue gente revisando y aprobando, que es justamente el control."
+
+Palabras de esta parte:
+- 9 de 14: devolvía todos los motivos juntos o ninguno, y el cliente pidió un solo
+  motivo con un orden de prioridad.
+- La comparación fue justa: mismo modelo, mismo pedido y mismas respuestas del cliente.
+  Su límite: fue una sola corrida de cada uno.
+
+
+7 · UNA FALLA REAL  (Franko, 1 min 30 s)
+-----------------------------------------
+"Esta falla la encontramos nosotros. El analista tenía que cargar su guía como skill,
+pero la abrió como un archivo cualquiera. El resultado se veía bien, así que nadie lo
+habría notado.
+Nos dimos cuenta gracias al registro automático, que anota cada herramienta que usa
+cada agente: ahí no aparecía la carga de la guía.
+La causa fue nuestra: en la configuración del analista no le dimos permiso para cargar
+guías. Lo agregamos (en la imagen, lo verde), lo volvimos a ejecutar y el registro ya
+mostró la guía cargada.
+En total tuvimos 3 fallas de este tipo y corregimos a mano 2 resultados de los agentes.
+Todo quedó registrado."
+
+Palabras de esta parte:
+- Falla de especificación (MAST): el error estaba en nuestras instrucciones, no en el modelo.
+- La imagen es un "diff": muestra el antes (rojo) y el después (verde) de un archivo.
+- Las otras dos fallas: el analista no puso la línea de encabezado que pedíamos, y
+  después puso un nombre inventado ("analista-requisitos").
+- Las 2 correcciones del equipo: arreglamos ese nombre a mano, y en el plan cambiamos
+  una prueba que revisaba cómo estaba hecho el código en vez de lo que pedía el cliente.
+
+
+8 · PREGUNTAS  (Dante)
+-----------------------
+Dante abre la ronda de preguntas.
