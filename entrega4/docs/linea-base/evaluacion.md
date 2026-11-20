@@ -53,6 +53,8 @@ Fuente: capturas de pantalla de `docs/linea-base/` (opción marcada "Recommended
 
 Las tres recomendaciones contradecían las fuentes del cliente (DEC-04). El resultado final fue correcto en esos puntos solo porque el representante del cliente no aceptó las recomendaciones.
 
+La línea base no preguntó por el motivo de la decisión ni por su precedencia (equivalente a Q-5/ACL-5 del flujo multiagente). De esa omisión vienen sus 5 AC incumplidos (AC-2, 3, 6, 7 y 9).
+
 ## 4. Pruebas
 
 - 22 casos de prueba (coincide con lo informado en la transcripción): 16 funciones, de las cuales `test_validacion_de_puntajes` (5 casos) y `test_api_config_invalida` (3 casos) están parametrizadas.

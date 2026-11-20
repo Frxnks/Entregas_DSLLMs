@@ -8,7 +8,7 @@
 | Tiempo de agentes (suma de subagentes) | 3 min 37 s (217 s) | sin dato por separado (todo el trabajo es del agente único: 5 min) |
 | Mensajes o prompts humanos | 5 prompts a agentes + 4 decisiones humanas (H1–H4) + 2 correcciones (E1, E2) | 2 mensajes |
 | Preguntas de aclaración al cliente | 5 (Q-1 a Q-5) | 3 (una sola ronda) |
-| Recomendaciones que contradecían al cliente | 0 (sin dato de recomendaciones; el analista solo listó preguntas) | 3 de 3 |
+| Recomendaciones que contradecían al cliente | No aplica: el analista presenta 2 o 3 opciones por pregunta sin marcar ninguna como recomendada (02-especificacion.md, 1ra pasada, commit a5649c1) | 3 de 3 |
 | AC cumplidos de 14 | 14/14 (revisor, vuelta 1) | 9/14 (`evaluar_ac.py`, criterio estricto) |
 | AC con prueba trazable | 14/14 (verificador-trazabilidad) | 0/14 (sin ids AC en nombres ni comentarios) |
 | Número de pruebas | 19 | 22 |
