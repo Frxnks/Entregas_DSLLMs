@@ -6,10 +6,10 @@ Reglas: hablan los 4, no se lee la diapositiva y se cortan los 15 minutos. Despu
 
 Reparto:
   1 · Portada ........................ Nikolas  (15 s)
-  2 · De qué trata esta entrega ...... Dante    (45 s)
-  3 · El caso ........................ Dante    (1 min)
+  2 · De qué trata esta entrega ...... Nikolas    (45 s)
+  3 · El caso ........................ Nikolas   (1 min)
   4 · Diseño (diagrama) .............. Felipe   (3 min)
-  5 · Demostración en vivo ........... Nikolas  (6 min, opera y hace de cliente)
+  5 · Demostración en vivo ........... Dante  (6 min, opera y hace de cliente)
   6 · Resultados ..................... Franko   (1 min 30 s)
   7 · Una falla real ................. Franko   (1 min 30 s)
   8 · Preguntas ...................... Dante
@@ -45,7 +45,7 @@ PALABRAS QUE CONVIENE ENTENDER (para todos)
 representante del cliente. Usamos Claude Code con el modelo Claude Sonnet 5.5."
 
 
-2 · DE QUÉ TRATA ESTA ENTREGA  (Dante, 45 s)
+2 · DE QUÉ TRATA ESTA ENTREGA  (Nikolas, 45 s)
 --------------------------------------------
 "Nos pidieron armar un equipo de cuatro agentes de IA, cada uno con un rol, que lleve
 un caso de MIRA de principio a fin sin que nosotros hagamos su trabajo, con una persona
@@ -55,7 +55,7 @@ hasta tener código con 19 pruebas en verde, lo comparamos con un solo agente y
 registramos y corregimos las fallas que aparecieron."
 
 
-3 · EL CASO  (Dante, 1 min)
+3 · EL CASO  (Nikolas, 1 min)
 ----------------------------
 "Este es el pedido del cliente: que MIRA calcule un puntaje y decida sola si aprueba,
 deriva a revisión o rechaza un caso, que el fraude mande sobre todo y que cada cliente
@@ -105,7 +105,7 @@ Palabras de esta parte:
   docs/decision.md (por qué se diseñó así).
 
 
-5 · DEMOSTRACIÓN EN VIVO  (Nikolas, 6 min)
+5 · DEMOSTRACIÓN EN VIVO  (Dante, 6 min)
 -------------------------------------------
 Se sigue guion-demo-en-vivo.txt. Qué decir en cada paso:
 
@@ -172,4 +172,4 @@ Palabras de esta parte:
 
 8 · PREGUNTAS  (Dante)
 -----------------------
-Dante abre la ronda de preguntas.
+la verdad aquí cualquiera puede responder
