@@ -5,7 +5,7 @@ Set-Location $raiz
 
 $rama = (git branch --show-current).Trim()
 if ($rama -eq "main") {
-    Write-Error "Rama actual: main. Crea una rama de corrida (git switch -c corrida-<n>) antes de reiniciar."
+    Write-Host "No se reinicia: estás en la rama main. Crea una rama de corrida (git switch -c corrida-<n>) y vuelve a ejecutar." -ForegroundColor Yellow
     exit 1
 }
 Write-Host "Rama: $rama"
