@@ -1,0 +1,80 @@
+MIRA · Entrega 4 · Cómo probar la API del módulo de decisión
+=============================================================
+
+La API no tiene una interfaz gráfica propia (la especificación pedía "API o
+pantalla" y el plan eligió API). FastAPI genera automáticamente una página web
+(/docs) desde la que se puede probar con botones, sin escribir comandos.
+
+
+1. Levantar la API
+------------------
+En una terminal de PowerShell, dentro de la carpeta entrega4/:
+
+    .\.venv\Scripts\Activate.ps1
+    .\.venv\Scripts\python.exe -m uvicorn mira_decision.demo:app --port 8000
+
+Si PowerShell bloquea la activación del entorno, ejecuta antes:
+
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+
+Deja esa terminal abierta mientras pruebas. Para detener la API: Ctrl+C.
+
+
+2. Abrir la página de prueba
+----------------------------
+En el navegador:
+
+    http://localhost:8000/docs
+
+1. Clic en "POST /decisiones".
+2. Clic en "Try it out".
+3. Borra el contenido del cuadro "Request body" y pega uno de los casos de la tabla.
+4. Clic en "Execute".
+5. Baja hasta "Server response": ahí aparece el código (Code) y la respuesta (Response body).
+
+El subrayado rojo en "senales" es solo el corrector ortográfico del navegador.
+
+
+3. Clientes de prueba
+---------------------
+Definidos en src/mira_decision/demo.py (datos ficticios):
+
+    cliente-a   umbral de aprobación 70   mínimo por señal 50
+    cliente-b   umbral de aprobación 90   mínimo por señal 50
+
+
+4. Casos para probar cada regla
+-------------------------------
+
+| # | Qué se prueba            | Cuerpo (Request body)                                                                         | Respuesta esperada                          |
+|---|--------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------|
+| 1 | Aprueba                  | {"cliente_id":"cliente-a","senales":[{"puntaje":80},{"puntaje":80}]}                          | 200 · APROBAR · PUNTAJE_SOBRE_UMBRAL        |
+| 2 | Mismo caso, otro cliente | {"cliente_id":"cliente-b","senales":[{"puntaje":80},{"puntaje":80}]}                          | 200 · DERIVAR_A_REVISION · PUNTAJE_BAJO_UMBRAL |
+| 3 | El fraude manda          | {"cliente_id":"cliente-a","senales":[{"puntaje":99,"es_fraude":true},{"puntaje":99}]}         | 200 · DERIVAR_A_REVISION · FRAUDE           |
+| 4 | Señal bajo el mínimo     | {"cliente_id":"cliente-a","senales":[{"puntaje":100},{"puntaje":100},{"puntaje":40}]}         | 200 · DERIVAR_A_REVISION · SENAL_BAJO_MINIMO |
+| 5 | Sin señales              | {"cliente_id":"cliente-a","senales":[]}                                                       | 200 · DERIVAR_A_REVISION · SIN_SENALES      |
+| 6 | Cliente sin configurar   | {"cliente_id":"cliente-x","senales":[{"puntaje":95}]}                                         | 404 · CLIENTE_SIN_CONFIGURACION             |
+
+En ningún caso debe aparecer RECHAZAR: MIRA nunca rechaza un caso por sí sola
+(DEC-04, ACL-2, AC-11).
+
+Nota: en FRAUDE y SIN_SENALES el campo "puntaje" viene en null. Es el supuesto
+S-1 del plan, aprobado por el equipo en H3; no es un requisito del cliente.
+
+
+5. Alternativa por terminal (sin navegador)
+-------------------------------------------
+Con la API levantada, en otra terminal:
+
+    Invoke-RestMethod -Method Post -Uri http://localhost:8000/decisiones -ContentType "application/json" -Body '{"cliente_id":"cliente-a","senales":[{"puntaje":80},{"puntaje":80}]}'
+
+
+6. Pruebas automáticas
+----------------------
+No necesitan la API levantada:
+
+    .\.venv\Scripts\python.exe -m pytest -q
+    .\.venv\Scripts\python.exe .claude\skills\verificador-trazabilidad\scripts\verificar.py
+
+Resultado esperado: 19 pruebas pasan y el verificador termina con RESULTADO: OK
+(14 de 14 AC con tarea y prueba).
